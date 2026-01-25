@@ -1,6 +1,10 @@
-import {createFileRoute} from '@tanstack/react-router'
+import {createFileRoute, Link} from '@tanstack/react-router'
 import {db} from "@/db";
 import {createServerFn} from "@tanstack/react-start";
+import {Badge} from "src/components/ui/badge.tsx"
+import {Button} from "@/components/ui/button.tsx";
+import {ListTodoIcon, PlusIcon} from "lucide-react";
+import {Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle} from "@/components/ui/empty.tsx";
 
 // Equivalent of Server Actions (NextJS). Main difference, now in Tanstack it works not only to POST data, but to GET data too.
 // It will make a server action so the client can GET / POST the last datas.
@@ -27,6 +31,78 @@ function App() {
   // Hook that gets the data from the loader
   const data = Route.useLoaderData()
 
-  return <h1>Hi. You have {data.length} todos awaiting</h1>
+  const completedCount = data.filter( todo => todo.isCompleted).length
+  const totalCount = data.length
 
+
+  return (
+      <div className="min-h-screen container space-y-8">
+        <div className="flex justify-between items-center gap-4">
+          {/* HEADER SECTION */}
+          {/* Title of page and count of todos done */}
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold">
+              Todo List
+            </h1>
+            {
+              totalCount > 0 && (
+                  <Badge variant="outline">
+                    {completedCount} of {totalCount} completed
+                  </Badge>
+                )
+            }
+          </div>
+
+          {/* Buttons section  to add a todo */}
+          <div>
+            <Button size="sm" asChild>
+              <Link to={"/todos/new"}>
+                <PlusIcon /> Add Todo
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* BODY SECTION */}
+        {/* Table of todos */}
+        <TodoListTable todos={data}/>
+      </div>
+
+  )
+}
+
+function TodoListTable({todos,} :
+  {
+    todos: Array<{
+      id: string
+      title: string
+      isCompleted: boolean
+      createdAt: Date
+    }>
+  })
+{
+  // 2 sections
+  if(todos.length === 0){
+    return (
+        <Empty className="border border-dashed">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <ListTodoIcon/>
+
+            </EmptyMedia>
+            <EmptyTitle>No Todos</EmptyTitle>
+            <EmptyDescription>
+              Try Adding a new todo
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button asChild>
+              <Link to={"/todos/new"}>
+                <PlusIcon /> Add Todo
+              </Link>
+            </Button>
+          </EmptyContent>
+        </Empty>
+    )
+  }
 }

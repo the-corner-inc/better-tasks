@@ -1,5 +1,8 @@
 Welcome to your new TanStack app! 
 
+# TUTO
+Following [this tutorial](https://www.youtube.com/watch?v=KsHbs5RMVYU)
+
 # ToDo
 - [ ] Fix package json versions (It generates errors...)
 

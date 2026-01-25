@@ -1,5 +1,8 @@
 Welcome to your new TanStack app! 
 
+# ToDo
+- [ ] Fix package json versions (It generates errors...)
+
 # Getting Started
 
 To run this application:

@@ -1,7 +1,10 @@
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import {boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
-export const todos = pgTable('todos', {
-  id: serial().primaryKey(),
-  title: text().notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
+export const todos = pgTable(
+  'todos', {
+      id: uuid("id").primaryKey().defaultRandom(),
+      title: text("title").notNull(),
+      isCompleted: boolean("is_completed").notNull(),
+      createdAt: timestamp("created_at",{withTimezone: true}).defaultNow().notNull(),
+      updatedAt: timestamp("updated_at",{withTimezone: true}).defaultNow().notNull().$onUpdate(() => new Date()),
 })

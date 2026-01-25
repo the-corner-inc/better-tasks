@@ -16,7 +16,7 @@ import {cn} from "@/lib/utils.ts";
 //  - A) We are on the client -> Make a fetch request
 //  - B) we are on the server -> Call the code (db query), with no changes at all.
 const serverLoader = createServerFn({method: 'GET' }).handler(() => {
-  return db.query.todos.findMany()
+  return db.query.todosTable.findMany()
 })
 
 // Other functions for server / client :

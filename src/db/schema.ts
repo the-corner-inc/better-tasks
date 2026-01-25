@@ -1,6 +1,6 @@
 import {boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
 
-export const todos = pgTable(
+export const todosTable = pgTable(
   'todos', {
       id: uuid("id").primaryKey().defaultRandom(),
       title: text("title").notNull(),

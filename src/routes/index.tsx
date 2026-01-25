@@ -1,10 +1,13 @@
 import {createFileRoute, Link} from '@tanstack/react-router'
 import {db} from "@/db";
-import {createClientOnlyFn, createIsomorphicFn, createServerFn, createServerOnlyFn} from "@tanstack/react-start";
+import {createIsomorphicFn, createServerFn} from "@tanstack/react-start";
 import {Badge} from "src/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx";
-import {ListTodoIcon, PlusIcon} from "lucide-react";
+import {EditIcon, ListTodoIcon, PlusIcon, TrashIcon} from "lucide-react";
 import {Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle} from "@/components/ui/empty.tsx";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
+import {Checkbox} from "@/components/ui/checkbox.tsx";
+import {cn} from "@/lib/utils.ts";
 
 // Equivalent of Server Actions (NextJS). Main difference, now in Tanstack it works not only to POST data, but to GET data too.
 // It will make a server action so the client can GET / POST the last datas.
@@ -92,7 +95,7 @@ function TodoListTable({todos,} :
     }>
   })
 {
-  // 2 sections
+  // If there is no Todos
   if(todos.length === 0){
     return (
         <Empty className="border border-dashed">
@@ -116,4 +119,79 @@ function TodoListTable({todos,} :
         </Empty>
     )
   }
+
+  // show all Todos
+  return (
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+              <TableHead className="w-0"></TableHead>
+              <TableHead>Task</TableHead>
+            <TableHead>Created On</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {
+            todos.map(todo => (
+                <TodoTableRow key={todo.id} {...todo} />
+            ))
+          }
+        </TableBody>
+      </Table>
+  )
+
+}
+
+
+
+
+function TodoTableRow({id, title, isCompleted, createdAt} : {
+  id: string
+  title: string
+  isCompleted: boolean
+  createdAt: Date
+}) {
+  return (
+      <TableRow>
+
+        <TableCell>
+          <Checkbox checked={isCompleted}/>
+        </TableCell>
+
+        <TableCell className={cn(
+            "font-medium",
+            isCompleted && "text-muted-foreground line-through")}>
+          {title}
+        </TableCell>
+
+        <TableCell className="text-sm text-muted-foreground">
+          {formatDate(createdAt)}
+        </TableCell>
+
+        <TableCell>
+            <div className="flex items-center justify-end gap-1">
+                <Button variant="ghost" size="icon-sm" asChild>
+                    <Link to="/todos/$id/edit" params={{id}} >
+                        <EditIcon />
+                    </Link>
+                </Button>
+
+                <Button variant="destructiveGhost" size="icon-sm">
+                    <TrashIcon />
+                </Button>
+
+            </div>
+        </TableCell>
+
+      </TableRow>
+  )
+}
+
+
+function formatDate(date: Date) {
+  const formatter = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "short",
+  })
+
+  return formatter.format(date)
 }

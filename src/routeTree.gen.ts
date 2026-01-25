@@ -14,6 +14,7 @@ import { Route as ApiSplatRouteImport } from './routes/api.$'
 import { Route as TodosNewIndexRouteImport } from './routes/todos/new/index'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as TodosIdEditIndexRouteImport } from './routes/todos/$id/edit/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TodosIdEditIndexRoute = TodosIdEditIndexRouteImport.update({
+  id: '/todos/$id/edit/',
+  path: '/todos/$id/edit/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/todos/new/': typeof TodosNewIndexRoute
+  '/todos/$id/edit/': typeof TodosIdEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/todos/new': typeof TodosNewIndexRoute
+  '/todos/$id/edit': typeof TodosIdEditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,33 @@ export interface FileRoutesById {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/todos/new/': typeof TodosNewIndexRoute
+  '/todos/$id/edit/': typeof TodosIdEditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/$' | '/api/auth/$' | '/api/rpc/$' | '/todos/new/'
+  fullPaths:
+    | '/'
+    | '/api/$'
+    | '/api/auth/$'
+    | '/api/rpc/$'
+    | '/todos/new/'
+    | '/todos/$id/edit/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/$' | '/api/auth/$' | '/api/rpc/$' | '/todos/new'
-  id: '__root__' | '/' | '/api/$' | '/api/auth/$' | '/api/rpc/$' | '/todos/new/'
+  to:
+    | '/'
+    | '/api/$'
+    | '/api/auth/$'
+    | '/api/rpc/$'
+    | '/todos/new'
+    | '/todos/$id/edit'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/$'
+    | '/api/auth/$'
+    | '/api/rpc/$'
+    | '/todos/new/'
+    | '/todos/$id/edit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +105,7 @@ export interface RootRouteChildren {
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
   TodosNewIndexRoute: typeof TodosNewIndexRoute
+  TodosIdEditIndexRoute: typeof TodosIdEditIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/todos/$id/edit/': {
+      id: '/todos/$id/edit/'
+      path: '/todos/$id/edit'
+      fullPath: '/todos/$id/edit/'
+      preLoaderRoute: typeof TodosIdEditIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
   TodosNewIndexRoute: TodosNewIndexRoute,
+  TodosIdEditIndexRoute: TodosIdEditIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

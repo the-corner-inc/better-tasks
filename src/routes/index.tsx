@@ -1,6 +1,6 @@
 import {createFileRoute, Link, useRouter} from '@tanstack/react-router'
 import {db} from "@/db";
-import {createIsomorphicFn, createServerFn, useServerFn} from "@tanstack/react-start";
+import {createServerFn, useServerFn} from "@tanstack/react-start";
 import {Badge} from "src/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx";
 import {EditIcon, ListTodoIcon, PlusIcon, TrashIcon} from "lucide-react";
@@ -12,6 +12,7 @@ import {ActionButton} from "@/components/ui/action-button.tsx";
 import z from "zod";
 import {todosTable} from "@/db/schema.ts";
 import {eq} from "drizzle-orm";
+import {startTransition, useState} from "react";
 
 // Equivalent of Server Actions (NextJS). Main difference, now in Tanstack it works not only to POST data, but to GET data too.
 // It will make a server action so the client can GET / POST the last datas.
@@ -157,6 +158,22 @@ const deleteFn = createServerFn({method: "POST"})
         return  {error: false}
     } )
 
+const toggleFn = createServerFn({method: "POST"})
+        .inputValidator(
+            z.object({
+                id: z.string().min(1),
+                isCompleted: z.boolean(),
+            } ) ,
+        )
+        // Server Handler
+        .handler( async ({data}) => {
+            // Timeout of 500ms - Wait before showing on screen
+            //await new Promise(resolve => setTimeout(resolve, 500))
+            await db.update(todosTable)
+                .set({ isCompleted: data.isCompleted})
+                .where(eq(todosTable.id, data.id))
+        } )
+
 
 
 function TodoTableRow({id, title, isCompleted, createdAt} : {
@@ -166,19 +183,38 @@ function TodoTableRow({id, title, isCompleted, createdAt} : {
   createdAt: Date
 }) {
 
+  // Wrap the methods with server Function
   const deleteFnServer = useServerFn(deleteFn)
+  const toggleFnServer = useServerFn(toggleFn)
+
+  // Use this to do a optimistic   update
+  const [isCurrentCompleted, setIsCurrentCompleted] = useState<boolean>(isCompleted)
+
   const router = useRouter()
 
   return (
-      <TableRow>
+      <TableRow onClick={(event) => {
+          const target = event.target as HTMLElement
+          // If we click on actions in the row, like "edit" or "delete", we don't toggle the checkbox
+          if (target.closest("[data-actios]"))
+              return
+
+          setIsCurrentCompleted(current => !current)
+          // Transition to make sure it delays the update of our state for this ones
+          startTransition(async () => {
+              await toggleFnServer({ data: {id: id , isCompleted: !isCurrentCompleted} })
+              router.invalidate()
+          })
+
+      }}>
 
         <TableCell>
-          <Checkbox checked={isCompleted}/>
+          <Checkbox checked={isCurrentCompleted}/>
         </TableCell>
 
         <TableCell className={cn(
             "font-medium",
-            isCompleted && "text-muted-foreground line-through")}>
+            isCurrentCompleted && "text-muted-foreground line-through")}>
           {title}
         </TableCell>
 
@@ -186,7 +222,7 @@ function TodoTableRow({id, title, isCompleted, createdAt} : {
           {formatDate(createdAt)}
         </TableCell>
 
-        <TableCell>
+        <TableCell data-actions>
             <div className="flex items-center justify-end gap-1">
                 <Button variant="ghost" size="icon-sm" asChild>
                     <Link to="/todos/$id/edit" params={{id}} >

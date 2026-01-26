@@ -1,7 +1,7 @@
 import {Input} from "@/components/ui/input.tsx";
 import {FormEvent, useRef, useState} from "react";
 import {Button} from "@/components/ui/button";
-import {LoadingSwap} from "@/components/loading-swap.tsx";
+import {LoadingSwap} from "@/components/ui/loading-swap.tsx";
 import {PlusIcon} from "lucide-react";
 import {createServerFn, useServerFn} from "@tanstack/react-start";
 import {z} from "zod";

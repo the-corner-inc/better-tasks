@@ -11,10 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiSplatRouteImport } from './routes/api.$'
-import { Route as TodosNewIndexRouteImport } from './routes/todos/new/index'
+import { Route as TodosNewIndexRouteImport } from '@/routes/(app)/todos/new/index'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as TodosIdEditIndexRouteImport } from './routes/todos/$id/edit/index'
+import { Route as TodosIdEditIndexRouteImport } from '@/routes/(app)/todos/$id/edit/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',

@@ -1,5 +1,5 @@
 import {createFileRoute, Link, useRouter} from '@tanstack/react-router'
-import {db} from "@/db";
+import {db} from "@/drizzle/db.ts";
 import {createServerFn, useServerFn} from "@tanstack/react-start";
 import {Badge} from "src/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx";
@@ -10,10 +10,10 @@ import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {cn} from "@/lib/utils.ts";
 import {ActionButton} from "@/components/ui/action-button.tsx";
 import z from "zod";
-import {todosTable} from "@/db/schema.ts";
+import {todosTable} from "@/drizzle/schema.ts";
 import {eq} from "drizzle-orm";
 import {startTransition, useState} from "react";
-import {LocalCountButton} from "@/components/local-count-button.tsx";
+import {LocalCountButton} from "@/features/todos/ui/local-count-button.tsx";
 
 // Equivalent of Server Actions (NextJS). Main difference, now in Tanstack it works not only to POST data, but to GET data too.
 // It will make a server action so the client can GET / POST the last datas.

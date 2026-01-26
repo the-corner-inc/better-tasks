@@ -2,11 +2,11 @@ import {createFileRoute, Link, notFound} from '@tanstack/react-router'
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowLeftIcon} from "lucide-react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {TodoForm} from "@/components/todo-form.tsx";
+import {TodoForm} from "@/features/todos/ui/todo-form.tsx";
 import {createServerFn} from "@tanstack/react-start";
-import {db} from "@/db";
+import {db} from "@/drizzle/db.ts";
 import {eq} from "drizzle-orm";
-import {todosTable} from "@/db/schema.ts";
+import {todosTable} from "@/drizzle/schema.ts";
 
 const loaderFn = createServerFn ({method: "GET"})
     .inputValidator((data: { id:string }) => data) // Hardcoding this particular type and no real error Validation is done

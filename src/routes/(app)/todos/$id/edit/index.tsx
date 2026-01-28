@@ -6,7 +6,7 @@ import {TodoForm} from "@/features/todos/ui/todo-form.tsx";
 import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/drizzle/db.ts";
 import {eq} from "drizzle-orm";
-import {todosTable} from "@/drizzle/schema.ts";
+import {todosTable} from "@/db/schema.ts";
 
 const loaderFn = createServerFn ({method: "GET"})
     .inputValidator((data: { id:string }) => data) // Hardcoding this particular type and no real error Validation is done

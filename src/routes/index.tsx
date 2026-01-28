@@ -10,7 +10,7 @@ import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {cn} from "@/lib/utils.ts";
 import {ActionButton} from "@/components/ui/action-button.tsx";
 import z from "zod";
-import {todosTable} from "@/drizzle/schema.ts";
+import {todosTable} from "@/db/schema.ts";
 import {eq} from "drizzle-orm";
 import {startTransition, useState} from "react";
 import {LocalCountButton} from "@/features/todos/ui/local-count-button.tsx";

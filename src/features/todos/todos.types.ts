@@ -1,4 +1,4 @@
-import {todosTable} from "@/drizzle/schema.ts";
+import {todosTable} from "@/db/schema.ts";
 import { createSelectSchema } from "drizzle-zod";
 import {z} from "zod";
 

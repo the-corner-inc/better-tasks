@@ -23,7 +23,7 @@ const loaderFn = createServerFn ({method: "GET"})
     })
 
 
-export const Route = createFileRoute('/todos/$id/edit/')({
+export const Route = createFileRoute('/(app)/todos/$id/edit/')({
   component: RouteComponent,
   // params is the "id" in the URL
   loader: async ({ params }) => loaderFn({ data: params})

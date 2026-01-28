@@ -20,7 +20,7 @@ type ActionResult = {
 }
 
 type ActionButtonProps = ComponentProps<typeof Button> & {
-    action: () => Promise<ActionResult>
+    action: () => Promise<ActionResult | void>
     requireAreYouSure?: boolean
     areYouSureDescription?: ReactNode
 }

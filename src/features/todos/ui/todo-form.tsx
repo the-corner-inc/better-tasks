@@ -3,92 +3,106 @@ import {FormEvent, useRef, useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
 import {LoadingSwap} from "@/components/ui/loading-swap.tsx";
 import {PlusIcon} from "lucide-react";
-import {createServerFn, useServerFn} from "@tanstack/react-start";
-import {z} from "zod";
-import {db} from "@/drizzle/db.ts";
-import {todosTable} from "@/drizzle/schema.ts";
-import {redirect} from "@tanstack/react-router";
-import { eq } from "drizzle-orm";
+import {useServerFn} from "@tanstack/react-start";
+import {createTodo, TodoModel, updateTodo} from "@/features/todos/todos.index.ts";
+import {redirect} from "@tanstack/router-core";
 
-// Server Actions
-const addTodo = createServerFn({method: "POST"})
-    .inputValidator( z.object({ title: z.string().min(1) }))
-    // Server Handler
-    .handler(async ({ data }) => {
-    await db.insert(todosTable).values({
-        title: data.title,
-        isCompleted: false
-    })
+/**
+ *  Todos Form Component
+ *
+ *  Handles :
+ *  - create mode
+ *  - edit mode
+ */
 
-    throw redirect({to: "/"})
-});
+type Props = {
+    todo?: Pick<TodoModel, "id" | "title">
+}
 
-const updateTodo = createServerFn({method: "POST"})
-    .inputValidator( z.object({
-        id: z.string().min(1),
-        title: z.string().min(1)
-    }))
-    // Server Handler
-    .handler(async ({ data }) => {
-        await db.update(todosTable).set(data)
-            .where(eq(todosTable.id, data.id))
+export function TodoForm({ todo}: Props) {
 
-        throw redirect({to: "/"})
-    });
+    // Hooks
+    const inputRef = useRef<HTMLInputElement> (null)
+    const [isLoading, setIsLoading]             = useState<boolean>(false);
+    const [error, setError]                     = useState<string | null>(null);
 
-export function TodoForm({ todo}: {todo?: {
-    title: string;
-    id: string;
-    }}) {
+    // To call the server function inside the client, we need to wrap the function with serverFunction Hook
+    const createTodoFn     = useServerFn(createTodo)
+    const updateTodoFn  = useServerFn(updateTodo)
 
-    const nameRef = useRef<HTMLInputElement> (null)
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    // Variables
+    const isEditMode =  todo != null   // Bool check, if todos exits we update, otherwise we create
 
-    // To call the function inside the client, we need to wrap the function with serverFunction Hook
-    const addTodoFn = useServerFn(addTodo)
-    const updateTodoFn = useServerFn(updateTodo)
-
+    // Functions
     async function handleSubmit(event: FormEvent) {
         event.preventDefault()
+        setError(null)
 
-        const title = nameRef.current?.value
-        if(!title)
+        const title = inputRef.current?.value
+        if(!title?.trim()) {
+            setError("Title is required")
             return
+        }
 
         setIsLoading(true);
 
-        if(todo == null)
-            await addTodoFn({data: { title }})
-        else
-            await updateTodoFn ({data: {title, id: todo.id}})
+        try {
+            if(isEditMode)
+                await updateTodoFn({ data: {id: todo?.id , title: title } })
+            else
+                await createTodoFn({data: { title }})
 
-        setIsLoading(false);
+            throw redirect({ to: "/" })
+        }
+        catch (error) {
+            // Todo: Make a error Handler that makes & explain this
+            //1) Tanstack uses "throw redirect()", but it's not an error, so continue to throw it
+            if(error instanceof Response)
+                throw error
+            //2) Same here other possible format of redirect, and not an error
+            if(typeof error === "object" && error !== null && "redirect" in error)
+                throw error
+
+            //3) Real error here
+            console.error("Submit failed: ", error)
+            setError("Something went wrong");
+        }
+        finally {
+            setIsLoading(false);
+        }
     }
 
+    // Render
     return (
         <form
-            onSubmit={handleSubmit} className="flex gap-2">
-            <Input
-                autoFocus
-                ref={nameRef}
-                placeholder="Enter your todo..."
-                className="flex-1"
-                aria-label="Name"
-                defaultValue={todo?.title}
-            />
-            <Button type="submit" disabled={isLoading}>
-                <LoadingSwap isLoading={isLoading} className="flex gap-2 items-center"  >
-                    {
-                        todo == null ? (
-                            <>
-                                <PlusIcon/> Add
-                            </>
-                        ) : (
-                            "Update"
-                        )
-                    }
-                </LoadingSwap>
-            </Button>
+            onSubmit={handleSubmit}
+            className="space-y-4">
+            <div className="flex gap-2">
+                <Input
+                    autoFocus
+                    ref={inputRef}
+                    placeholder="Enter your todo..."
+                    className="flex-1"
+                    aria-label="Title"
+                    defaultValue={todo?.title}
+                />
+                <Button type="submit" disabled={isLoading}>
+                    <LoadingSwap isLoading={isLoading} className="flex gap-2 items-center"  >
+                        {
+                            isEditMode
+                                ? "Update"
+                                :   <>
+                                    <PlusIcon/> Add
+                                </>
+                        }
+                    </LoadingSwap>
+                </Button>
+            </div>
+            {error &&
+                <p className="text-sm text-red-600 text-destructive">
+                    {error}
+                </p>
+            }
         </form>
     )
 }

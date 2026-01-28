@@ -5,6 +5,16 @@ Following [this tutorial](https://www.youtube.com/watch?v=KsHbs5RMVYU)
 
 # ToDo
 - [ ] Fix package json versions (It generates errors...)
+- [ ] Voir schemas zod ancien projet, et essayer implementer ici, et coté UI  ne pas faire le pick ? Redefinir les données ?
+- [ ] Faire input & output validtors
+- [ ] Comment vit la data & models dans mon app ? 
+- [ ] Toujours besoin de DAL ? Voir avec cache et local storage
+- [ ] faire architecture colocation
+- [ ] Ajouter error handler dans le UI
+- [ ] Deplacer ce que il faut dans routes ?
+- [ ] Implementer better Auth (login)
+- [ ] Ajouter Tasks (renommer mes Todos en Task, puis lui ajouter une liste de todos)
+- [ ] Ajouter ORCP
 
 # Getting Started
 

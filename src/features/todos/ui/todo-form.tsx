@@ -6,6 +6,7 @@ import {PlusIcon} from "lucide-react";
 import {useServerFn} from "@tanstack/react-start";
 import {createTodo, TodoModel, updateTodo} from "@/features/todos/todos.index.ts";
 import {redirect} from "@tanstack/router-core";
+import {useRouter} from "@tanstack/react-router";
 
 /**
  *  Todos Form Component
@@ -22,6 +23,7 @@ type Props = {
 export function TodoForm({ todo}: Props) {
 
     // Hooks
+    const router = useRouter();
     const inputRef = useRef<HTMLInputElement> (null)
     const [isLoading, setIsLoading]             = useState<boolean>(false);
     const [error, setError]                     = useState<string | null>(null);
@@ -52,10 +54,11 @@ export function TodoForm({ todo}: Props) {
             else
                 await createTodoFn({data: { title }})
 
-            throw redirect({ to: "/" })
+            //throw redirect({ to: "/" }) //Todo : Check this aproach from tutorial if still valuable
+            router.navigate({ to: "/" })
         }
         catch (error) {
-            // Todo: Make a error Handler that makes & explain this
+            // Todo: Make a error Handler that makes & explain this. Maybe not use this anymore if I use router.navigate() instead of throw
             //1) Tanstack uses "throw redirect()", but it's not an error, so continue to throw it
             if(error instanceof Response)
                 throw error

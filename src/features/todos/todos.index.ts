@@ -21,7 +21,6 @@ export {
 // ====================== UI COMPONENTS =========================
 export {TodoForm} from "@/features/todos/ui/todo-form.tsx"
 export {TodoTable} from "@/features/todos/ui/todo-table.tsx"
-// Client code only - Data in Storage
-export {LocalCountButton} from "@/features/todos/ui/local-count-button.tsx"
+export {LocalCountButton} from "@/features/todos/ui/local-count-button.tsx" // Client code only - Data in Storage
 
 

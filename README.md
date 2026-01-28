@@ -1,20 +1,110 @@
-Welcome to your new TanStack app! 
+# Better Tasks - TanStack Start
 
-# TUTO
-Following [this tutorial](https://www.youtube.com/watch?v=KsHbs5RMVYU)
+A task management application built with TanStack Start, featuring a pragmatic **Feature-First Colocation** architecture.
 
-# ToDo
-- [ ] Fix package json versions (It generates errors...)
-- [ ] Voir schemas zod ancien projet, et essayer implementer ici, et coté UI  ne pas faire le pick ? Redefinir les données ?
-- [ ] Faire input & output validtors
-- [ ] Comment vit la data & models dans mon app ? 
-- [ ] Toujours besoin de DAL ? Voir avec cache et local storage
-- [ ] faire architecture colocation
-- [ ] Ajouter error handler dans le UI
-- [ ] Deplacer ce que il faut dans routes ?
+> Originally based on [this YouTube tutorial](https://www.youtube.com/watch?v=KsHbs5RMVYU), now evolved into a standalone project demonstrating modern full-stack patterns with TanStack.
+
+---
+
+## Architecture
+
+This project follows a **Feature-First Colocation** pattern, designed to embrace TanStack Start's full-stack philosophy while keeping code organized and maintainable.
+
+### Why this Architecture?
+
+| Reason | Benefit |
+|--------|---------|
+| **Colocation** | Keep what changes together, together. Server functions live near their UI consumers |
+| **Feature-First** | Code organized by business domain, not technical layers |
+| **Pragmatic** | No over-engineering. Simple structure with 3-4 files per feature |
+| **TanStack-Native** | Embraces `createServerFn` and route loaders as intended |
+
+> **Note**: Unlike the [Next.js sister project](https://github.com/...) which uses a full Layered Architecture (DAL/BLL/Actions), this project uses a lighter approach that fits TanStack Start's "full-stack by default" philosophy.
+
+### Project Structure
+
+```
+src/
+├── features/                     #Feature modules
+│   └── todos/
+│       ├── todos.types.ts        # Types & Zod schemas
+│       ├── todos.server.ts       # Server functions (loaders + mutations)
+│       ├── todos.index.ts        # Public exports (barrel file)
+│       └── ui/
+│           ├── todo-table.tsx    # Feature-specific components
+│           └── todo-form.tsx
+│
+├── routes/                       # Pages (thin layer)
+│   ├── index.tsx                 # Route composition only
+│   └── (app)/todos/...
+│
+├── components/ui/                # Shared UI (shadcn)
+├── drizzle/                      # Database schema & migrations
+└── lib/                          # Utilities & auth config
+```
+
+---
+
+### Server Functions Explained
+
+```typescript
+// LOADER (GET) - Called by route loader, cacheable
+export const listTodos = createServerFn({ method: "GET" })
+  .handler(() => db.query.todosTable.findMany());
+
+// MUTATION (POST) - Called by UI on user action, never cached
+export const createTodo = createServerFn({ method: "POST" })
+  .inputValidator(createTodoSchema)
+  .handler(async ({ data }) => {
+    await db.insert(todosTable).values({ title: data.title });
+    throw redirect({ to: "/" });
+  });
+```
+
+| Type | HTTP | Purpose | Called by | Cache         |
+|------|------|---------|-----------|---------------|
+| **Loader** | GET | Read data | Route `loader` | Can be cached |
+| **Mutation** | POST | Write data | UI `onClick`/`onSubmit` | Never cached  |
+
+---
+
+
+## Project Status / TODO
+### Features (Product)
+- [x] faire architecture colocation
 - [ ] Implementer better Auth (login)
-- [ ] Ajouter Tasks (renommer mes Todos en Task, puis lui ajouter une liste de todos)
-- [ ] Ajouter ORCP
+- [ ] Rename "Todos" to "Tasks" with nested todos
+- [ ] Ajouter error handler dans le UI
+- [ ] Add oRPC integration
+- [ ] Add error handling in UI
+
+
+### Chore (Internally)
+- [x] Follow the YouTube tutorial (TanStack Start basics)
+- [x] Implement Feature-First Colocation architecture
+- [ ] Implement Better Auth (login/register)
+- [ ] Faire input & output validtors
+- [ ] Add Zod schemas from Drizzle (drizzle-zod) - et coté UI  ne pas faire le pick ? Redefinir les données ?
+- [ ] Explore data caching strategies - NEED FOR DAL ?  Comment vit la data & models dans mon app ?
+- [ ] Fix package json versions (It generates errors...)
+- [ ] Add oRPC integration
+- [ ] Add error handling in UI
+
+---
+
+
+## Resources
+
+- [TanStack Start Documentation](https://tanstack.com/start/latest)
+- [TanStack Router Documentation](https://tanstack.com/router/latest)
+- [Drizzle ORM Documentation](https://orm.drizzle.team/docs/overview)
+- [Better Auth Documentation](https://www.better-auth.com/docs)
+- [shadcn/ui Documentation](https://ui.shadcn.com/docs)
+
+---
+
+<details>
+<summary><strong> Tanstack Initial Boilerplate Documentation</strong></summary>
 
 # Getting Started
 
@@ -358,3 +448,5 @@ Files prefixed with `demo` can be safely deleted. They are there to provide a st
 # Learn More
 
 You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+</details>
+

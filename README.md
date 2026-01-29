@@ -21,28 +21,6 @@ This project follows a **Feature-First Colocation** pattern, designed to embrace
 
 > **Note**: Unlike the [Next.js sister project](https://github.com/...) which uses a full Layered Architecture (DAL/BLL/Actions), this project uses a lighter approach that fits TanStack Start's "full-stack by default" philosophy.
 
-### Project Structure
-
-```
-src/
-├── features/                     #Feature modules
-│   └── todos/
-│       ├── todos.types.ts        # Types & Zod schemas
-│       ├── todos.server.ts       # Server functions (loaders + mutations)
-│       ├── todos.index.ts        # Public exports (barrel file)
-│       └── ui/
-│           ├── todo-table.tsx    # Feature-specific components
-│           └── todo-form.tsx
-│
-├── routes/                       # Pages (thin layer)
-│   ├── index.tsx                 # Route composition only
-│   └── (app)/todos/...
-│
-├── components/ui/                # Shared UI (shadcn)
-├── drizzle/                      # Database schema & migrations
-└── lib/                          # Utilities & auth config
-```
-
 ---
 
 ### Server Functions Explained
@@ -72,7 +50,9 @@ export const createTodo = createServerFn({ method: "POST" })
 ## Project Status / TODO
 ### Features (Product)
 - [x] faire architecture colocation
-- [ ] Implementer better Auth (login)
+- [ ] Implementer better Auth 
+  - login / signin
+  - caching
 - [ ] Rename "Todos" to "Tasks" with nested todos
 - [ ] Ajouter error handler dans le UI
 - [ ] Add oRPC integration
@@ -82,7 +62,7 @@ export const createTodo = createServerFn({ method: "POST" })
 ### Chore (Internally)
 - [x] Follow the YouTube tutorial (TanStack Start basics)
 - [x] Implement Feature-First Colocation architecture
-- [ ] Implement Better Auth (login/register)
+- [ ] Implement Better Auth
 - [ ] Faire input & output validtors
 - [ ] Add Zod schemas from Drizzle (drizzle-zod) - et coté UI  ne pas faire le pick ? Redefinir les données ?
 - [ ] Explore data caching strategies - NEED FOR DAL ?  Comment vit la data & models dans mon app ?

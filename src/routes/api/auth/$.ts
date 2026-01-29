@@ -9,16 +9,15 @@ import { auth } from '@/lib/auth/auth.ts'
  * Route:
  * - "/api/auth/*"
  * - Every request under "/api/auth/*" is handled here
+ * - The $ in the filename catches all sub-routes.
  *
  * Description:
- * Mount the Better Auth handler to a Next.js API route.
+ * Mount the Better Auth handler.
  * To handle API requests, you need to set up a route handler on your server.
  * A mount handler is responsible for processing incoming requests and sending appropriate responses.
- * In Next.js, you can create API routes that act as endpoints for your application.
  *
  *
  * Entry points:
- * - Next.js Route handler (App Router)
  * - Exports HTTP methods (GET, POST, etc...) delegated to Better Auth
  *
  * Responsibilities:
@@ -35,10 +34,6 @@ import { auth } from '@/lib/auth/auth.ts'
  *      - "authClient" (so the browser)
  *      - OAuth providers redirects
  *      - Cookies-based session checks
- *
- * Constraints:
- * - server only
- * - The single purpose is routing HTTP requests to Better Auth
  *
  */
 

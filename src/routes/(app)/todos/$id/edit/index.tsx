@@ -4,7 +4,7 @@ import {ArrowLeftIcon} from "lucide-react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {TodoForm} from "@/features/todos/ui/todo-form.tsx";
 import {createServerFn} from "@tanstack/react-start";
-import {db} from "@/drizzle/db.ts";
+import {db} from "@/db/db.ts";
 import {eq} from "drizzle-orm";
 import {todosTable} from "@/db/schema.ts";
 

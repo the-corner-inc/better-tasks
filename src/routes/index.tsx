@@ -1,5 +1,5 @@
 import {createFileRoute, Link, useRouter} from '@tanstack/react-router'
-import {db} from "@/drizzle/db.ts";
+import {db} from "@/db/db.ts";
 import {createServerFn, useServerFn} from "@tanstack/react-start";
 import {Badge} from "src/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx";

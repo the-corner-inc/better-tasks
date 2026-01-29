@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { auth } from '@/lib/auth/auth.ts'
 
+/**
+ * Better Auth Handler
+ */
 export const Route = createFileRoute('/api/auth/$')({
   server: {
     handlers: {

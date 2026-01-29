@@ -5,7 +5,6 @@ import {LoadingSwap} from "@/components/ui/loading-swap.tsx";
 import {PlusIcon} from "lucide-react";
 import {useServerFn} from "@tanstack/react-start";
 import {createTodo, TodoModel, updateTodo} from "@/features/todos/todos.index.ts";
-import {redirect} from "@tanstack/router-core";
 import {useRouter} from "@tanstack/react-router";
 
 /**

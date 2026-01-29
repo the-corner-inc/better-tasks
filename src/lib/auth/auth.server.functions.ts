@@ -1,6 +1,7 @@
 import {createServerFn} from "@tanstack/react-start";
 import {auth} from "@/lib/auth/auth.ts";
 import {getRequest, setResponseHeader} from "@tanstack/start-server-core";
+import {AuthQueryResult} from "@/lib/auth/auth.server.queries.ts";
 
 export const $getUser = createServerFn({ method: "GET" })
     .handler(async () => {

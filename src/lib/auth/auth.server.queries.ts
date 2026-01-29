@@ -11,8 +11,8 @@ export const authQueryOptions = () =>
 
 export const userQueryOptions = () =>
     queryOptions({
-        queryKey: ["user"],
-        queryFn: ({ signal }) => $getUser({ signal }),
+        queryKey: ["users"],
+        queryFn: ({ signal }) => $getUsers({ signal }),
     })
 
 

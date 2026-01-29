@@ -4,7 +4,7 @@ import {createServerOnlyFn} from "@tanstack/react-start";
 import {drizzleAdapter} from "better-auth/adapters/drizzle";
 import {db} from "@/lib/db/db.ts";
 import * as schema from "@/lib/db/schema.ts"
-import { env } from "@/lib/auth/env/server.ts"
+import { env } from "@/lib/env/server.ts"
 import {admin} from "better-auth/plugins";
 
 
@@ -35,12 +35,16 @@ import {admin} from "better-auth/plugins";
 
 const getAuthConfig = createServerOnlyFn( () =>
   betterAuth({
+
+    // Base URL for auth callbacks
     baseURL: env.VITE_BASE_URL,
 
     // Authentication Methods
     emailAndPassword: {
       enabled: true,
     },
+
+    // OAuth Social Providers
     // https://www.better-auth.com/docs/concepts/oauth
     socialProviders: {
       github: {
@@ -53,10 +57,10 @@ const getAuthConfig = createServerOnlyFn( () =>
         }
     },
 
-    // Configure Drizzle adapter with PostgreSQL provider and database instance
+    // Database configuration with Drizzle adapter
     database: drizzleAdapter( db, {provider: "pg", schema} ),
 
-    // Cookie Cache Server. Reduces the calls to the DB.
+    // Session configuration with cookie caching. Reduces the calls to the DB
     session: {
       cookieCache: {
         enabled: true,
@@ -64,32 +68,41 @@ const getAuthConfig = createServerOnlyFn( () =>
       },
     },
 
-    telemetry: {
+      // Disable telemetry for privacy
+      telemetry: {
       enabled: false,
     },
 
-    // User configuration for Database
+    // User configuration
     user: {
       // https://www.better-auth.com/docs/concepts/users-accounts#delete-user
       deleteUser: {
         enabled: true,
       },
 
-      // Additional user fields, extend te defaults properties with some custom fields
+      // Additional user fields (extend as needed)
       // https://www.better-auth.com/docs/concepts/typescript#additional-fields
       additionalFields: {
 
       },
     },
 
-    // ! Plugins should always be at the end of this config !
+    // Plugins - IMPORTANT: tanstackStartCookies MUST be last!
+    // https://www.better-auth.com/docs/integrations/tanstack#usage-tips
     plugins: [
-        // Core
-        tanstackStartCookies(),
-
         // Table
         admin(), //Todo : Get more infos on this and why it allows me to do "auth.api.listUsers"
-    ]
+
+        // Core
+        tanstackStartCookies(),
+    ],
+
+    // Experimental features
+    experimental: {
+        // Enable Drizzle joins for better query performance
+        // https://www.better-auth.com/docs/adapters/drizzle#joins-experimental
+        joins: true,
+      },
   })
 )
 

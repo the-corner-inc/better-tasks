@@ -2,12 +2,16 @@ import {createServerOnlyFn} from "@tanstack/react-start";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres"
 import * as schema from './schema.ts'
-import { env } from "@/lib/auth/env/server.ts"
+import { env } from "@/lib/env/server.ts"
 
 /**
- * Make a server function to ensure it will not get executed in the client (client side safe)
+ * Database Instance
  *
- * uses server env. variables.
+ * Creates a Drizzle ORM instance connected to PostgreSQL.
+ * Includes all schemas (auth + app) for type-safe queries.
+ *
+ * Make a server function to ensure it will not get executed in the client (client side safe).
+ * uses "server env." variables.
  */
 
 /** TODO : UPDATE INFORMATION FORM NEXTJS HERE

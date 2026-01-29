@@ -1,5 +1,5 @@
 import { createAuthClient } from 'better-auth/react'
-import {env} from "@/lib/auth/env/client.ts"
+import {env} from "@/lib/env/client.ts"
 import {adminClient, inferAdditionalFields} from "better-auth/client/plugins";
 import {auth} from "@/lib/auth/auth.ts";
 
@@ -14,10 +14,12 @@ import {auth} from "@/lib/auth/auth.ts";
  *
  * Usage:
  * - Client UI:
- *      - authClient.useSession()
- *      - authClient.signIn.*
- *      - authClient.signOut()
- *      - etc...
+ *   - authClient.useSession()     // Hook for session state
+ *   - authClient.signIn.email()   // Email sign-in
+ *   - authClient.signIn.social()  // OAuth sign-in
+ *   - authClient.signUp.email()   // Email sign-up
+ *   - authClient.signOut()        // Sign out
+ *   - authClient.getSession()     // Get current session
  *
  * Constraints:
  * - Client-only (no : next/headers, secrets, server config).
@@ -28,7 +30,8 @@ import {auth} from "@/lib/auth/auth.ts";
 const authClient = createAuthClient({
     // Todo: Still true ?
     //  No need to pass the URL of the authentication API endpoint, because the Client & Server are on the same URL
-    baseURL: env.VITE_BASE_URL,
+    // Base URL - uses same origin in production
+    baseURL: env.VITE_BASE_URL || "http://localhost:3000",
 
     plugins: [
         // https://www.better-auth.com/docs/concepts/typescript#inferring-additional-fields-on-client

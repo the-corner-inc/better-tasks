@@ -7,6 +7,7 @@ import {getRequest, setResponseHeader, setResponseStatus} from "@tanstack/start-
 /**
  * Middleware
  *
+ * TanStack middleware for protecting server functions and routes.
  * https://tanstack.com/start/latest/docs/framework/react/guide/middleware
  *
  * Types of middleware :
@@ -21,20 +22,42 @@ import {getRequest, setResponseHeader, setResponseStatus} from "@tanstack/start-
  * - Observability: Collect metrics, traces, and logs.
  * - Provide Context: Attach data to the request object for use in other middleware or server functions.
  * - Error Handling: Handle errors in a consistent way.
- * - And many more! The possibilities are up to you!
+ *
+ * Usage in routes:
+ * export const Route = createFileRoute('/dashboard')({
+ *   server: {
+ *     middleware: [authMiddleware],
+ *   },
+ * })
+ *
+ *
+ * Usage in server functions:
+ * const $protectedFn = createServerFn({ method: 'GET' })
+ *    .middleware([authMiddleware])
+ *    .handler(({ context }) => {
+ *      // context.user is available and typed
+ *    })
+ *
  */
 
 // ================================================================
 // Middleware Authentication - Session & Cookies
 // ================================================================
 
+/**
+ * Middleware to enforce authentication
+ * - Validates session on every request
+ * - Forwards cookie headers for session refresh
+ * - Adds user to context for downstream handlers
+ * - Returns 401 if not authenticated
+ */
 export const authMiddleware = createMiddleware()
     .server( async ({ next }) => {
 
         const session = await auth.api.getSession({
             headers: getRequest().headers,
             query: {
-            // ensure session is fresh
+            // Ensure session is fresh
             // https://www.better-auth.com/docs/concepts/session-management#session-caching
             disableCookieCache: true,
             },
@@ -47,12 +70,15 @@ export const authMiddleware = createMiddleware()
             setResponseHeader("Set-Cookie", cookies)
         }
 
+        // Return 401 if not authenticated
         if (!session?.response?.user) {
             setResponseStatus(401)
             throw new Error("Unauthorized")
         }
 
+        // Pass user to the next handler via context
         return next({ context: { user: session.response.user } })
 })
+
 
 

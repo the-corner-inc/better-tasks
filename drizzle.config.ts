@@ -1,5 +1,5 @@
 import type {Config} from 'drizzle-kit'
-import {env} from "@/lib/auth/env/server.ts"
+import {env} from "@/lib/env/server.ts"
 //import {config} from 'dotenv'
 
 // Todo : DOCUMENT THIS FILE

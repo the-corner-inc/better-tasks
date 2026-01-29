@@ -4,6 +4,7 @@ import {getRequest, setResponseHeader} from "@tanstack/start-server-core";
 import {AuthQueryResult} from "@/lib/auth/auth.server.queries.ts";
 
 // TODO :UNDERSTAND THIS FILE BETTER
+// Utilise les Server Functions de TanStack pour les opérations serveur :
 export const $getUser = createServerFn({ method: "GET" })
     .handler(async () => {
         const session = await auth.api.getSession({

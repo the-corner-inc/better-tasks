@@ -3,4 +3,4 @@
  */
 
 //export * from "@/db/schemas/auth-schema"
-export * from "@/db/schemas/todos-schema.ts"
+export * from "@/lib/db/schemas/todos-schema.ts"

@@ -4,9 +4,9 @@ import {ArrowLeftIcon} from "lucide-react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {TodoForm} from "@/features/todos/ui/todo-form.tsx";
 import {createServerFn} from "@tanstack/react-start";
-import {db} from "@/db/db.ts";
+import {db} from "@/lib/db/db.ts";
 import {eq} from "drizzle-orm";
-import {todosTable} from "@/db/schema.ts";
+import {todosTable} from "@/lib/db/schema.ts";
 
 const loaderFn = createServerFn ({method: "GET"})
     .inputValidator((data: { id:string }) => data) // Hardcoding this particular type and no real error Validation is done

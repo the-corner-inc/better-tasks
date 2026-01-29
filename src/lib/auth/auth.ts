@@ -2,8 +2,8 @@ import { betterAuth } from 'better-auth'
 import {tanstackStartCookies} from "better-auth/tanstack-start";
 import {createServerOnlyFn} from "@tanstack/react-start";
 import {drizzleAdapter} from "better-auth/adapters/drizzle";
-import {db} from "@/db/db.ts";
-import * as schema from "@/db/schema.ts"
+import {db} from "@/lib/db/db.ts";
+import * as schema from "@/lib/db/schema.ts"
 import { env } from "@/lib/auth/env/server.ts"
 import {admin} from "better-auth/plugins";
 
@@ -56,6 +56,7 @@ const getAuthConfig = createServerOnlyFn( () =>
     // Configure Drizzle adapter with PostgreSQL provider and database instance
     database: drizzleAdapter( db, {provider: "pg", schema} ),
 
+    // Cookie Cache Server. Reduces the calls to the DB.
     session: {
       cookieCache: {
         enabled: true,

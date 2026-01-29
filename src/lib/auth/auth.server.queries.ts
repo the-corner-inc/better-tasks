@@ -1,6 +1,7 @@
 import {queryOptions} from "@tanstack/react-query";
 import {$getUser, $getUsers} from "@/lib/auth/auth.server.functions.ts";
 
+// TODO :UNDERSTAND THIS FILE BETTER
 export const authQueryOptions = () =>
     queryOptions({
         queryKey: ["user"],

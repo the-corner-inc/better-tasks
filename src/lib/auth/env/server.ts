@@ -40,6 +40,9 @@ export const env = createEnv({
         // OAuth2 providers, optional, update as needed
         GITHUB_CLIENT_ID: z.string().optional(),
         GITHUB_CLIENT_SECRET: z.string().optional(),
+
+        GOOGLE_CLIENT_ID: z.string().optional(),
+        GOOGLE_CLIENT_SECRET:z.string().optional(),
     },
     runtimeEnv: process.env,
 })

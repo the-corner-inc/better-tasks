@@ -3,6 +3,7 @@ import {auth} from "@/lib/auth/auth.ts";
 import {getRequest, setResponseHeader} from "@tanstack/start-server-core";
 import {AuthQueryResult} from "@/lib/auth/auth.server.queries.ts";
 
+// TODO :UNDERSTAND THIS FILE BETTER
 export const $getUser = createServerFn({ method: "GET" })
     .handler(async () => {
         const session = await auth.api.getSession({
@@ -29,7 +30,7 @@ export const $getUsers = createServerFn({ method: "GET" })
             }
         })
 
-        return response.users as AuthQueryResult
+        return response.users as AuthQueryResult[]
     })
 
 

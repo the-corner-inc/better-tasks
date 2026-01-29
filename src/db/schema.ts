@@ -1,10 +1,6 @@
-import {boolean, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+/**
+ * Single point of export for all schema files in the drizzle folder
+ */
 
-export const todosTable = pgTable(
-  'todos', {
-      id: uuid("id").primaryKey().defaultRandom(),
-      title: text("title").notNull(),
-      isCompleted: boolean("is_completed").notNull(),
-      createdAt: timestamp("created_at",{withTimezone: true}).defaultNow().notNull(),
-      updatedAt: timestamp("updated_at",{withTimezone: true}).defaultNow().notNull().$onUpdate(() => new Date()),
-})
+//export * from "@/db/schemas/auth-schema"
+export * from "@/db/schemas/todos-schema.ts"

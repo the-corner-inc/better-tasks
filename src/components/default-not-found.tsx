@@ -1,5 +1,8 @@
 import { Link } from "@tanstack/react-router"
-import { Button } from "./ui/button"
+import { Button } from "@/components/ui/button.tsx"
+
+//TODO: RAPH COMPONENT, DOCUMENT IT
+
 
 export function DefaultNotFound() {
   return (
@@ -10,8 +13,8 @@ export function DefaultNotFound() {
         <Button type="button" onClick={() => window.history.back()}>
           Go back
         </Button>
-        <Button render={<Link to="/" />} variant="secondary" nativeButton={false}>
-          Home
+        <Button asChild variant="secondary">
+            <Link to="/">Home</Link>
         </Button>
       </p>
     </div>

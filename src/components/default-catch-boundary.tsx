@@ -6,7 +6,7 @@ import {
   useMatch,
   useRouter,
 } from "@tanstack/react-router"
-import { Button } from "./ui/button"
+import { Button } from "@/components/ui/button.tsx"
 
 //TODO: RAPH COMPONENT, DOCUMENT IT
 
@@ -32,24 +32,20 @@ export function DefaultCatchBoundary({ error }: Readonly<ErrorComponentProps>) {
           Try Again
         </Button>
         {isRoot ? (
-          <Button render={<Link to="/" />} variant="secondary" nativeButton={false}>
-            Home
-          </Button>
+            <Button asChild variant="secondary">
+              <Link to="/">Home</Link>
+            </Button>
         ) : (
-          <Button
-            render={
-              <Link
+          <Button asChild variant="secondary">
+            <Link
                 to="/"
                 onClick={(e) => {
                   e.preventDefault()
                   window.history.back()
                 }}
-              />
-            }
-            variant="secondary"
-            nativeButton={false}
-          >
-            Go Back
+            >
+              Go Back
+            </Link>
           </Button>
         )}
       </div>

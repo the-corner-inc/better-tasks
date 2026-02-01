@@ -1,6 +1,6 @@
 import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/lib/db/db.ts";
-import {createTodoSchema, todoIdSchema, toggleTodoSchema, updateTodoSchema} from "@/features/todos/todos.types.ts";
+import {createTodoSchema, todoIdSchema, toggleTodoSchema, updateTodoSchema} from "@/routes/(app)/todos/todos.ts";
 import { notFound } from "@tanstack/react-router";
 import { todosTable } from "@/lib/db/schema.ts";
 import { eq } from "drizzle-orm";
@@ -12,7 +12,7 @@ import { eq } from "drizzle-orm";
  * - It's a mix of server actions (API), business rules(BLL), and DB acces (DAL).
  *
  * Loaders (GET):
- *  - Can be cached, pre-fetched.
+ *  - Can be cached, pre-fetched.P
  *  - For the route loaders. Read datas. When page is loading, called by "route loader".
  *
  * Mutations (POST):

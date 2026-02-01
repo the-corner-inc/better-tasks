@@ -12,7 +12,7 @@ const todoSchema = createSelectSchema(todosTable)
 export type TodoModel = z.infer<typeof todoSchema>
 
 // ====================== INPUT SCHEMAS ======================
-// TODO : EXPLIQUER CE TYPE ???
+// TODO : EXPLIQUER CE TYPE
 // TODO : VOIR AUTRE PROJET
 
 export const createTodoSchema = z.object({

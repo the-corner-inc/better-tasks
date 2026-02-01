@@ -13,7 +13,7 @@ import z from "zod";
 import {todosTable} from "@/lib/db/schema.ts";
 import {eq} from "drizzle-orm";
 import {startTransition, useState} from "react";
-import {LocalCountButton} from "@/features/todos/ui/local-count-button.tsx";
+import {LocalCountButton} from "@/routes/(app)/todos/-components/local-count-button.tsx";
 
 // Equivalent of Server Actions (NextJS). Main difference, now in Tanstack it works not only to POST data, but to GET data too.
 // It will make a server action so the client can GET / POST the last datas.

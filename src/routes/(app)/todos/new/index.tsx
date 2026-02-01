@@ -2,7 +2,7 @@ import {createFileRoute, Link} from '@tanstack/react-router'
 import {Button} from "@/components/ui/button.tsx"
 import {ArrowLeftIcon} from "lucide-react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {TodoForm} from "@/features/todos/ui/todo-form.tsx"
+import {TodoForm} from "@/routes/(app)/todos/-components/todo-form.tsx"
 
 export const Route = createFileRoute('/(app)/todos/new/')({
   component: RouteComponent,

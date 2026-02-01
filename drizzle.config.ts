@@ -6,7 +6,7 @@ import {env} from "@/lib/env/server.ts"
 //config({ path: ['.env.local', '.env'] })
 
 export default {
-  out: './src/drizzle',
+  out: './drizzle',
   schema: './src/lib/db/schema.ts',
   dialect: 'postgresql',
   breakpoints: true,

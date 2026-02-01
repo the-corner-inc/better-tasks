@@ -19,7 +19,7 @@ export {
     $getUsers,
     $getSession,
     $getCurrentUserId
-} from "@/lib/auth/auth.server.functions.ts"
+} from "@/lib/auth/auth.functions.ts"
 
 // ====================== REACT QUERY OPTIONS ===========================================
 export {
@@ -29,10 +29,10 @@ export {
     type AuthQueryResult,
     type UsersQueryResult,
     type SessionQueryResult
-} from "@/lib/auth/auth.server.queries.ts"
+} from "@/lib/auth/auth.queries.ts"
 
 // ====================== MIDDLEWARE ====================================================
-export { authMiddleware } from "@/lib/auth/auth.server.middleware.ts"
+export { authMiddleware } from "@/lib/auth/auth.middleware.ts"
 
 
 // ====================== OAUTH PROVIDERS CONFIGURATION =================================

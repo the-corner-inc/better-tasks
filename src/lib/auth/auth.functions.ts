@@ -1,7 +1,7 @@
 import {createServerFn} from "@tanstack/react-start";
 import {auth} from "@/lib/auth/auth.ts";
 import {getRequest, setResponseHeader} from "@tanstack/start-server-core";
-import {AuthQueryResult} from "@/lib/auth/auth.server.queries.ts";
+import {AuthQueryResult} from "@/lib/auth/auth.queries.ts";
 
 // TODO :UNDERSTAND THIS FILE BETTER
 

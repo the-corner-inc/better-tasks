@@ -8,7 +8,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import appCss from '../styles.css?url'
 import type { QueryClient } from '@tanstack/react-query'
-import {authQueryOptions, AuthQueryResult} from "@/lib/auth/auth.server.queries.ts";
+import {authQueryOptions, AuthQueryResult} from "@/lib/auth/auth.queries.ts";
 import {Toaster} from "sonner";
 import {ReactQueryDevtoolsPanel} from "@tanstack/react-query-devtools";
 

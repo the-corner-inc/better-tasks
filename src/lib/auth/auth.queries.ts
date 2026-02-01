@@ -1,5 +1,5 @@
 import {queryOptions} from "@tanstack/react-query";
-import {$getSession, $getUser, $getUsers} from "@/lib/auth/auth.server.functions.ts";
+import {$getSession, $getUser, $getUsers} from "@/lib/auth/auth.functions.ts";
 
 // Todo : How it it used exactly ?
 /**
@@ -49,7 +49,8 @@ export const usersQueryOptions = () =>
  */
 export const sessionQueryOptions = () =>
     queryOptions({
-        queryKey: ["session"],
+        queryKey: ["session"], // NOM DE L'OBJET TANSTACK DANS LE CACHE
+        // QUERY SERA STOCKE DANS LE QUERY-KEY
         queryFn: ({ signal }) => $getSession({ signal }),
         staleTime: 1000 * 60 * 1, // cache for 1 minute to reduce server calls
     })

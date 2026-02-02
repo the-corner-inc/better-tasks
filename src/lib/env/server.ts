@@ -6,6 +6,9 @@ import * as z from "zod"
  *
  * Server-side environment variables configuration.
  *
+ * !!! WARNNG !!!
+ * The ".env.local" file will/can overwrite some values from the ".env" file
+ *
  * This file:
  * - Centralizes all sensitive environment variables (database, secrets, OAuth)
  * - Validates their presence and format at startup
@@ -29,7 +32,6 @@ import * as z from "zod"
  * - Without explicit separation, secrets can leak into the client bundle
  * - `createEnv` + `zod` provide safety, validation, and early failure
  */
-
 
 export const env = createEnv({
     server: {

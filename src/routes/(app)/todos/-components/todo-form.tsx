@@ -4,7 +4,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {LoadingSwap} from "@/components/ui/loading-swap.tsx";
 import {PlusIcon} from "lucide-react";
 import {useServerFn} from "@tanstack/react-start";
-import {createTodo, TodoModel, updateTodo} from "@/routes/(app)/todos/todos.barrel.ts";
+import {createTodo, TodoModel, updateTodo} from "@/routes/(app)/todos/-todos.barrel.ts";
 import {useRouter} from "@tanstack/react-router";
 
 /**

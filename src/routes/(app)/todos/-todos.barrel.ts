@@ -6,7 +6,7 @@
 // TODO : DOES IT IMPORT EVERYTHING OR JUST WHAT I NEED ???
 
 // ====================== TYPES =================================
-export type {TodoModel} from "@/routes/(app)/todos/todos.d.ts"
+export type {TodoModel} from "@/routes/(app)/todos/-todos.d.ts"
 
 // ====================== SERVER FUNCTIONS ======================
 export {
@@ -16,7 +16,7 @@ export {
     updateTodo,
     deleteTodo,
     toggleTodo
-} from "@/routes/(app)/todos/todos.service.ts"
+} from "@/routes/(app)/todos/-todos.service.ts"
 
 
 // ====================== UI COMPONENTS =========================

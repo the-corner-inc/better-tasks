@@ -92,7 +92,7 @@ const getAuthConfig = createServerOnlyFn( () =>
     plugins: [
         // Table
         admin(), // Adds "roles" in user table //Todo : Get more infos on this and why it allows me to do "auth.api.listUsers"
-
+        //todosTablePlugin(),
 
         // Core
         tanstackStartCookies(),

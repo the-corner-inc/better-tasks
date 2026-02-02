@@ -19,11 +19,11 @@ import {BetterAuthPlugin} from "better-auth";
  * 3. Run: npx drizzle-kit push (or your migration command)
  */
 
-const todosTablePlugin = () => ({
+const todosTablePlugin = () => {
     return {
         id: "todosTablePlugin",
-        // Extend the user table
         schema: {
+            // Extend the todos table
             todo: {
                 fields: {
                     title: {type: "string", required: true},
@@ -31,5 +31,5 @@ const todosTablePlugin = () => ({
                 }
             }
         }
-    }
-}) satisfies BetterAuthPlugin
+    } satisfies BetterAuthPlugin
+}

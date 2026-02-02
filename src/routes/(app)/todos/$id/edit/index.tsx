@@ -2,7 +2,7 @@ import {createFileRoute, Link, notFound} from '@tanstack/react-router'
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowLeftIcon} from "lucide-react";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {TodoForm} from "@/routes/(app)/todos/-components/todo-form.tsx";
+import {TodoForm} from "@/routes/(app)/todos/-feature/components/todo-form.tsx";
 import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/lib/db/db.ts";
 import {eq} from "drizzle-orm";

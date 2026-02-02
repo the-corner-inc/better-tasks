@@ -1,4 +1,4 @@
-import {TodoModel} from "@/routes/(app)/todos/-todos.d.ts"
+import {TodoModel} from "@/routes/(app)/todos/-todos"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle} from "@/components/ui/empty.tsx";
 import {EditIcon, ListTodoIcon, PlusIcon, Trash2Icon} from "lucide-react";
@@ -157,5 +157,5 @@ function TodoEmptyState() {
 }
 
 function formatDate(date: Date): string {
-    return new Intl.DateTimeFormat(undefined, { dateStyle: "short" }).format(date);
+    return new Intl.DateTimeFormat("fr-FR", { dateStyle: "short" }).format(date);
 }

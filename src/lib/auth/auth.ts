@@ -106,5 +106,4 @@ const getAuthConfig = createServerOnlyFn( () =>
       },
   })
 )
-
 export const auth = getAuthConfig()

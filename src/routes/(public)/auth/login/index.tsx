@@ -1,5 +1,5 @@
 import {createFileRoute, redirect} from '@tanstack/react-router'
-import {authQueryOptions} from "@/lib/auth/auth.barrel.ts";
+import {authQueryOptions} from "@/lib/auth/auth.queries.ts"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx"
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Separator} from "@/components/ui/separator.tsx";

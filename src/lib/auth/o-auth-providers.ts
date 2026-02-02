@@ -1,5 +1,5 @@
 import {ComponentProps, ElementType} from "react";
-import {GitHubIcon, GoogleIcon} from "@/lib/auth/ui/o-auth-icons";
+import {GitHubIcon, GoogleIcon} from "@/lib/auth/components/o-auth-icons";
 
 /**
  * Auth - OAuth Providers

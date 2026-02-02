@@ -27,7 +27,9 @@ import {$getSession, $getUser, $getUsers} from "@/lib/auth/auth.functions.ts";
  */
 export const authQueryOptions = () =>
     queryOptions({
+        // UNIQUE ID IN THE CACHE
         queryKey: ["user"],
+        // QUERY MADE TO THE SERVER IF THE DATA IS STALE OR NOT IN CACHE
         queryFn: ({ signal }) => $getUser({ signal }),
         staleTime: 1000 * 60 * 1, // cache for 1 minute to reduce server calls
     })

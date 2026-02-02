@@ -91,7 +91,8 @@ const getAuthConfig = createServerOnlyFn( () =>
     // https://www.better-auth.com/docs/integrations/tanstack#usage-tips
     plugins: [
         // Table
-        admin(), //Todo : Get more infos on this and why it allows me to do "auth.api.listUsers"
+        admin(), // Adds "roles" in user table //Todo : Get more infos on this and why it allows me to do "auth.api.listUsers"
+
 
         // Core
         tanstackStartCookies(),

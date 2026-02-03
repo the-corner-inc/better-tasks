@@ -1,6 +1,6 @@
 import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/lib/db/db.ts";
-import {createTodoSchema, todoIdSchema, toggleTodoSchema, updateTodoSchema} from "@/routes/(app)/todos/-feature/todos.d.ts";
+import {createTodoSchema, todoIdSchema, toggleTodoSchema, updateTodoSchema} from "@/routes/(app)/todos/-feature/todos"
 import { notFound } from "@tanstack/react-router";
 import { todosTable } from "@/lib/db/schema.ts";
 import { eq } from "drizzle-orm";
@@ -79,7 +79,7 @@ export const updateTodo = createServerFn({ method: "POST" })
 export const toggleTodo = createServerFn({ method: "POST" })
     .inputValidator(toggleTodoSchema)
     .handler(async ({data}) => {
-        db
+        await db
             .update(todosTable)
             .set({isCompleted: data.isCompleted})
             .where(eq( todosTable.id , data.id ))
@@ -88,7 +88,7 @@ export const toggleTodo = createServerFn({ method: "POST" })
 export const deleteTodo = createServerFn({ method: "POST" })
     .inputValidator(todoIdSchema)
     .handler(async ({data}) => {
-        db
+        await db
             .delete(todosTable)
             .where(eq( todosTable.id , data.id ))
     })

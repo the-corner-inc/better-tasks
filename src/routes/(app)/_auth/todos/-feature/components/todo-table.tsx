@@ -1,4 +1,4 @@
-import {TodoModel} from "@/routes/(app)/_auth/todos/-feature/todos"
+import {TodoModel} from "@/routes/(app)/_auth/todos/-feature/todos.dm.ts"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle} from "@/components/ui/empty.tsx";
 import {EditIcon, ListTodoIcon, PlusIcon, Trash2Icon} from "lucide-react";

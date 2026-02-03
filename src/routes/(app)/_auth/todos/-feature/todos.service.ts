@@ -1,6 +1,6 @@
 import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/lib/db/db.ts";
-import {createTodoSchema, todoIdSchema, toggleTodoSchema, updateTodoSchema} from "@/routes/(app)/_auth/todos/-feature/todos"
+import {createTodoSchema, todoIdSchema, toggleTodoSchema, updateTodoSchema} from "@/routes/(app)/_auth/todos/-feature/todos.dm.ts"
 import { notFound } from "@tanstack/react-router";
 import { todosTable } from "@/lib/db/schema.ts";
 import { eq } from "drizzle-orm";

@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
+import {
+    pgTable,
+    text,
+    timestamp,
+    boolean,
+    integer,
+    index,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
     id: text("id").primaryKey(),
@@ -78,22 +85,32 @@ export const verification = pgTable(
     (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
-export const TasksTable = pgTable("tasks_table", {
+export const tasks = pgTable("tasks", {
     id: text("id").primaryKey(),
+    userId: text("user_id")
+        .notNull()
+        .references(() => user.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
-    userId: text("user_id").notNull(),
+    created_at: timestamp("created_at").notNull(),
+    updated_at: timestamp("updated_at").notNull(),
 });
 
-export const TodosTable = pgTable("todos_table", {
+export const todos = pgTable("todos", {
     id: text("id").primaryKey(),
-    taskId: text("task_id").notNull(),
-    title: text("title").notNull(),
-    isComplete: boolean("is_complete").notNull(),
+    taskId: text("task_id")
+        .notNull()
+        .references(() => tasks.id, { onDelete: "cascade" }),
+    content: text("content").notNull(),
+    isCompleted: boolean("is_completed").notNull(),
+    sortPosition: integer("sort_position").notNull(),
+    createdAt: timestamp("created_at").notNull(),
+    updatedAt: timestamp("updated_at").notNull(),
 });
 
 export const userRelations = relations(user, ({ many }) => ({
     sessions: many(session),
     accounts: many(account),
+    taskss: many(tasks),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -107,5 +124,20 @@ export const accountRelations = relations(account, ({ one }) => ({
     user: one(user, {
         fields: [account.userId],
         references: [user.id],
+    }),
+}));
+
+export const tasksRelations = relations(tasks, ({ one, many }) => ({
+    user: one(user, {
+        fields: [tasks.userId],
+        references: [user.id],
+    }),
+    todoss: many(todos),
+}));
+
+export const todosRelations = relations(todos, ({ one }) => ({
+    tasks: one(tasks, {
+        fields: [todos.taskId],
+        references: [tasks.id],
     }),
 }));

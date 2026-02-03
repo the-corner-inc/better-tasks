@@ -19,21 +19,20 @@ import {BetterAuthPlugin} from "better-auth";
  * 3. Run: npx drizzle-kit push (or your migration command)
  */
 
-const todosTablePlugin = () => {
+export const todosTablePlugin = () => {
     return {
         id: "todosTablePlugin",
         schema: {
-            // Extend the tables
-            TasksTable: {
+            // Name of the Table in the DB
+            Tasks: {
                 fields: {
-                    id: {type: "string", required: true},
                     title: {type: "string", required: true},
                     userId: {type: "string", required: true},
                 }
             },
-            TodosTable: {
+            // Name of the Table in the DB
+            Todos: {
                 fields: {
-                    id: {type: "string", required: true},
                     taskId: {type: "string", required: true},
                     title: {type: "string", required: true},
                     isComplete: {type: "boolean",required: true},

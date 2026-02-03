@@ -27,7 +27,9 @@ export function SocialAuthButtons() {
  * Handles the OAuth flow for a single provider.
  */
 function SocialButton({ provider }: { provider: SupportedOAuthProvider }) {
-    const { name, Icon } = SUPPORTED_OAUTH_PROVIDER_DETAILS[provider]
+    const Icon = SUPPORTED_OAUTH_PROVIDER_DETAILS[provider].Icon
+    const name = SUPPORTED_OAUTH_PROVIDER_DETAILS[provider]
+
 
     const mutation = useMutation({
         mutationFn: async () => {
@@ -58,7 +60,7 @@ function SocialButton({ provider }: { provider: SupportedOAuthProvider }) {
             <LoadingSwap isLoading={isLoading} className="">
         <span className="flex items-center gap-2">
           <Icon />
-            {name}
+            {SUPPORTED_OAUTH_PROVIDER_DETAILS[provider].name}
         </span>
             </LoadingSwap>
         </Button>

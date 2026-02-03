@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as publicRouteRouteImport } from './routes/(public)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiSplatRouteImport } from './routes/api.$'
+import { Route as appAuthRouteRouteImport } from './routes/(app)/_auth/route'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as publicAuthLoginIndexRouteImport } from './routes/(public)/auth/login/index'
@@ -30,6 +31,10 @@ const IndexRoute = IndexRouteImport.update({
 const ApiSplatRoute = ApiSplatRouteImport.update({
   id: '/api/$',
   path: '/api/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const appAuthRouteRoute = appAuthRouteRouteImport.update({
+  id: '/(app)/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiRpcSplatRoute = ApiRpcSplatRouteImport.update({
@@ -80,6 +85,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/(public)': typeof publicRouteRouteWithChildren
+  '/(app)/_auth': typeof appAuthRouteRoute
   '/api/$': typeof ApiSplatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
@@ -110,6 +116,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/(public)'
+    | '/(app)/_auth'
     | '/api/$'
     | '/api/auth/$'
     | '/api/rpc/$'
@@ -121,6 +128,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   publicRouteRoute: typeof publicRouteRouteWithChildren
+  appAuthRouteRoute: typeof appAuthRouteRoute
   ApiSplatRoute: typeof ApiSplatRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
@@ -149,6 +157,13 @@ declare module '@tanstack/react-router' {
       path: '/api/$'
       fullPath: '/api/$'
       preLoaderRoute: typeof ApiSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(app)/_auth': {
+      id: '/(app)/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof appAuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/rpc/$': {
@@ -204,6 +219,7 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   publicRouteRoute: publicRouteRouteWithChildren,
+  appAuthRouteRoute: appAuthRouteRoute,
   ApiSplatRoute: ApiSplatRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,

@@ -1,6 +1,6 @@
 import {createFileRoute, Link, useRouter} from '@tanstack/react-router'
 import {db} from "@/lib/db/db.ts";
-import {createServerFn, useServerFn} from "@tanstack/react-start";
+import {createServerFn} from "@tanstack/react-start";
 import {Badge} from "src/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx";
 import {LogOutIcon, PlusIcon} from "lucide-react";
@@ -39,7 +39,7 @@ export const Route = createFileRoute('/')({
       // If user is logged in, also fetch todos stats
       let stats =  user
           ? await serverLoader()
-          : { total: 0, completed: 0 }
+          : {todosData: [], stats: { total: 0, completed: 0} }
 
 
       return stats
@@ -51,8 +51,6 @@ export const Route = createFileRoute('/')({
 // HOME PAGE "/"
 // ===================================================================
 function HomePage() {
-    // Hook that gets the data from the loader
-    const data = Route.useLoaderData()
 
     // Get user from React Query cache
     const { data: user } = useSuspenseQuery(authQueryOptions())
@@ -122,13 +120,10 @@ function LoginSection() {
 // ===================================================================
 // LOGGED IN SECTION (authenticated)
 // ===================================================================
-async function LoggedInSection() {
+function LoggedInSection() {
 
     const {data: user} = useSuspenseQuery(authQueryOptions())
-    const {stats} = Route.useLoaderData()
-
-    const todosData = await serverLoader()
-
+    const {stats, todosData} = Route.useLoaderData()
 
     const router = useRouter()
     const queryClient = useQueryClient()
@@ -206,7 +201,18 @@ async function LoggedInSection() {
 // So it tells to the Browser :
 //  - A) We are on the client -> Make a fetch request
 //  - B) we are on the server -> Call the code (db query), with no changes at all.
-const serverLoader = createServerFn({method: 'GET' }).handler(() => {
-    return db.query.todosTable.findMany()
+const serverLoader = createServerFn({method: 'GET' })
+    .handler(async () => {
+    const todosData = await db.query.todosTable.findMany()
+
+    const completed = todosData.filter( (t) => t.isCompleted ).length
+
+    return {
+        todosData,
+        stats: {
+            total: todosData.length,
+            completed: completed,
+        }
+    }
 })
 

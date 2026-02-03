@@ -23,11 +23,20 @@ const todosTablePlugin = () => {
     return {
         id: "todosTablePlugin",
         schema: {
-            // Extend the todos table
-            todo: {
+            // Extend the tables
+            TasksTable: {
                 fields: {
+                    id: {type: "string", required: true},
                     title: {type: "string", required: true},
                     userId: {type: "string", required: true},
+                }
+            },
+            TodosTable: {
+                fields: {
+                    id: {type: "string", required: true},
+                    taskId: {type: "string", required: true},
+                    title: {type: "string", required: true},
+                    isComplete: {type: "boolean",required: true},
                 }
             }
         }

@@ -15,6 +15,13 @@
       "when": 1770131535423,
       "tag": "0001_tricky_mimic",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770140519375,
+      "tag": "0002_puzzling_franklin_richards",
+      "breakpoints": true
     }
   ]
 }

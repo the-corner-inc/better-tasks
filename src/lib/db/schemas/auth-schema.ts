@@ -78,6 +78,19 @@ export const verification = pgTable(
     (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+export const TasksTable = pgTable("tasks_table", {
+    id: text("id").primaryKey(),
+    title: text("title").notNull(),
+    userId: text("user_id").notNull(),
+});
+
+export const TodosTable = pgTable("todos_table", {
+    id: text("id").primaryKey(),
+    taskId: text("task_id").notNull(),
+    title: text("title").notNull(),
+    isComplete: boolean("is_complete").notNull(),
+});
+
 export const userRelations = relations(user, ({ many }) => ({
     sessions: many(session),
     accounts: many(account),

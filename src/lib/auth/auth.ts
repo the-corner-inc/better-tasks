@@ -6,6 +6,7 @@ import {db} from "@/lib/db/db.ts";
 import * as schema from "@/lib/db/schema.ts"
 import { env } from "@/lib/env/server.ts"
 import {admin} from "better-auth/plugins";
+import {todosTablePlugin} from "@/lib/auth/plugins/todos.table.ts";
 
 
 
@@ -92,7 +93,7 @@ const getAuthConfig = createServerOnlyFn( () =>
     plugins: [
         // Table
         admin(), // Adds "roles" in user table //Todo : Get more infos on this and why it allows me to do "auth.api.listUsers"
-        //todosTablePlugin(),
+        todosTablePlugin(),
 
         // Core
         tanstackStartCookies(),

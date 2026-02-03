@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as appAuthRouteRouteImport } from './routes/(app)/_auth/route'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as publicAuthLoginIndexRouteImport } from './routes/(public)/auth/login/index'
+import { Route as appAuthTodosIndexRouteImport } from './routes/(app)/_auth/todos/index'
 import { Route as appAuthTodosNewIndexRouteImport } from './routes/(app)/_auth/todos/new/index'
 import { Route as appAuthTodosIdEditIndexRouteImport } from './routes/(app)/_auth/todos/$id/edit/index'
 
@@ -40,6 +41,11 @@ const publicAuthLoginIndexRoute = publicAuthLoginIndexRouteImport.update({
   path: '/auth/login/',
   getParentRoute: () => publicRouteRoute,
 } as any)
+const appAuthTodosIndexRoute = appAuthTodosIndexRouteImport.update({
+  id: '/todos/',
+  path: '/todos/',
+  getParentRoute: () => appAuthRouteRoute,
+} as any)
 const appAuthTodosNewIndexRoute = appAuthTodosNewIndexRouteImport.update({
   id: '/todos/new/',
   path: '/todos/new/',
@@ -54,6 +60,7 @@ const appAuthTodosIdEditIndexRoute = appAuthTodosIdEditIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/todos/': typeof appAuthTodosIndexRoute
   '/auth/login/': typeof publicAuthLoginIndexRoute
   '/todos/new/': typeof appAuthTodosNewIndexRoute
   '/todos/$id/edit/': typeof appAuthTodosIdEditIndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/todos': typeof appAuthTodosIndexRoute
   '/auth/login': typeof publicAuthLoginIndexRoute
   '/todos/new': typeof appAuthTodosNewIndexRoute
   '/todos/$id/edit': typeof appAuthTodosIdEditIndexRoute
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/(public)': typeof publicRouteRouteWithChildren
   '/(app)/_auth': typeof appAuthRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/(app)/_auth/todos/': typeof appAuthTodosIndexRoute
   '/(public)/auth/login/': typeof publicAuthLoginIndexRoute
   '/(app)/_auth/todos/new/': typeof appAuthTodosNewIndexRoute
   '/(app)/_auth/todos/$id/edit/': typeof appAuthTodosIdEditIndexRoute
@@ -80,17 +89,25 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api/auth/$'
+    | '/todos/'
     | '/auth/login/'
     | '/todos/new/'
     | '/todos/$id/edit/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/auth/$' | '/auth/login' | '/todos/new' | '/todos/$id/edit'
+  to:
+    | '/'
+    | '/api/auth/$'
+    | '/todos'
+    | '/auth/login'
+    | '/todos/new'
+    | '/todos/$id/edit'
   id:
     | '__root__'
     | '/'
     | '/(public)'
     | '/(app)/_auth'
     | '/api/auth/$'
+    | '/(app)/_auth/todos/'
     | '/(public)/auth/login/'
     | '/(app)/_auth/todos/new/'
     | '/(app)/_auth/todos/$id/edit/'
@@ -140,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicAuthLoginIndexRouteImport
       parentRoute: typeof publicRouteRoute
     }
+    '/(app)/_auth/todos/': {
+      id: '/(app)/_auth/todos/'
+      path: '/todos'
+      fullPath: '/todos/'
+      preLoaderRoute: typeof appAuthTodosIndexRouteImport
+      parentRoute: typeof appAuthRouteRoute
+    }
     '/(app)/_auth/todos/new/': {
       id: '/(app)/_auth/todos/new/'
       path: '/todos/new'
@@ -170,11 +194,13 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
 )
 
 interface appAuthRouteRouteChildren {
+  appAuthTodosIndexRoute: typeof appAuthTodosIndexRoute
   appAuthTodosNewIndexRoute: typeof appAuthTodosNewIndexRoute
   appAuthTodosIdEditIndexRoute: typeof appAuthTodosIdEditIndexRoute
 }
 
 const appAuthRouteRouteChildren: appAuthRouteRouteChildren = {
+  appAuthTodosIndexRoute: appAuthTodosIndexRoute,
   appAuthTodosNewIndexRoute: appAuthTodosNewIndexRoute,
   appAuthTodosIdEditIndexRoute: appAuthTodosIdEditIndexRoute,
 }

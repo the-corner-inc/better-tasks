@@ -6,11 +6,8 @@ export const Route = createFileRoute('/(public)')({
 
 function RouteComponent() {
   return (
-      <>
-        <div>Hello "/(public)"!</div>
-        <main className="container py-8">
+      <main className="container py-8">
           <Outlet/>
-        </main>
-      </>
+      </main>
   )
 }

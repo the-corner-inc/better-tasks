@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1769992351905,
-      "tag": "0000_colorful_quentin_quire",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1770131535423,
-      "tag": "0001_tricky_mimic",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1770140519375,
-      "tag": "0002_puzzling_franklin_richards",
+      "when": 1770142762694,
+      "tag": "0000_flawless_marvel_zombies",
       "breakpoints": true
     }
   ]

@@ -85,21 +85,21 @@ export const verification = pgTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
-export const tasks = pgTable("tasks", {
+export const task = pgTable("task", {
   id: text("id").primaryKey(),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
-  created_at: timestamp("created_at").notNull(),
-  updated_at: timestamp("updated_at").notNull(),
+  createdAt: timestamp("created_at").notNull(),
+  updatedAt: timestamp("updated_at").notNull(),
 });
 
-export const todos = pgTable("todos", {
+export const todo = pgTable("todo", {
   id: text("id").primaryKey(),
   taskId: text("task_id")
     .notNull()
-    .references(() => tasks.id, { onDelete: "cascade" }),
+    .references(() => task.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
   isCompleted: boolean("is_completed").notNull(),
   sortPosition: integer("sort_position").notNull(),
@@ -110,7 +110,7 @@ export const todos = pgTable("todos", {
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
-  taskss: many(tasks),
+  tasks: many(task),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -127,17 +127,17 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
-export const tasksRelations = relations(tasks, ({ one, many }) => ({
+export const taskRelations = relations(task, ({ one, many }) => ({
   user: one(user, {
-    fields: [tasks.userId],
+    fields: [task.userId],
     references: [user.id],
   }),
-  todoss: many(todos),
+  todos: many(todo),
 }));
 
-export const todosRelations = relations(todos, ({ one }) => ({
-  tasks: one(tasks, {
-    fields: [todos.taskId],
-    references: [tasks.id],
+export const todoRelations = relations(todo, ({ one }) => ({
+  task: one(task, {
+    fields: [todo.taskId],
+    references: [task.id],
   }),
 }));

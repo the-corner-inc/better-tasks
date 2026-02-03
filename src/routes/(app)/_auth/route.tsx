@@ -1,8 +1,8 @@
-import {createFileRoute, Outlet, redirect, useRouter} from "@tanstack/react-router";
+import {createFileRoute, Outlet, redirect, useRouter, Link} from "@tanstack/react-router";
 import {authQueryOptions} from "@/lib/auth/auth.queries.ts";
 import {useQueryClient, useSuspenseQuery} from "@tanstack/react-query";
 import authClient from "@/lib/auth/auth-client.ts";
-import {ListTodoIcon, Link, UserIcon, LogOutIcon} from "lucide-react";
+import {ListTodoIcon, UserIcon, LogOutIcon} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx"
 
 /**
@@ -85,7 +85,7 @@ function AppLayout() {
 
                         <nav className="flex items-center gap-2">
                             <Button variant="ghost" size="sm" asChild>
-                                <Link to="/todos">My Todos</Link>
+                                <Link to="/todos/new">My Todos</Link>
                             </Button>
                         </nav>
                     </div>

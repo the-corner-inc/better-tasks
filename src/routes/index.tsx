@@ -7,14 +7,9 @@ import {LogOutIcon, PlusIcon} from "lucide-react";
 import {LocalCountButton} from "@/routes/(app)/todos/-feature/components/local-count-button.tsx";
 import { authQueryOptions } from "@/lib/auth/auth.queries";
 import {useQueryClient, useSuspenseQuery} from "@tanstack/react-query";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import { SignInTab } from "@/lib/auth/components/sign-in-tab";
-import {Separator} from "@radix-ui/react-separator";
-import {SocialAuthButtons} from "@/lib/auth/components/social-auth-buttons.tsx";
-import {SignUpTab} from "@/lib/auth/components/sign-up-tab.tsx";
 import {TodoTable} from "@/routes/(app)/todos/-feature/components/todo-table.tsx";
 import authClient from "@/lib/auth/auth-client.ts";
+import {LoginForm} from "@/lib/auth/components/login-form.tsx";
 
 /**
  * Home Page
@@ -57,7 +52,7 @@ function HomePage() {
 
     // If not logged in, show login form
     if (!user) {
-        return <LoginSection />
+        return <LoginForm variant="page"/>
     }
 
     // If logged in, show dashboard
@@ -65,57 +60,6 @@ function HomePage() {
 
 
 }
-
-
-// ===================================================================
-// LOGIN SECTION (not authenticated)
-// ===================================================================
-function LoginSection() {
-    return (
-        <Tabs defaultValue="signin" className="max-auto w-full my-6 px-4">
-            <TabsList>
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
-
-            {/* ======================================================
-                TAB: Sign In
-                ====================================================== */}
-            <TabsContent value="signin">
-                <Card>
-                    <CardHeader className="text-2xl font-bold">
-                        <CardTitle>Sign In</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <SignInTab/>
-                    </CardContent>
-
-                    <Separator />
-
-                    <CardFooter className="grid grid-cols-2 gap-3">
-                        <SocialAuthButtons />
-                    </CardFooter>
-                </Card>
-            </TabsContent>
-
-            {/* ======================================================
-                TAB: Sign Up
-                ====================================================== */}
-            <TabsContent value="signup">
-                <Card>
-                    <CardHeader className="text-2xl font-bold">
-                        <CardTitle>Sign Up</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <SignUpTab/>
-                    </CardContent>
-                </Card>
-            </TabsContent>
-
-        </Tabs>
-    )
-}
-
 
 // ===================================================================
 // LOGGED IN SECTION (authenticated)
@@ -149,10 +93,10 @@ function LoggedInSection() {
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold">
-                            ✅ Logged in as {user?.name || user?.email}
+                            Logged in as {user?.name || user?.email}
                         </h1>
                         <p className="text-muted-foreground">
-                            Auth is working! Here are your todo stats:
+                            Here are your todo stats:
                         </p>
                     </div>
 

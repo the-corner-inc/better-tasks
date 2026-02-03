@@ -6,7 +6,7 @@ import * as z from "zod"
  *
  * Server-side environment variables configuration.
  *
- * !!! WARNNG !!!
+ * !!! WARNING !!!
  * The ".env.local" file will/can overwrite some values from the ".env" file
  *
  * This file:

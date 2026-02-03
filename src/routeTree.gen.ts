@@ -14,8 +14,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as appAuthRouteRouteImport } from './routes/(app)/_auth/route'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as publicAuthLoginIndexRouteImport } from './routes/(public)/auth/login/index'
-import { Route as appTodosNewIndexRouteImport } from './routes/(app)/todos/new/index'
-import { Route as appTodosIdEditIndexRouteImport } from './routes/(app)/todos/$id/edit/index'
+import { Route as appAuthTodosNewIndexRouteImport } from './routes/(app)/_auth/todos/new/index'
+import { Route as appAuthTodosIdEditIndexRouteImport } from './routes/(app)/_auth/todos/$id/edit/index'
 
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
@@ -40,69 +40,67 @@ const publicAuthLoginIndexRoute = publicAuthLoginIndexRouteImport.update({
   path: '/auth/login/',
   getParentRoute: () => publicRouteRoute,
 } as any)
-const appTodosNewIndexRoute = appTodosNewIndexRouteImport.update({
-  id: '/(app)/todos/new/',
+const appAuthTodosNewIndexRoute = appAuthTodosNewIndexRouteImport.update({
+  id: '/todos/new/',
   path: '/todos/new/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => appAuthRouteRoute,
 } as any)
-const appTodosIdEditIndexRoute = appTodosIdEditIndexRouteImport.update({
-  id: '/(app)/todos/$id/edit/',
+const appAuthTodosIdEditIndexRoute = appAuthTodosIdEditIndexRouteImport.update({
+  id: '/todos/$id/edit/',
   path: '/todos/$id/edit/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => appAuthRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/todos/new/': typeof appTodosNewIndexRoute
   '/auth/login/': typeof publicAuthLoginIndexRoute
-  '/todos/$id/edit/': typeof appTodosIdEditIndexRoute
+  '/todos/new/': typeof appAuthTodosNewIndexRoute
+  '/todos/$id/edit/': typeof appAuthTodosIdEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/todos/new': typeof appTodosNewIndexRoute
   '/auth/login': typeof publicAuthLoginIndexRoute
-  '/todos/$id/edit': typeof appTodosIdEditIndexRoute
+  '/todos/new': typeof appAuthTodosNewIndexRoute
+  '/todos/$id/edit': typeof appAuthTodosIdEditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/(public)': typeof publicRouteRouteWithChildren
-  '/(app)/_auth': typeof appAuthRouteRoute
+  '/(app)/_auth': typeof appAuthRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/(app)/todos/new/': typeof appTodosNewIndexRoute
   '/(public)/auth/login/': typeof publicAuthLoginIndexRoute
-  '/(app)/todos/$id/edit/': typeof appTodosIdEditIndexRoute
+  '/(app)/_auth/todos/new/': typeof appAuthTodosNewIndexRoute
+  '/(app)/_auth/todos/$id/edit/': typeof appAuthTodosIdEditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/api/auth/$'
-    | '/todos/new/'
     | '/auth/login/'
+    | '/todos/new/'
     | '/todos/$id/edit/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/auth/$' | '/todos/new' | '/auth/login' | '/todos/$id/edit'
+  to: '/' | '/api/auth/$' | '/auth/login' | '/todos/new' | '/todos/$id/edit'
   id:
     | '__root__'
     | '/'
     | '/(public)'
     | '/(app)/_auth'
     | '/api/auth/$'
-    | '/(app)/todos/new/'
     | '/(public)/auth/login/'
-    | '/(app)/todos/$id/edit/'
+    | '/(app)/_auth/todos/new/'
+    | '/(app)/_auth/todos/$id/edit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   publicRouteRoute: typeof publicRouteRouteWithChildren
-  appAuthRouteRoute: typeof appAuthRouteRoute
+  appAuthRouteRoute: typeof appAuthRouteRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  appTodosNewIndexRoute: typeof appTodosNewIndexRoute
-  appTodosIdEditIndexRoute: typeof appTodosIdEditIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -142,19 +140,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicAuthLoginIndexRouteImport
       parentRoute: typeof publicRouteRoute
     }
-    '/(app)/todos/new/': {
-      id: '/(app)/todos/new/'
+    '/(app)/_auth/todos/new/': {
+      id: '/(app)/_auth/todos/new/'
       path: '/todos/new'
       fullPath: '/todos/new/'
-      preLoaderRoute: typeof appTodosNewIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof appAuthTodosNewIndexRouteImport
+      parentRoute: typeof appAuthRouteRoute
     }
-    '/(app)/todos/$id/edit/': {
-      id: '/(app)/todos/$id/edit/'
+    '/(app)/_auth/todos/$id/edit/': {
+      id: '/(app)/_auth/todos/$id/edit/'
       path: '/todos/$id/edit'
       fullPath: '/todos/$id/edit/'
-      preLoaderRoute: typeof appTodosIdEditIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof appAuthTodosIdEditIndexRouteImport
+      parentRoute: typeof appAuthRouteRoute
     }
   }
 }
@@ -171,13 +169,25 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
   publicRouteRouteChildren,
 )
 
+interface appAuthRouteRouteChildren {
+  appAuthTodosNewIndexRoute: typeof appAuthTodosNewIndexRoute
+  appAuthTodosIdEditIndexRoute: typeof appAuthTodosIdEditIndexRoute
+}
+
+const appAuthRouteRouteChildren: appAuthRouteRouteChildren = {
+  appAuthTodosNewIndexRoute: appAuthTodosNewIndexRoute,
+  appAuthTodosIdEditIndexRoute: appAuthTodosIdEditIndexRoute,
+}
+
+const appAuthRouteRouteWithChildren = appAuthRouteRoute._addFileChildren(
+  appAuthRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   publicRouteRoute: publicRouteRouteWithChildren,
-  appAuthRouteRoute: appAuthRouteRoute,
+  appAuthRouteRoute: appAuthRouteRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  appTodosNewIndexRoute: appTodosNewIndexRoute,
-  appTodosIdEditIndexRoute: appTodosIdEditIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

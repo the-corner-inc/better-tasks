@@ -5,8 +5,8 @@ import {LoadingSwap} from "@/components/ui/loading-swap.tsx";
 import {PlusIcon} from "lucide-react";
 import {useServerFn} from "@tanstack/react-start";
 import {useRouter} from "@tanstack/react-router";
-import {TodoModel} from "@/routes/(app)/todos/-feature/todos";
-import {createTodo, updateTodo} from "@/routes/(app)/todos/-feature/todos.service.ts";
+import {TodoModel} from "@/routes/(app)/_auth/todos/-feature/todos";
+import {createTodo, updateTodo} from "@/routes/(app)/_auth/todos/-feature/todos.service.ts";
 
 /**
  *  Todos Form Component

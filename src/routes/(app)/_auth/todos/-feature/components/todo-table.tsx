@@ -1,11 +1,11 @@
-import {TodoModel} from "@/routes/(app)/todos/-feature/todos"
+import {TodoModel} from "@/routes/(app)/_auth/todos/-feature/todos"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle} from "@/components/ui/empty.tsx";
 import {EditIcon, ListTodoIcon, PlusIcon, Trash2Icon} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
 import {Link, useRouter} from "@tanstack/react-router";
 import {useServerFn} from "@tanstack/react-start";
-import {deleteTodo, toggleTodo} from "@/routes/(app)/todos/-feature/todos.service.ts";
+import {deleteTodo, toggleTodo} from "@/routes/(app)/_auth/todos/-feature/todos.service.ts";
 import {startTransition, useState} from "react";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {cn} from "@/lib/utils.ts";

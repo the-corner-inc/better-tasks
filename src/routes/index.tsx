@@ -4,10 +4,10 @@ import {createServerFn} from "@tanstack/react-start";
 import {Badge} from "src/components/ui/badge.tsx"
 import {Button} from "@/components/ui/button.tsx";
 import {LogOutIcon, PlusIcon} from "lucide-react";
-import {LocalCountButton} from "@/routes/(app)/todos/-feature/components/local-count-button.tsx";
+import {LocalCountButton} from "@/routes/(app)/_auth/todos/-feature/components/local-count-button.tsx";
 import { authQueryOptions } from "@/lib/auth/auth.queries";
 import {useQueryClient, useSuspenseQuery} from "@tanstack/react-query";
-import {TodoTable} from "@/routes/(app)/todos/-feature/components/todo-table.tsx";
+import {TodoTable} from "@/routes/(app)/_auth/todos/-feature/components/todo-table.tsx";
 import authClient from "@/lib/auth/auth-client.ts";
 import {LoginForm} from "@/lib/auth/components/login-form.tsx";
 

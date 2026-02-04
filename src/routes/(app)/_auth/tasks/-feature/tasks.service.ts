@@ -1,5 +1,3 @@
-import {auth} from "@/lib/auth/auth.ts";
-import {getRequest} from "@tanstack/start-server-core";
 import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/lib/db/db.ts";
 import {and, asc, desc, eq} from "drizzle-orm";
@@ -11,6 +9,7 @@ import {
     TaskModel,
     updateTaskSchema
 } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
+import {$getCurrentUserId} from "@/lib/auth/auth.functions.ts";
 
 /**
  * Server Functions
@@ -43,24 +42,7 @@ import {
 // ========================================================
 // HELPER
 // ========================================================
-async function requireUserId() {
-    const session = await auth.api.getSession({
-        headers: getRequest().headers,
-        //returnHeaders: true
-    })
 
-    // Todo : Implement this here or in Query ?
-    // forward cookies (important for session refresh)
-    //const cookies = session.headers?.getSetCookie();
-    //if (cookies?.length) setResponseHeader("Set-Cookie", cookies);
-
-    const userId = session?.user?.id
-
-    if(!userId)
-        throw new Error("Not authenticated");
-
-    return userId
-}
 
 // ========================================================
 // LOADERS (GET)
@@ -70,7 +52,7 @@ async function requireUserId() {
  */
 export const getTasksList = createServerFn({ method: "GET" })
     .handler(async () => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         const tasks = await db.query.task.findMany({
             where: eq(taskTable.userId , userId),
@@ -91,7 +73,7 @@ export const getTaskById = createServerFn({ method: "GET" })
     .inputValidator(taskIdSchema)
     .handler(async ({ data }) => {
 
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         const taskResult = await db.query.task.findFirst({
             where: (and
@@ -114,7 +96,7 @@ export const getTaskById = createServerFn({ method: "GET" })
 export const getTaskByIdWithTodos = createServerFn({ method: "GET" })
     .inputValidator(taskIdSchema)
     .handler(async ({ data }) => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         const taskResult = await db.query.task.findFirst({
             where: and(
@@ -143,7 +125,7 @@ export const getTaskByIdWithTodos = createServerFn({ method: "GET" })
 export const createTask = createServerFn({ method: "POST" })
     .inputValidator(createTaskSchema)
     .handler(async ({ data }) => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         const now = new Date();
 
@@ -168,7 +150,7 @@ export const createTask = createServerFn({ method: "POST" })
 export const updateTask = createServerFn({ method: "POST" })
     .inputValidator(updateTaskSchema)
     .handler(async ({ data }) => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         // Verify ownership
         const existingTask = await db.query.task.findFirst({
@@ -201,7 +183,7 @@ export const updateTask = createServerFn({ method: "POST" })
 export const deleteTask = createServerFn({ method: "POST" })
     .inputValidator(deleteTaskSchema)
     .handler(async ({ data }) => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         // Verify ownership
         const existingTask = await db.query.task.findFirst({

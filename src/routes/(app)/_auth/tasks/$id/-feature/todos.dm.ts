@@ -5,9 +5,6 @@ import {z} from "zod";
 /**
  * Types & validation Schemas
  */
-// Todo : Pas convaincu de ces schemas
-// TODO : EXPLIQUER CE TYPE
-// TODO : VOIR AUTRE PROJET
 
 // ================================================================
 // BASE ZOD SCHEMAS (from Drizzle - single source of truth)
@@ -30,7 +27,9 @@ export type TodoModel = z.infer<typeof todoSchema>
 // ====================== PROPERTIES ======================
 const todoId = z.string().uuid()
 const taskId = z.string().min(1, "taskId required");
-const content = z.string().min(1, "Title required").max(255, "Title too long")
+const content = z.string().min(1, "Title required")
+                            .max(255, "Title too long")
+                            .transform((val) => val.trim())
 const isCompleted = z.boolean()
 
 // ====================== INPUT SCHEMAS ======================

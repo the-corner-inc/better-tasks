@@ -9,8 +9,7 @@ import {
 } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.dm.ts"
 import { todo as todoTable , task as taskTable  } from "@/lib/db/schema.ts"
 import {and, eq, max} from "drizzle-orm";
-import {getRequest} from "@tanstack/start-server-core";
-import {auth} from "@/lib/auth/auth.ts";
+import {$getCurrentUserId} from "@/lib/auth/auth.functions.ts";
 
 /**
  * Server Functions
@@ -44,18 +43,6 @@ import {auth} from "@/lib/auth/auth.ts";
 // ========================================================
 // HELPER
 // ========================================================
-async function requireUserId() {
-    const session = await auth.api.getSession({
-        headers: getRequest().headers,
-    });
-
-    const userId = session?.user?.id;
-
-    if (!userId) throw new Error("Not authenticated");
-
-    return userId;
-}
-
 /**
  * Verify user owns the task
  * */
@@ -111,7 +98,7 @@ async function touchTask(taskId: string) {
 export const createTodo = createServerFn({ method: "POST"})
     .inputValidator(createTodoSchema)
     .handler( async ({ data }) => {
-        const userId = await requireUserId()
+        const userId = await $getCurrentUserId()
 
         // Verify ownership
         await verifyTaskOwnership(data.taskId, userId)
@@ -149,7 +136,7 @@ export const createTodo = createServerFn({ method: "POST"})
 export const updateTodoContent = createServerFn({ method: "POST" })
     .inputValidator(updateTodoContentSchema)
     .handler(async ({ data }) => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         // Verify ownership
         const todo = await verifyTodoOwnership(data.todoId, userId);
@@ -175,7 +162,7 @@ export const updateTodoContent = createServerFn({ method: "POST" })
 export const toggleTodo = createServerFn({ method: "POST" })
     .inputValidator(toggleTodoSchema)
     .handler(async ({ data }) => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         // Verify ownership
         const todo = await verifyTodoOwnership(data.todoId, userId);
@@ -201,7 +188,7 @@ export const toggleTodo = createServerFn({ method: "POST" })
 export const deleteTodo = createServerFn({ method: "POST" })
     .inputValidator(todoIdSchema)
     .handler(async ({ data }) => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         // Verify ownership
         const todo = await verifyTodoOwnership(data.todoId, userId);
@@ -217,7 +204,7 @@ export const deleteTodo = createServerFn({ method: "POST" })
 export const reorderTodos = createServerFn({ method: "POST" })
     .inputValidator(reorderTodoSchema)
     .handler(async ({ data }) => {
-        const userId = await requireUserId();
+        const userId = await $getCurrentUserId();
 
         // Verify ownership
         await verifyTaskOwnership(data.taskId, userId);

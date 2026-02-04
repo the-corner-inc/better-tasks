@@ -28,6 +28,7 @@ export const $getUser = createServerFn({ method: "GET" })
             returnHeaders: true
         })
 
+
         // Important : Forward any Set-Cookie headers to the client,
         // This is critical for session/cache refresh to work properly
         const cookies = session.headers?.getSetCookie()
@@ -82,11 +83,13 @@ export const $getCurrentUserId = createServerFn({ method: "GET" })
             headers: getRequest().headers,
         })
 
-        if(!session?.user?.id) {
+        const userId = session?.user?.id;
+
+        if(!userId) {
             throw new Error("Not authenticated")
         }
 
-        return session.user.id
+        return userId
     })
 
 

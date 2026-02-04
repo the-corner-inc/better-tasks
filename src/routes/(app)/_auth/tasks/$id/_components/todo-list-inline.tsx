@@ -5,8 +5,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { reorderTodos } from "@/routes/(app)/_auth/tasks/-feature/todos.service.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { PlusIcon, ListTodoIcon } from "lucide-react";
-import { TodoItem } from "@/routes/(app)/_auth/tasks/-feature/components/todo-item.tsx";
-import { TodoAddForm } from "@/routes/(app)/_auth/tasks/-feature/components/todo-add-form.tsx";
+import { TodoItem } from "@/routes/(app)/_auth/tasks/$id/_components/todo-item.tsx";
+import { TodoAddForm } from "@/routes/(app)/_auth/tasks/$id/_components/todo-add-form.tsx";
 import {
     DndContext,
     closestCenter,

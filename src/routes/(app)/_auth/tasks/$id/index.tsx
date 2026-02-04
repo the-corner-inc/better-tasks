@@ -2,7 +2,7 @@ import {createFileRoute, Link} from '@tanstack/react-router'
 import { getTaskByIdWithTodos} from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts";
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowLeftIcon} from "lucide-react";
-import {TodoListInline} from "@/routes/(app)/_auth/tasks/-feature/components/todo-list-inline.tsx";
+import {TodoListInline} from "@/routes/(app)/_auth/tasks/$id/_components/todo-list-inline.tsx";
 
 // ===================================================================
 // ROUTE

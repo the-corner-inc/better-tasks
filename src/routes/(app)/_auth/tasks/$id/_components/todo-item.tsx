@@ -17,7 +17,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 /**
- * Todo Item Component (Sortable)
+ * Todos Item Component (Sortable)
  *
  * Based on original TodoTableRow pattern:
  * - Optimistic UI state (isCompleted)

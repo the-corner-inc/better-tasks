@@ -141,7 +141,7 @@ export function TaskCard({ task }: { task: TaskTodoModel }) {
             </CardHeader>
 
             {/* Todos Preview */}
-            {task.todos.length > 0 && (
+            {task.todos && task.todos.length > 0 && (
                 <CardContent className="pt-0">
                     <TodosPreview taskId={task.id} todos={task.todos} />
                 </CardContent>

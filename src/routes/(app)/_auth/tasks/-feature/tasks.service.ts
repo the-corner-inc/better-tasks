@@ -2,7 +2,7 @@ import {auth} from "@/lib/auth/auth.ts";
 import {getRequest} from "@tanstack/start-server-core";
 import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/lib/db/db.ts";
-import {and, desc, eq} from "drizzle-orm";
+import {and, asc, desc, eq} from "drizzle-orm";
 import {task as taskTable, todo as todoTable} from "@/lib/db/schema.ts"
 import {createTaskSchema, deleteTaskSchema, taskIdSchema, updateTaskSchema} from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
 
@@ -55,7 +55,12 @@ export const getTasksList = createServerFn({ method: "GET" })
 
         const tasks = await db.query.task.findMany({
             where: eq(taskTable.userId , userId),
-            orderBy: [desc(taskTable.updatedAt), desc(taskTable.createdAt)]
+            orderBy: [desc(taskTable.updatedAt), desc(taskTable.createdAt)],
+            with: {
+                todos: {
+                    orderBy: [asc(todoTable.sortPosition)],
+                },
+            },
         })
 
 

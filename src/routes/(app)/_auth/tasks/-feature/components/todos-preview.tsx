@@ -70,8 +70,14 @@ export function TodosPreview({ taskId, todos }: Props) {
  * Shows completion stats: "x/y completed" or "No todos yet"
  */
 export function TodosStats({ todos }: { todos: TodoModel[] }) {
+    if (!todos || todos.length === 0) {
+        return <span>No todos yet</span>;
+    }
+
     const completedCount = todos.filter((t) => t.isCompleted).length;
     const totalCount = todos.length;
+
+
 
     if (totalCount === 0) {
         return <span>No todos yet</span>;

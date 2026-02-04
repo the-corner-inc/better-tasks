@@ -95,7 +95,7 @@ function RouteComponent() {
 //  - B) we are on the server -> Call the code (db query), with no changes at all.
 const serverLoader = createServerFn({method: 'GET' })
     .handler(async () => {
-      const todosData = await db.query.todosTable.findMany()
+      const todosData = await db.query.todo.findMany()
 
       const completed = todosData.filter( (t) => t.isCompleted ).length
 

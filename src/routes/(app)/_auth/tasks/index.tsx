@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import {authQueryOptions} from "@/lib/auth/auth.queries.ts";
-import {listTasks} from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts";
+import {getTasksList} from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts";
 import {useSuspenseQuery} from "@tanstack/react-query";
 import {TaskList} from "@/routes/(app)/_auth/tasks/-feature/components/task-list.tsx";
 
@@ -14,8 +14,8 @@ export const Route = createFileRoute('/(app)/_auth/tasks/')({
     // user is guaranteed by (_auth) beforeLoad, but keeping this pattern good
     await context.queryClient.ensureQueryData(authQueryOptions());
 
-    // fetch tasks
-    return await listTasks()
+    // fetch tasks with todos
+    return await getTasksList()
   }
 })
 

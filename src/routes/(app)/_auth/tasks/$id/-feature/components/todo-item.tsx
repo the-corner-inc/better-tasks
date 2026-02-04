@@ -5,7 +5,7 @@ import {
     deleteTodo,
     toggleTodo,
     updateTodoContent,
-} from "@/routes/(app)/_auth/tasks/-feature/todos.service.ts";
+} from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Checkbox } from "@/components/ui/checkbox.tsx";

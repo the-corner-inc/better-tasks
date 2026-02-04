@@ -6,34 +6,54 @@ import {task as TaskTable,todo as TodoTable} from "@/lib/db/schema.ts";
  * Types & validation Schemas
  */
 
-// ================================================================
+// ===============================================================================
 // BASE ZOD SCHEMAS (from Drizzle - single source of truth)
-// ================================================================
+// ===============================================================================
 // Schemas are generated with Zod based on the row of the DB
 // this avoids to re-type all fields and only do composition
-// ================================================================
+//
+// Those Schemas are a ground-base to work with to create others schemas from it
+//
+// createSelectSchema : What EXITS from the DB (all fields)
+// createInsertSchema : What ENTERS to  the DB (some fields are optional)
+// ===============================================================================
 const taskSchema = createSelectSchema(TaskTable)
-const todoSchema = createSelectSchema(TodoTable);
+const todoSchema = createSelectSchema(TodoTable)
 
-// Composition
+// Composition : Task with its related Todos
 const taskTodosSchema = taskSchema.extend({
     todos: z.array(todoSchema)
 })
 
-// ================================================================
+// ===============================================================================
 // MODELS TYPES for internal use - Full database rows
-// ================================================================
+// ===============================================================================
+// Used :
+//  - in service as a verification for creation: satisfies xxxModel
+//  - in return type of functions : function getTask(): TaskModel
+//  - in props of components : function taskCard({ task }: { task: TaskModel })
+// ===============================================================================
 export type TaskModel = z.infer<typeof taskSchema>
 export type TodoModel = z.infer<typeof todoSchema>;
-
 export type TaskTodoModel = z.infer<typeof taskTodosSchema>
 
 
-// ====================== PROPERTIES ======================
+// ===============================================================================
+// INPUT SCHEMAS
+// ===============================================================================
+// Used :
+//  - To validate inputs from client -> to server
+//  - In : .inputValidator(createXxxSchema)
+//  - In client side
+// ====================== PROPERTIES =============================================
 const id = z.string().min(1, "taskId required")
-const title = z.string().min(1, "title required").max(255, "Title too long")
+const title = z.string()
+                        .min(1, "title required")
+                        .max(255, "Title too long")
+                        .transform((val) => val.trim())
 
-// ====================== INPUT SCHEMAS ======================
+
+// ====================== INPUT SCHEMAS ==========================================
 export const taskIdSchema = z.object({
     taskId: id
 })

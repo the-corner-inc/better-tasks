@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button.tsx";
 import { LoadingSwap } from "@/components/ui/loading-swap.tsx";
 import { PlusIcon } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
-import { createTodo } from "@/routes/(app)/_auth/tasks/-feature/todos.service.ts";
+import { createTodo } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts";
 import { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
 import {tasksKey} from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts";
 import {useQueryClient} from "@tanstack/react-query";

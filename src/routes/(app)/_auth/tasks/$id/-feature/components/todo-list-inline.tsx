@@ -1,11 +1,11 @@
 import { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
 import { startTransition, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { reorderTodos } from "@/routes/(app)/_auth/tasks/-feature/todos.service.ts";
+import { reorderTodos } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { PlusIcon, ListTodoIcon } from "lucide-react";
-import { TodoItem } from "@/routes/(app)/_auth/tasks/$id/-components/todo-item.tsx";
-import { TodoAddForm } from "@/routes/(app)/_auth/tasks/$id/-components/todo-add-form.tsx";
+import { TodoItem } from "@/routes/(app)/_auth/tasks/$id/-feature/components/todo-item.tsx";
+import { TodoAddForm } from "@/routes/(app)/_auth/tasks/$id/-feature/components/todo-add-form.tsx";
 import {
     DndContext,
     closestCenter,

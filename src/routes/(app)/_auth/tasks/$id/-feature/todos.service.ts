@@ -3,31 +3,37 @@ import {db} from "@/lib/db/db.ts";
 import {
     createTodoSchema,
     reorderTodoSchema,
-    todoIdSchema,
+    todoIdSchema, TodoModel,
     toggleTodoSchema,
     updateTodoContentSchema
-} from "@/routes/(app)/_auth/tasks/-feature/todos.dm.ts"
+} from "@/routes/(app)/_auth/tasks/$id/-feature/todos.dm.ts"
 import { todo as todoTable , task as taskTable  } from "@/lib/db/schema.ts"
-import {and, asc, eq, max} from "drizzle-orm";
+import {and, eq, max} from "drizzle-orm";
 import {getRequest} from "@tanstack/start-server-core";
 import {auth} from "@/lib/auth/auth.ts";
-import {listTodosByTaskIdSchema} from "@/routes/(app)/_auth/tasks/-feature/todos.dm.ts";
 
 /**
  * Server Functions
  *
  * Architecture :
  * - It's a mix of server actions (API), business rules(BLL), and DB acces (DAL).
- * - Uses the advantages of the tanstack fullstack features
+ * - Uses TanStack Start's fullstack features
  *
  * Loaders (GET):
- *  - Can be cached, pre-fetched.
- *  - For the route loaders. Read datas. When page is loading, called by "route loader".
+ *  - Can be cached and pre-fetched via React Query
+ *  - Called by route loaders during page load
+ *  - Read-only operations
  *
  * Mutations (POST):
  *  - Never cached.
- *  - For the user actions, onClick, onSubmit.
- *  Update datas in DB and change UI state.
+ *  - For the user actions (onClick, onSubmit).
+ *  - Modify data and trigger UI updates
+ *
+ *
+ * Satisfies Pattern:
+ *  - Used when creating objects to insert in DB
+ *  - TypeScript verifies ALL required fields are present
+ *  - Catches missing fields at compile time, not runtime
  *
  *  In/Out put :
  *   - inputValidator() : Validate what enters from client to server. --> INPUT
@@ -35,7 +41,9 @@ import {listTodosByTaskIdSchema} from "@/routes/(app)/_auth/tasks/-feature/todos
  *   - Input has to be validated, because the client could send malicious code or a bug. Validator verify that it's safe data.
  */
 
-// ====================== HELPER ==========================
+// ========================================================
+// HELPER
+// ========================================================
 async function requireUserId() {
     const session = await auth.api.getSession({
         headers: getRequest().headers,
@@ -79,27 +87,27 @@ async function verifyTodoOwnership(todoId: string, userId: string) {
     return todo;
 }
 
-// ====================== LOADERS =========================
-export const listTodosByTaskId = createServerFn({ method: "GET" })
-    .inputValidator(listTodosByTaskIdSchema)
-    .handler( async ({ data }) => {
+/** Update task's updatedAt timestamp */
+async function touchTask(taskId: string) {
+    await db
+        .update(taskTable)
+        .set({ updatedAt: new Date() })
+        .where(eq(taskTable.id, taskId));
+}
 
-        const userId = await requireUserId()
-
-        // Verify ownership
-        await verifyTaskOwnership(data.taskId, userId);
-
-        const todos = await db.query.todo.findMany({
-            where: eq(todoTable.taskId, data.taskId),
-            orderBy: [asc(todoTable.sortPosition)],
-        });
-
-        return todos;
-    })
+// ========================================================
+// LOADERS (GET)
+// ========================================================
+// NOTE: Todos don't have their own queries file because they are always
+// loaded via their parent Task (getTaskByIdWithTodos, getTasksList).
+// This file contains only mutations.
+// ========================================================
 
 
 
-// ====================== MUTATIONS ======================
+// ========================================================
+// MUTATIONS (POST)
+// ========================================================
 export const createTodo = createServerFn({ method: "POST"})
     .inputValidator(createTodoSchema)
     .handler( async ({ data }) => {
@@ -117,24 +125,23 @@ export const createTodo = createServerFn({ method: "POST"})
         const nextPosition = (maxResult[0]?.maxPos ?? -1) +1
 
         const now = new Date()
+        const todoToInsert = {
+            id: crypto.randomUUID(),
+            taskId: data.taskId,
+            content: data.content.trim(),
+            isCompleted: false,
+            sortPosition: nextPosition,
+            createdAt: now,
+            updatedAt: now
+        } satisfies TodoModel
+
         const [newTodo] = await db
             .insert(todoTable)
-            .values({
-                id: crypto.randomUUID(),
-                taskId: data.taskId,
-                content: data.content.trim(),
-                isCompleted: false,
-                sortPosition: nextPosition,
-                createdAt: now,
-                updatedAt: now
-            })
+            .values(todoToInsert)
             .returning()
 
         // Update task's updatedAt
-        await db
-            .update(taskTable)
-            .set({ updatedAt: now })
-            .where(eq(taskTable.id , data.taskId))
+        await touchTask(data.taskId)
 
         return newTodo
     })
@@ -148,20 +155,19 @@ export const updateTodoContent = createServerFn({ method: "POST" })
         const todo = await verifyTodoOwnership(data.todoId, userId);
 
         const now = new Date();
+        const todoToUpdate = {
+            content: data.content.trim(),
+            updatedAt: now,
+        } satisfies Partial<TodoModel>
+
         const [updatedTodo] = await db
             .update(todoTable)
-            .set({
-                content: data.content.trim(),
-                updatedAt: now,
-            })
+            .set(todoToUpdate)
             .where(eq(todoTable.id, data.todoId))
             .returning();
 
-        // Update task's updatedAt
-        await db
-            .update(taskTable)
-            .set({ updatedAt: now })
-            .where(eq(taskTable.id, todo.taskId));
+        // Update parent : task's updatedAt
+        await touchTask(todo.taskId)
 
         return updatedTodo;
     });
@@ -175,20 +181,19 @@ export const toggleTodo = createServerFn({ method: "POST" })
         const todo = await verifyTodoOwnership(data.todoId, userId);
 
         const now = new Date();
+        const todoToUpdate = {
+            isCompleted: data.isCompleted,
+            updatedAt: now,
+        } satisfies Partial<TodoModel>
+
         const [updatedTodo] = await db
             .update(todoTable)
-            .set({
-                isCompleted: data.isCompleted,
-                updatedAt: now,
-            })
+            .set(todoToUpdate)
             .where(eq(todoTable.id, data.todoId))
             .returning();
 
         // Update task's updatedAt
-        await db
-            .update(taskTable)
-            .set({ updatedAt: now })
-            .where(eq(taskTable.id, todo.taskId));
+        await touchTask(todo.taskId)
 
         return updatedTodo;
     });
@@ -204,11 +209,7 @@ export const deleteTodo = createServerFn({ method: "POST" })
         await db.delete(todoTable).where(eq(todoTable.id, data.todoId));
 
         // Update task's updatedAt
-        const now = new Date();
-        await db
-            .update(taskTable)
-            .set({ updatedAt: now })
-            .where(eq(taskTable.id, todo.taskId));
+        await touchTask(todo.taskId)
 
         return { success: true };
     });
@@ -224,28 +225,23 @@ export const reorderTodos = createServerFn({ method: "POST" })
         const now = new Date();
 
         // Update each todos sortPosition based on new order
-        await Promise.all(
-            data.todoIds.map((todoId, index) =>
-                db
-                    .update(todoTable)
-                    .set({
-                        sortPosition: index,
-                        updatedAt: now,
-                    })
-                    .where(
-                        and(
-                            eq(todoTable.id, todoId),
-                            eq(todoTable.taskId, data.taskId)
-                        )
-                    )
+        await Promise.all(data.todoIds.map((todoId, index) =>
+                db.update(todoTable)
+                  .set({
+                      sortPosition: index,
+                      updatedAt: now,
+                  })
+                  .where(
+                      and(
+                          eq(todoTable.id, todoId),
+                          eq(todoTable.taskId, data.taskId)
+                      )
+                  )
             )
         );
 
         // Update task's updatedAt
-        await db
-            .update(taskTable)
-            .set({ updatedAt: now })
-            .where(eq(taskTable.id, data.taskId));
+        await touchTask(data.taskId)
 
         return { success: true };
     });

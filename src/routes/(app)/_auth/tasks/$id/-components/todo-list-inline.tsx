@@ -1,12 +1,11 @@
 import { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
 import { startTransition, useState } from "react";
-import { useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { reorderTodos } from "@/routes/(app)/_auth/tasks/-feature/todos.service.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { PlusIcon, ListTodoIcon } from "lucide-react";
-import { TodoItem } from "@/routes/(app)/_auth/tasks/$id/_components/todo-item.tsx";
-import { TodoAddForm } from "@/routes/(app)/_auth/tasks/$id/_components/todo-add-form.tsx";
+import { TodoItem } from "@/routes/(app)/_auth/tasks/$id/-components/todo-item.tsx";
+import { TodoAddForm } from "@/routes/(app)/_auth/tasks/$id/-components/todo-add-form.tsx";
 import {
     DndContext,
     closestCenter,
@@ -30,6 +29,8 @@ import {
     EmptyMedia,
     EmptyTitle,
 } from "@/components/ui/empty.tsx";
+import {useQueryClient} from "@tanstack/react-query";
+import {tasksKey} from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts";
 
 /**
  * Todo List Inline Component
@@ -47,7 +48,10 @@ type Props = {
 };
 
 export function TodoListInline({ taskId, todos: initialTodos }: Props) {
-    const router = useRouter();
+    // Cache manipulation
+    const queryClient = useQueryClient()
+
+    // Hooks
     const [todos, setTodos] = useState(initialTodos);
     const [isAdding, setIsAdding] = useState(false);
 
@@ -88,7 +92,9 @@ export function TodoListInline({ taskId, todos: initialTodos }: Props) {
                         todoIds: newTodos.map((t) => t.id),
                     },
                 });
-                router.invalidate();
+
+                // Invalidate Cache
+                await queryClient.invalidateQueries({ queryKey: [tasksKey] });
             });
         }
     }

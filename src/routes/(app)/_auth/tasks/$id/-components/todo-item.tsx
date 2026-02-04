@@ -1,6 +1,5 @@
 import { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
 import { startTransition, useState } from "react";
-import { useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
     deleteTodo,
@@ -15,6 +14,8 @@ import { CheckIcon, EditIcon, GripVerticalIcon, Trash2Icon, XIcon } from "lucide
 import { cn } from "@/lib/utils.ts";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import {tasksKey} from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts";
+import {useQueryClient} from "@tanstack/react-query";
 
 /**
  * Todos Item Component (Sortable)
@@ -33,8 +34,10 @@ type Props = {
 };
 
 export function TodoItem({ todo, onUpdate, onDelete }: Props) {
+    // Cache manipulation
+    const queryClient = useQueryClient()
+
     // Hooks
-    const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(todo.content);
     const [isCompleted, setIsCompleted] = useState(todo.isCompleted);
@@ -68,7 +71,8 @@ export function TodoItem({ todo, onUpdate, onDelete }: Props) {
 
         startTransition(async () => {
             await toggleFn({ data: { todoId: todo.id, isCompleted: next } });
-            router.invalidate();
+            // Invalidate Cache
+            await queryClient.invalidateQueries({ queryKey: [tasksKey] });
         });
     }
 
@@ -92,7 +96,9 @@ export function TodoItem({ todo, onUpdate, onDelete }: Props) {
             });
             onUpdate(updated);
             setIsEditing(false);
-            router.invalidate();
+            // Invalidate Cache
+            await queryClient.invalidateQueries({ queryKey: [tasksKey] });
+
         } catch (error) {
             console.error("Update failed:", error);
         } finally {
@@ -103,7 +109,9 @@ export function TodoItem({ todo, onUpdate, onDelete }: Props) {
     async function handleDelete() {
         await deleteFn({ data: { todoId: todo.id } });
         onDelete(todo.id);
-        router.invalidate();
+
+        // Invalidate Cache
+        await queryClient.invalidateQueries({ queryKey: [tasksKey] });
     }
 
     function handleCancelEdit() {

@@ -16,11 +16,13 @@ import {$getSession, $getUser, $getUsers} from "@/lib/auth/auth.functions.ts";
  * - Automatic caching and deduplication
  * - Background refetching
  * - Optimistic updates support
+ *
+ * CACHE INVALIDATION:
+ * After mutations (create/update/delete), invalidate with:
+ *   queryClient.invalidateQueries({ queryKey: ["user"] })
  */
 
 // ====================== QUERY OPTIONS ======================
-
-
 /**
  * Query options for the current user
  * Most commonly used - returns user data or null
@@ -31,7 +33,7 @@ export const authQueryOptions = () =>
         queryKey: ["user"],
         // QUERY MADE TO THE SERVER IF THE DATA IS STALE OR NOT IN CACHE
         queryFn: ({ signal }) => $getUser({ signal }),
-        staleTime: 1000 * 60 * 1, // cache for 1 minute to reduce server calls
+        staleTime: 1000 * 60 * 2, // cache for 2 minute to reduce server calls
     })
 
 /**
@@ -42,7 +44,7 @@ export const usersQueryOptions = () =>
     queryOptions({
         queryKey: ["users"],
         queryFn: ({ signal }) => $getUsers({ signal }),
-        staleTime: 1000 * 60 * 1, // cache for 1 minute to reduce server calls
+        staleTime: 1000 * 60 * 2, // cache for 2 minute to reduce server calls
     })
 
 /**

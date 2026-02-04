@@ -48,7 +48,9 @@ async function requireUserId() {
     return userId;
 }
 
-/** Verify user owns the task */
+/**
+ * Verify user owns the task
+ * */
 async function verifyTaskOwnership(taskId: string, userId: string) {
     const task = await db.query.task.findFirst({
         where: and(eq(taskTable.id, taskId), eq(taskTable.userId, userId)),
@@ -61,7 +63,9 @@ async function verifyTaskOwnership(taskId: string, userId: string) {
     return task;
 }
 
-/** Verify user owns the todos (via task) */
+/**
+ * Verify user owns the todos (via task)
+ * */
 async function verifyTodoOwnership(todoId: string, userId: string) {
     const todo = await db.query.todo.findFirst({
         where: eq(todoTable.id, todoId),

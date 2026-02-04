@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button.tsx";
 import { LoadingSwap } from "@/components/ui/loading-swap.tsx";
 import { PlusIcon } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
-import { useRouter } from "@tanstack/react-router";
 import { createTodo } from "@/routes/(app)/_auth/tasks/-feature/todos.service.ts";
 import { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
+import {tasksKey} from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts";
+import {useQueryClient} from "@tanstack/react-query";
 
 /**
  * Todos Add Form Component
@@ -24,8 +25,10 @@ type Props = {
 };
 
 export function TodoAddForm({ taskId, onCancel, onCreated }: Props) {
+    // Cache manipulation
+    const queryClient = useQueryClient()
+
     // Hooks
-    const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -51,7 +54,8 @@ export function TodoAddForm({ taskId, onCancel, onCreated }: Props) {
                 data: { taskId, content },
             });
             onCreated(newTodo);
-            router.invalidate();
+            // Invalidate Cache
+            await queryClient.invalidateQueries({ queryKey: [tasksKey] });
         } catch (error) {
             // Handle redirect responses (Tanstack pattern)
             if (error instanceof Response) throw error;

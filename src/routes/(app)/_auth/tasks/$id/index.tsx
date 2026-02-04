@@ -1,20 +1,20 @@
 import {createFileRoute, Link} from '@tanstack/react-router'
-import { getTaskByIdWithTodos} from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts";
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowLeftIcon} from "lucide-react";
-import {TodoListInline} from "@/routes/(app)/_auth/tasks/$id/_components/todo-list-inline.tsx";
+import {TodoListInline} from "@/routes/(app)/_auth/tasks/$id/-components/todo-list-inline.tsx";
+import {taskDetailQueryOptions} from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts";
+import {useSuspenseQuery} from "@tanstack/react-query";
+
 
 // ===================================================================
 // ROUTE
 // ===================================================================
 export const Route = createFileRoute('/(app)/_auth/tasks/$id/')({
   component: RouteComponent,
-  loader: async ({ params }) => {
-    //const taskResult = await getTaskById({ data: { taskId: params.id } })
-    const taskResult = await getTaskByIdWithTodos({ data: { taskId: params.id } })
+  loader: async ({ context, params }) => {
 
-
-      return taskResult
+    // no return - the data are stored into the cache
+    await context.queryClient.ensureQueryData(taskDetailQueryOptions( params.id ))
   }
 })
 
@@ -24,7 +24,15 @@ export const Route = createFileRoute('/(app)/_auth/tasks/$id/')({
 // ===================================================================
 function RouteComponent() {
 
-  const {task} = Route.useLoaderData()
+  // FETCH THE DATAS FROM THE CACHE
+  // Recover the PARAM from the ROUTE
+  const { id } = Route.useParams()
+
+  // Recover the data from the cache with help og the param
+  const { data } = useSuspenseQuery(taskDetailQueryOptions(id))
+
+  // Extract the task object  (my service returns { task: ... })
+  const task = data.task
 
   return (
       <div className="min-h-screen container space-y-6">

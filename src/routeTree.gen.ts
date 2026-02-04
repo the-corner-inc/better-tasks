@@ -14,11 +14,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as appAuthRouteRouteImport } from './routes/(app)/_auth/route'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as publicAuthLoginIndexRouteImport } from './routes/(public)/auth/login/index'
-import { Route as appAuthTodosIndexRouteImport } from './routes/(app)/_auth/todos/index'
 import { Route as appAuthTasksIndexRouteImport } from './routes/(app)/_auth/tasks/index'
-import { Route as appAuthTodosNewIndexRouteImport } from './routes/(app)/_auth/todos/new/index'
 import { Route as appAuthTasksIdIndexRouteImport } from './routes/(app)/_auth/tasks/$id/index'
-import { Route as appAuthTodosIdEditIndexRouteImport } from './routes/(app)/_auth/todos/$id/edit/index'
 
 const publicRouteRoute = publicRouteRouteImport.update({
   id: '/(public)',
@@ -43,19 +40,9 @@ const publicAuthLoginIndexRoute = publicAuthLoginIndexRouteImport.update({
   path: '/auth/login/',
   getParentRoute: () => publicRouteRoute,
 } as any)
-const appAuthTodosIndexRoute = appAuthTodosIndexRouteImport.update({
-  id: '/todos/',
-  path: '/todos/',
-  getParentRoute: () => appAuthRouteRoute,
-} as any)
 const appAuthTasksIndexRoute = appAuthTasksIndexRouteImport.update({
   id: '/tasks/',
   path: '/tasks/',
-  getParentRoute: () => appAuthRouteRoute,
-} as any)
-const appAuthTodosNewIndexRoute = appAuthTodosNewIndexRouteImport.update({
-  id: '/todos/new/',
-  path: '/todos/new/',
   getParentRoute: () => appAuthRouteRoute,
 } as any)
 const appAuthTasksIdIndexRoute = appAuthTasksIdIndexRouteImport.update({
@@ -63,31 +50,20 @@ const appAuthTasksIdIndexRoute = appAuthTasksIdIndexRouteImport.update({
   path: '/tasks/$id/',
   getParentRoute: () => appAuthRouteRoute,
 } as any)
-const appAuthTodosIdEditIndexRoute = appAuthTodosIdEditIndexRouteImport.update({
-  id: '/todos/$id/edit/',
-  path: '/todos/$id/edit/',
-  getParentRoute: () => appAuthRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/tasks/': typeof appAuthTasksIndexRoute
-  '/todos/': typeof appAuthTodosIndexRoute
   '/auth/login/': typeof publicAuthLoginIndexRoute
   '/tasks/$id/': typeof appAuthTasksIdIndexRoute
-  '/todos/new/': typeof appAuthTodosNewIndexRoute
-  '/todos/$id/edit/': typeof appAuthTodosIdEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/tasks': typeof appAuthTasksIndexRoute
-  '/todos': typeof appAuthTodosIndexRoute
   '/auth/login': typeof publicAuthLoginIndexRoute
   '/tasks/$id': typeof appAuthTasksIdIndexRoute
-  '/todos/new': typeof appAuthTodosNewIndexRoute
-  '/todos/$id/edit': typeof appAuthTodosIdEditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,33 +72,14 @@ export interface FileRoutesById {
   '/(app)/_auth': typeof appAuthRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/(app)/_auth/tasks/': typeof appAuthTasksIndexRoute
-  '/(app)/_auth/todos/': typeof appAuthTodosIndexRoute
   '/(public)/auth/login/': typeof publicAuthLoginIndexRoute
   '/(app)/_auth/tasks/$id/': typeof appAuthTasksIdIndexRoute
-  '/(app)/_auth/todos/new/': typeof appAuthTodosNewIndexRoute
-  '/(app)/_auth/todos/$id/edit/': typeof appAuthTodosIdEditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/api/auth/$'
-    | '/tasks/'
-    | '/todos/'
-    | '/auth/login/'
-    | '/tasks/$id/'
-    | '/todos/new/'
-    | '/todos/$id/edit/'
+  fullPaths: '/' | '/api/auth/$' | '/tasks/' | '/auth/login/' | '/tasks/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/api/auth/$'
-    | '/tasks'
-    | '/todos'
-    | '/auth/login'
-    | '/tasks/$id'
-    | '/todos/new'
-    | '/todos/$id/edit'
+  to: '/' | '/api/auth/$' | '/tasks' | '/auth/login' | '/tasks/$id'
   id:
     | '__root__'
     | '/'
@@ -130,11 +87,8 @@ export interface FileRouteTypes {
     | '/(app)/_auth'
     | '/api/auth/$'
     | '/(app)/_auth/tasks/'
-    | '/(app)/_auth/todos/'
     | '/(public)/auth/login/'
     | '/(app)/_auth/tasks/$id/'
-    | '/(app)/_auth/todos/new/'
-    | '/(app)/_auth/todos/$id/edit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -181,13 +135,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof publicAuthLoginIndexRouteImport
       parentRoute: typeof publicRouteRoute
     }
-    '/(app)/_auth/todos/': {
-      id: '/(app)/_auth/todos/'
-      path: '/todos'
-      fullPath: '/todos/'
-      preLoaderRoute: typeof appAuthTodosIndexRouteImport
-      parentRoute: typeof appAuthRouteRoute
-    }
     '/(app)/_auth/tasks/': {
       id: '/(app)/_auth/tasks/'
       path: '/tasks'
@@ -195,25 +142,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appAuthTasksIndexRouteImport
       parentRoute: typeof appAuthRouteRoute
     }
-    '/(app)/_auth/todos/new/': {
-      id: '/(app)/_auth/todos/new/'
-      path: '/todos/new'
-      fullPath: '/todos/new/'
-      preLoaderRoute: typeof appAuthTodosNewIndexRouteImport
-      parentRoute: typeof appAuthRouteRoute
-    }
     '/(app)/_auth/tasks/$id/': {
       id: '/(app)/_auth/tasks/$id/'
       path: '/tasks/$id'
       fullPath: '/tasks/$id/'
       preLoaderRoute: typeof appAuthTasksIdIndexRouteImport
-      parentRoute: typeof appAuthRouteRoute
-    }
-    '/(app)/_auth/todos/$id/edit/': {
-      id: '/(app)/_auth/todos/$id/edit/'
-      path: '/todos/$id/edit'
-      fullPath: '/todos/$id/edit/'
-      preLoaderRoute: typeof appAuthTodosIdEditIndexRouteImport
       parentRoute: typeof appAuthRouteRoute
     }
   }
@@ -233,18 +166,12 @@ const publicRouteRouteWithChildren = publicRouteRoute._addFileChildren(
 
 interface appAuthRouteRouteChildren {
   appAuthTasksIndexRoute: typeof appAuthTasksIndexRoute
-  appAuthTodosIndexRoute: typeof appAuthTodosIndexRoute
   appAuthTasksIdIndexRoute: typeof appAuthTasksIdIndexRoute
-  appAuthTodosNewIndexRoute: typeof appAuthTodosNewIndexRoute
-  appAuthTodosIdEditIndexRoute: typeof appAuthTodosIdEditIndexRoute
 }
 
 const appAuthRouteRouteChildren: appAuthRouteRouteChildren = {
   appAuthTasksIndexRoute: appAuthTasksIndexRoute,
-  appAuthTodosIndexRoute: appAuthTodosIndexRoute,
   appAuthTasksIdIndexRoute: appAuthTasksIdIndexRoute,
-  appAuthTodosNewIndexRoute: appAuthTodosNewIndexRoute,
-  appAuthTodosIdEditIndexRoute: appAuthTodosIdEditIndexRoute,
 }
 
 const appAuthRouteRouteWithChildren = appAuthRouteRoute._addFileChildren(

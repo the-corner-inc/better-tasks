@@ -49,6 +49,9 @@ async function requireUserId() {
 
 
 // ====================== LOADERS =========================
+/**
+ * Returns the list of all tasks (with todos).
+ */
 export const getTasksList = createServerFn({ method: "GET" })
     .handler(async () => {
         const userId = await requireUserId();
@@ -89,7 +92,9 @@ export const getTaskById = createServerFn({ method: "GET" })
         return {task: taskResult}
     })
 
-
+/**
+ * returns a single task with its todos
+ */
 export const getTaskByIdWithTodos = createServerFn({ method: "GET" })
     .inputValidator(taskIdSchema)
     .handler(async ({ data }) => {

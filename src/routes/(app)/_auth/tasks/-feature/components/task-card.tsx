@@ -1,5 +1,5 @@
 import { TaskTodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import {
     Card,
     CardContent,
@@ -18,6 +18,8 @@ import {
     updateTask,
 } from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts";
 import { TodosPreview, TodosStats } from "@/routes/(app)/_auth/tasks/-feature/components/todos-preview.tsx";
+import {tasksKey} from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts";
+import {useQueryClient} from "@tanstack/react-query";
 
 /**
  * Task Card Component
@@ -33,11 +35,16 @@ import { TodosPreview, TodosStats } from "@/routes/(app)/_auth/tasks/-feature/co
 
 
 export function TaskCard({ task }: { task: TaskTodoModel }) {
-    const router = useRouter();
+
+    // Manipulates the cache
+    const queryClient = useQueryClient();
+
+    // Hooks
     const [isEditing, setIsEditing] = useState(false);
     const [editTitle, setEditTitle] = useState(task.title);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Server Functions
     const updateTaskFn = useServerFn(updateTask);
     const deleteTaskFn = useServerFn(deleteTask);
 
@@ -49,7 +56,10 @@ export function TaskCard({ task }: { task: TaskTodoModel }) {
         try {
             await updateTaskFn({ data: { taskId: task.id, title: editTitle } });
             setIsEditing(false);
-            router.invalidate();
+
+            // Invalidate the cache for "tasks"
+            await queryClient.invalidateQueries({ queryKey: [tasksKey] });
+
         } catch (err) {
             console.error("Update failed:", err);
         } finally {
@@ -59,7 +69,8 @@ export function TaskCard({ task }: { task: TaskTodoModel }) {
 
     async function handleDelete() {
         await deleteTaskFn({ data: { taskId: task.id } });
-        router.invalidate();
+        // Invalidate the cache
+        await queryClient.invalidateQueries({ queryKey: [tasksKey] });
     }
 
     function handleCancelEdit() {

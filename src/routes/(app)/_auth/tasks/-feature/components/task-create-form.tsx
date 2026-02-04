@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button.tsx";
 import { LoadingSwap } from "@/components/ui/loading-swap.tsx";
 import { PlusIcon } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
-import { useRouter } from "@tanstack/react-router";
 import { createTask } from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts";
 import { Card, CardContent } from "@/components/ui/card.tsx";
+import {useQueryClient} from "@tanstack/react-query";
+import {tasksKey} from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts";
 
 /**
  * Task Create Form Component
@@ -21,8 +22,10 @@ type Props = {
 };
 
 export function TaskCreateForm({ onCancel, onCreated }: Props) {
+    // Cache manipulate
+    const queryClient = useQueryClient();
+
     // Hooks
-    const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -46,7 +49,9 @@ export function TaskCreateForm({ onCancel, onCreated }: Props) {
         try {
             await createTaskFn({ data: { title } });
             onCreated?.();
-            router.invalidate();
+            // Invalidate the cache
+            await queryClient.invalidateQueries({ queryKey: [tasksKey]})
+
         } catch (error) {
             // Handle redirect responses (Tanstack pattern)
             if (error instanceof Response) throw error;

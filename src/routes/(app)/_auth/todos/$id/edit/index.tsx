@@ -6,13 +6,13 @@ import {TodoForm} from "@/routes/(app)/_auth/todos/-feature/components/todo-form
 import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/lib/db/db.ts";
 import {eq} from "drizzle-orm";
-import {todosTable} from "@/lib/db/schema.ts";
+import {todo as todosTable} from "@/lib/db/schema.ts";
 
 const loaderFn = createServerFn ({method: "GET"})
     .inputValidator((data: { id:string }) => data) // Hardcoding this particular type and no real error Validation is done
     //Server Action
     .handler( async ({data}) => {
-      const todo = await db.query.todosTable.findFirst({
+      const todo = await db.query.todo.findFirst({
         where: eq(todosTable.id, data.id)
       })
 
@@ -51,7 +51,7 @@ function RouteComponent() {
         {/* CONTENT */}
         <Card>
           <CardHeader>
-            <CardTitle>Edit Todo - {todo.title}</CardTitle>
+            <CardTitle>Edit Todo - {todo.content}</CardTitle>
             <CardDescription>Update the details of your todo item</CardDescription>
           </CardHeader>
 

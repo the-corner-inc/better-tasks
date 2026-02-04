@@ -2,7 +2,7 @@ import {createServerFn} from "@tanstack/react-start";
 import {db} from "@/lib/db/db.ts";
 import {createTodoSchema, todoIdSchema, toggleTodoSchema, updateTodoSchema} from "@/routes/(app)/_auth/todos/-feature/todos.dm.ts"
 import { notFound } from "@tanstack/react-router";
-import { todosTable } from "@/lib/db/schema.ts";
+import { todo as todoTable  } from "@/lib/db/schema.ts"
 import { eq } from "drizzle-orm";
 
 /**
@@ -10,9 +10,10 @@ import { eq } from "drizzle-orm";
  *
  * Architecture :
  * - It's a mix of server actions (API), business rules(BLL), and DB acces (DAL).
+ * - Uses the advantages of the tanstack fullstack features
  *
  * Loaders (GET):
- *  - Can be cached, pre-fetched.P
+ *  - Can be cached, pre-fetched.
  *  - For the route loaders. Read datas. When page is loading, called by "route loader".
  *
  * Mutations (POST):
@@ -29,7 +30,7 @@ import { eq } from "drizzle-orm";
 // ====================== LOADERS =========================
 export const listTodos = createServerFn({ method: "GET"})
     .handler( () =>
-        db.query.todosTable.findMany({
+        db.query.todo.findMany({
             orderBy: (todos,
                       {desc}) => [desc(todos.createdAt)]
         })
@@ -38,14 +39,14 @@ export const listTodos = createServerFn({ method: "GET"})
 export const getTodoById = createServerFn({ method: "GET" })
     .inputValidator(todoIdSchema)
     .handler( async ({data}) => {
-        const todo = await db.query.todosTable.findFirst({
-            where: eq( todosTable.id , data.id )
+        const todoGet = await db.query.todo.findFirst({
+            where: eq( todoTable.id , data.id )
         });
 
-        if (!todo)
+        if (!todoGet)
             throw notFound()
 
-        return todo
+        return todoGet
     })
 
 
@@ -53,24 +54,24 @@ export const getTodoById = createServerFn({ method: "GET" })
 export const createTodo = createServerFn ({ method: "POST"})
     .inputValidator(createTodoSchema)
     .handler(async ({data}) => {
-        const [todo] = await db
-            .insert(todosTable)
+        const [todos] = await db
+            .insert(todoTable)
             .values({
-                title: data.title.trim(),
+                content: data.title.trim(),
                 isCompleted: false
             })
             .returning()
 
-        return todo
+        return todos
     })
 
 export const updateTodo = createServerFn({ method: "POST" })
     .inputValidator(updateTodoSchema)
     .handler(async ({data}) => {
         const [updateTodo] = await db
-            .update(todosTable)
-            .set({title: data.title.trim()})
-            .where(eq( todosTable.id , data.id ))
+            .update(todoTable)
+            .set({content: data.title.trim()})
+            .where(eq( todoTable.id , data.id ))
             .returning()
 
         return updateTodo
@@ -80,15 +81,15 @@ export const toggleTodo = createServerFn({ method: "POST" })
     .inputValidator(toggleTodoSchema)
     .handler(async ({data}) => {
         await db
-            .update(todosTable)
+            .update(todoTable)
             .set({isCompleted: data.isCompleted})
-            .where(eq( todosTable.id , data.id ))
+            .where(eq( todoTable.id , data.id ))
     })
 
 export const deleteTodo = createServerFn({ method: "POST" })
     .inputValidator(todoIdSchema)
     .handler(async ({data}) => {
         await db
-            .delete(todosTable)
-            .where(eq( todosTable.id , data.id ))
+            .delete(todoTable)
+            .where(eq( todoTable.id , data.id ))
     })

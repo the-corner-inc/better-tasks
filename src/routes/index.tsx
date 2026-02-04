@@ -25,7 +25,7 @@ export const Route = createFileRoute('/')({
 
       // If logged-in, redirect to todos page
       if (user) {
-          throw redirect({ to: "/todos" })
+          throw redirect({ to: "/tasks" })
       }
   }
 })

@@ -11,20 +11,17 @@ Based on the tutorial, first a POC is build to understand the tech used, and the
 
 ## Technical Stack
 
-# TODO : UPDATE VERSIONS
-
-
 | Technology                                     | Version | Purpose                   |
 |------------------------------------------------|---------|---------------------------|
-| [TanStack Start](https://tanstack.com/start)   | latest  | Fullstack React framework |
-| [TanStack Router](https://tanstack.com/router) | latest  | Type-safe routing         |
-| [TanStack Query](https://tanstack.com/query)   | latest  | Data fetching & caching   |
-| [Better Auth](https://www.better-auth.com/)    | latest  | Authentication            |
+| [TanStack Start](https://tanstack.com/start)   | 1.132.0 | Fullstack React framework |
+| [TanStack Router](https://tanstack.com/router) | 1.132.0 | Type-safe routing         |
+| [TanStack Query](https://tanstack.com/query)   | 5.84.2  | Data fetching & caching   |
+| [Better Auth](https://www.better-auth.com/)    | 1.4.12  | Authentication            |
 | [PostgreSQL](https://www.postgresql.org/)      | 16      | Database (Docker)         |
-| [Drizzle ORM](https://orm.drizzle.team/)       | latest  | Type-safe ORM             |
-| [Zod](https://zod.dev/)                        | latest  | Schema validation         |
+| [Drizzle ORM](https://orm.drizzle.team/)       | 0.45.0  | Type-safe ORM             |
+| [Zod](https://zod.dev/)                        | 4.3.6   | Schema validation         |
 | [shadcn/ui](https://ui.shadcn.com/)            | latest  | UI Components             |
-| [Tailwind CSS](https://tailwindcss.com/)       | 4       | Styling                   |
+| [Tailwind CSS](https://tailwindcss.com/)       | 4.1.18  | Styling                   |
 
 ---
 

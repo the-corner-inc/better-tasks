@@ -15,7 +15,7 @@ import {$getCurrentUserId} from "@/lib/auth/auth.functions.ts";
  * Server Functions
  *
  * Architecture :
- * - It's a mix of server actions (API), business rules(BLL), and DB acces (DAL).
+ * - It's a mix of server actions (API), business rules(BLL), and DB access (DAL).
  * - Uses TanStack Start's fullstack features
  *
  * Loaders (GET):

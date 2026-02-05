@@ -14,7 +14,7 @@ import * as z from "zod"
  * - Validates their presence and format at startup
  * - Prevents any secret from leaking into the client bundle
  *
- * !!! ABSOLUTE RULE !!! :
+ * !!! ABSOLUTE RULE !!!
  * This file must NEVER be imported in code that runs on the client
  * (React components, hooks, browser utilities).
  *

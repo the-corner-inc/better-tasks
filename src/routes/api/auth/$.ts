@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth/auth.ts'
 
 
 /**
- * TODO : UPDATE THIS INFORMATION FROM NEXTJS
+ * TODO : UPDATE THIS INFORMATION FROM NEXT.JS
  * Auth API route - Catch-all Handler (Better Auth)
  *
  * Route:

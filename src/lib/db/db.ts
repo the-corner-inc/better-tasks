@@ -14,12 +14,12 @@ import { env } from "@/lib/env/server.ts"
  * uses "server env." variables.
  */
 
-/** TODO : UPDATE INFORMATION FORM NEXTJS HERE
+/** TODO : UPDATE INFORMATION FORM NEXT.JS HERE
  * Database Connection setup using Drizzle ORM
  *
  * This file :
  * - Creates the Drizzle ORM instance "drizzle()"
- *      - Connects to PostgreSQL via the DATABSE_URL .env variable
+ *      - Connects to PostgreSQL via the DATABASE_URL .env variable
  *      - Imports all schemas for the relational query builder
  * - Is exports the as {db} elsewhere
  */

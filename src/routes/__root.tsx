@@ -65,7 +65,7 @@ function RootComponent() {
 
 function RootDocument({ children }: { readonly children: React.ReactNode }) {
   return (
-      // suppress since we're updating the "dark" class in ThemeProvider //Todo: remove calssname Dark below
+      // suppress since we're updating the "dark" class in ThemeProvider //Todo: remove classname Dark below
       <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <HeadContent />

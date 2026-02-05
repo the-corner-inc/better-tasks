@@ -10,7 +10,7 @@ import {tasksTablePlugin} from "@/lib/auth/plugins/todos.table.ts";
 
 
 
-/** TODO: UPDATE FORM NEXTJS DOCS
+/** TODO: UPDATE FORM NEXT.JS DOCS
  * Auth - Server configuration
  *
  * Is the source of truth for all auth configuration.

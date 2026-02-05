@@ -53,8 +53,8 @@ export const usersQueryOptions = () =>
  */
 export const sessionQueryOptions = () =>
     queryOptions({
-        queryKey: ["session"], // NOM DE L'OBJET TANSTACK DANS LE CACHE
-        // QUERY SERA STOCKE DANS LE QUERY-KEY
+        queryKey: ["session"], // NOM DE OBJET TANSTACK DANS LE CACHE
+        // QUERY SERA STOQUE DANS LE QUERY-KEY
         queryFn: ({ signal }) => $getSession({ signal }),
         staleTime: 1000 * 60 * 1, // cache for 1 minute to reduce server calls
     })

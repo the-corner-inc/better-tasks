@@ -11,7 +11,7 @@ import * as z from "zod"
  * - Ensures only variables prefixed with `VITE_` are accessible
  * - Provides type-safe access to `import.meta.env`
  *
- * !!! SECURITY RULE !!! :
+ * !!! SECURITY RULE !!!
  * No secrets must ever appear in this file.
  * Everything defined here is visible in the browser.
  *

@@ -23,7 +23,7 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"] //Todo : repplace @ with ~
+      "@/*": ["./src/*"] //Todo : replace @ with ~
     }
   }
 }

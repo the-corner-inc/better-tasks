@@ -4,9 +4,9 @@ A task management application built with TanStack Start, featuring a pragmatic *
 
 > Originally based on [this YouTube tutorial](https://www.youtube.com/watch?v=KsHbs5RMVYU), now evolved into a standalone project demonstrating modern full-stack patterns with TanStack.
 
-Based on the tutorial, first a POC is build to understand the tech used, and then a alpha version will be released to serve two purposes:
+Based on the tutorial, first a POC is build to understand the tech used, and then an alpha version will be released to serve two purposes:
 - a standalone web application
-- a partially packaged module to be distributed as an npm package and integrated into the up4it application
+- a partially packaged module to be distributed as a npm package and integrated into the up4it application
 ---
 
 ## Technical Stack
@@ -227,7 +227,7 @@ docker compose logs -f db
 docker compose down -v
 ```
 ---
-## General informations
+## General information
 
 ### Building For Production
 

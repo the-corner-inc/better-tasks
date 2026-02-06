@@ -49,7 +49,7 @@ Based on the tutorial, first a POC is build to understand the tech used, and the
 - [x] Zod input validation with transforms
 - [x] `satisfies` pattern for type safety
 - [x] Implement caching
-- [ ] Fix package json versions (It generates errors...)
+- [x] Fix package json versions (It generates errors...)
 - [ ] Add oRPC integration
 - [ ] Add error handling
 - [ ] Unit tests (Vitest)

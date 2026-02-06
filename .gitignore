@@ -260,3 +260,6 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/jetbrains+all,react,node
 
 
+/public/documentation/.$Up4It-Tasks_Mutation_Flow.drawio.bkp
+/public/documentation/.$Up4It-Tasks_Mutation_Flow.drawio.dtmp
+/public/documentation/.$Up4It-Tasks_Data_Flow.drawio.bkp

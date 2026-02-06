@@ -1,5 +1,6 @@
 packages:
-  - "."
+  - .
+
 catalog:
   "@commitlint/cli": 20.3.1
   "@commitlint/config-conventional": 20.3.1
@@ -51,6 +52,7 @@ catalog:
   pg: 8.16.3
   postgres: 3.4.8
   prettier: 3.5.3
+  prettier-plugin-organize-imports: "catalog:"
   prettier-plugin-tailwindcss: ^0.7.2
   react: 19.2.0
   react-dom: 19.2.0

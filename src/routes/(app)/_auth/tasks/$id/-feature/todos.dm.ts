@@ -1,6 +1,6 @@
+import { todo as TodoTable } from "@/lib/db/schema.ts"
 import { createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
-import { todo as TodoTable } from "@/lib/db/schema.ts"
 
 /**
  * Types & validation Schemas

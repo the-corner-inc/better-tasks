@@ -1,16 +1,15 @@
-import { createServerFn } from "@tanstack/react-start"
-import { and, asc, desc, eq } from "drizzle-orm"
-import type {
-  TaskModel} from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
+import { $getCurrentUserId } from "@/lib/auth/auth.functions.ts"
 import { db } from "@/lib/db/db.ts"
 import { task as taskTable, todo as todoTable } from "@/lib/db/schema.ts"
+import type { TaskModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
 import {
   createTaskSchema,
   deleteTaskSchema,
   taskIdSchema,
   updateTaskSchema,
 } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
-import { $getCurrentUserId } from "@/lib/auth/auth.functions.ts"
+import { createServerFn } from "@tanstack/react-start"
+import { and, asc, desc, eq } from "drizzle-orm"
 
 /**
  * Server Functions
@@ -50,23 +49,21 @@ import { $getCurrentUserId } from "@/lib/auth/auth.functions.ts"
 /**
  * Returns the list of all tasks (with todos).
  */
-export const getTasksList = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const userId = await $getCurrentUserId()
+export const getTasksList = createServerFn({ method: "GET" }).handler(async () => {
+  const userId = await $getCurrentUserId()
 
-    const tasks = await db.query.task.findMany({
-      where: eq(taskTable.userId, userId),
-      orderBy: [desc(taskTable.updatedAt), desc(taskTable.createdAt)],
-      with: {
-        todos: {
-          orderBy: [asc(todoTable.sortPosition)],
-        },
+  const tasks = await db.query.task.findMany({
+    where: eq(taskTable.userId, userId),
+    orderBy: [desc(taskTable.updatedAt), desc(taskTable.createdAt)],
+    with: {
+      todos: {
+        orderBy: [asc(todoTable.sortPosition)],
       },
-    })
+    },
+  })
 
-    return tasks
-  },
-)
+  return tasks
+})
 
 export const getTaskById = createServerFn({ method: "GET" })
   .inputValidator(taskIdSchema)
@@ -130,10 +127,7 @@ export const createTask = createServerFn({ method: "POST" })
       updatedAt: now,
     } satisfies TaskModel
 
-    const [newTask] = await db
-      .insert(taskTable)
-      .values(taskToInsert)
-      .returning()
+    const [newTask] = await db.insert(taskTable).values(taskToInsert).returning()
 
     return newTask
   })

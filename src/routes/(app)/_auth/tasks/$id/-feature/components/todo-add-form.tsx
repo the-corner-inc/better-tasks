@@ -1,14 +1,14 @@
-import { useRef, useState } from "react"
-import { PlusIcon } from "lucide-react"
-import { useServerFn } from "@tanstack/react-start"
-import { useQueryClient } from "@tanstack/react-query"
-import type { FormEvent} from "react";
-import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
-import { Input } from "@/components/ui/input.tsx"
 import { Button } from "@/components/ui/button.tsx"
+import { Input } from "@/components/ui/input.tsx"
 import { LoadingSwap } from "@/components/ui/loading-swap.tsx"
 import { createTodo } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts"
+import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
 import { tasksKey } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
+import { useQueryClient } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
+import { PlusIcon } from "lucide-react"
+import type { FormEvent } from "react"
+import { useRef, useState } from "react"
 
 /**
  * Todos Add Form Component
@@ -57,14 +57,13 @@ export function TodoAddForm({ taskId, onCancel, onCreated }: Props) {
       onCreated(newTodo)
       // Invalidate Cache
       await queryClient.invalidateQueries({ queryKey: [tasksKey] })
-    } catch (error) {
+    } catch (err) {
       // Handle redirect responses (Tanstack pattern)
-      if (error instanceof Response) throw error
-      if (typeof error === "object" && error !== null && "redirect" in error)
-        throw error
+      if (err instanceof Response) throw err
+      if (typeof err === "object" && err !== null && "redirect" in err) throw err
 
       // Real error
-      console.error("Submit failed:", error)
+      console.error("Submit failed:", err)
       setError("Something went wrong")
     } finally {
       setIsLoading(false)
@@ -84,10 +83,7 @@ export function TodoAddForm({ taskId, onCancel, onCreated }: Props) {
           disabled={isLoading}
         />
         <Button type="submit" size="sm" disabled={isLoading}>
-          <LoadingSwap
-            isLoading={isLoading}
-            className="flex items-center gap-2"
-          >
+          <LoadingSwap isLoading={isLoading} className="flex items-center gap-2">
             <PlusIcon className="h-4 w-4" /> Add
           </LoadingSwap>
         </Button>
@@ -101,9 +97,7 @@ export function TodoAddForm({ taskId, onCancel, onCreated }: Props) {
           Cancel
         </Button>
       </div>
-      {error && (
-        <p className="text-destructive text-sm text-red-600">{error}</p>
-      )}
+      {error && <p className="text-destructive text-sm text-red-600">{error}</p>}
     </form>
   )
 }

@@ -355,10 +355,7 @@ export const createTask = createServerFn({ method: "POST" })
       updatedAt: new Date(),
     } satisfies TaskModel // ← TypeScript verifies all fields
 
-    const [newTask] = await db
-      .insert(taskTable)
-      .values(taskToInsert)
-      .returning()
+    const [newTask] = await db.insert(taskTable).values(taskToInsert).returning()
     return newTask
   })
 

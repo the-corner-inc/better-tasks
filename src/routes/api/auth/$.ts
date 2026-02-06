@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router"
 import { auth } from "@/lib/auth/auth.ts"
+import { createFileRoute } from "@tanstack/react-router"
 
 /**
  * TODO : UPDATE THIS INFORMATION FROM NEXT.JS

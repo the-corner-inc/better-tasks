@@ -1,3 +1,7 @@
+import { Button } from "@/components/ui/button.tsx"
+import authClient from "@/lib/auth/auth-client.ts"
+import { authQueryOptions } from "@/lib/auth/auth.queries.ts"
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import {
   Link,
   Outlet,
@@ -5,11 +9,7 @@ import {
   redirect,
   useRouter,
 } from "@tanstack/react-router"
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { HomeIcon, ListTodoIcon, LogOutIcon, UserIcon } from "lucide-react"
-import { authQueryOptions } from "@/lib/auth/auth.queries.ts"
-import authClient from "@/lib/auth/auth-client.ts"
-import { Button } from "@/components/ui/button.tsx"
 
 /**
  * Protected Layout Route for (_auth)

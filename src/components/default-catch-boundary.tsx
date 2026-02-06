@@ -1,13 +1,12 @@
+import { Button } from "@/components/ui/button.tsx"
+import type { ErrorComponentProps } from "@tanstack/react-router"
 import {
   ErrorComponent,
-  
   Link,
   rootRouteId,
   useMatch,
-  useRouter
+  useRouter,
 } from "@tanstack/react-router"
-import type {ErrorComponentProps} from "@tanstack/react-router";
-import { Button } from "@/components/ui/button.tsx"
 
 // TODO: RAPH COMPONENT, DOCUMENT IT
 

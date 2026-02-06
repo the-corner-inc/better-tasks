@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { useSuspenseQuery } from "@tanstack/react-query"
 import { authQueryOptions } from "@/lib/auth/auth.queries.ts"
 import { TaskList } from "@/routes/(app)/_auth/tasks/-feature/components/task-list.tsx"
 import { tasksListQueryOptions } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { createFileRoute } from "@tanstack/react-router"
 
 // ===================================================================
 // ROUTE
@@ -31,9 +31,7 @@ function RouteComponent() {
     <div className="container min-h-screen space-y-6">
       <div>
         <h1 className="text-3xl font-bold">My Tasks</h1>
-        <p className="text-muted-foreground">
-          Logged in as {user?.name || user?.email}
-        </p>
+        <p className="text-muted-foreground">Logged in as {user?.name || user?.email}</p>
       </div>
 
       <TaskList tasks={tasks} />

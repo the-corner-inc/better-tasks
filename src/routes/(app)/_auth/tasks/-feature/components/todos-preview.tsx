@@ -1,7 +1,7 @@
-import { Link } from "@tanstack/react-router"
-import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
 import { Checkbox } from "@/components/ui/checkbox.tsx"
 import { cn } from "@/lib/utils.ts"
+import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import { Link } from "@tanstack/react-router"
 
 /**
  * Todos Preview Component
@@ -32,11 +32,7 @@ export function TodosPreview({ taskId, todos }: Props) {
     <div className="space-y-1">
       {previewTodos.map((todo) => (
         <div key={todo.id} className="flex items-center gap-2 text-sm">
-          <Checkbox
-            checked={todo.isCompleted}
-            disabled
-            className="pointer-events-none"
-          />
+          <Checkbox checked={todo.isCompleted} disabled className="pointer-events-none" />
           <span
             className={cn(
               "truncate",
@@ -67,7 +63,7 @@ export function TodosPreview({ taskId, todos }: Props) {
  * Shows completion stats: "x/y completed" or "No todos yet"
  */
 export function TodosStats({ todos }: { todos: Array<TodoModel> }) {
-  if (!todos || todos.length === 0) {
+  if (todos.length === 0) {
     return <span>No todos yet</span>
   }
 

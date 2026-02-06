@@ -1,12 +1,12 @@
-import { betterAuth } from "better-auth"
-import { tanstackStartCookies } from "better-auth/tanstack-start"
-import { createServerOnlyFn } from "@tanstack/react-start"
-import { drizzleAdapter } from "better-auth/adapters/drizzle"
-import { admin } from "better-auth/plugins"
+import { tasksTablePlugin } from "@/lib/auth/plugins/todos.table.ts"
 import { db } from "@/lib/db/db.ts"
 import * as schema from "@/lib/db/schema.ts"
 import { env } from "@/lib/env/server.ts"
-import { tasksTablePlugin } from "@/lib/auth/plugins/todos.table.ts"
+import { createServerOnlyFn } from "@tanstack/react-start"
+import { betterAuth } from "better-auth"
+import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { admin } from "better-auth/plugins"
+import { tanstackStartCookies } from "better-auth/tanstack-start"
 
 /** TODO: UPDATE FORM NEXT.JS DOCS
  * Auth - Server configuration

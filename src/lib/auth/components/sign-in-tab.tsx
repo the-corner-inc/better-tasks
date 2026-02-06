@@ -3,16 +3,16 @@
  *
  * Handles email/password sign-in using Better Auth.
  * Uses TanStack Query's useMutation for async state management.
- */ import { useNavigate } from "@tanstack/react-router"
-import { useState } from "react"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
-import authClient from "@/lib/auth/auth-client.ts"
-import { Label } from "@/components/ui/label.tsx"
-import { Input } from "@/components/ui/input.tsx"
-import { PasswordInput } from "@/components/password-input.tsx"
+ */ import { PasswordInput } from "@/components/password-input.tsx"
 import { Button } from "@/components/ui/button.tsx"
+import { Input } from "@/components/ui/input.tsx"
+import { Label } from "@/components/ui/label.tsx"
 import { LoadingSwap } from "@/components/ui/loading-swap.tsx"
+import authClient from "@/lib/auth/auth-client.ts"
+import { useMutation } from "@tanstack/react-query"
+import { useNavigate } from "@tanstack/react-router"
+import { useState } from "react"
+import { toast } from "sonner"
 
 export function SignInTab() {
   const navigate = useNavigate()
@@ -22,9 +22,7 @@ export function SignInTab() {
   const [password, setPassword] = useState("")
 
   // Form Validation state
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {},
-  )
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
 
   // Mutation for sign in
   const signInMutation = useMutation({
@@ -88,9 +86,7 @@ export function SignInTab() {
           disabled={isLoading}
           aria-invalid={!!errors.email}
         />
-        {errors.email && (
-          <p className="text-destructive text-sm">{errors.email}</p>
-        )}
+        {errors.email && <p className="text-destructive text-sm">{errors.email}</p>}
       </div>
 
       {/* Password Field */}
@@ -104,9 +100,7 @@ export function SignInTab() {
           disabled={isLoading}
           aria-invalid={!!errors.password}
         />
-        {errors.password && (
-          <p className="text-destructive text-sm">{errors.password}</p>
-        )}
+        {errors.password && <p className="text-destructive text-sm">{errors.password}</p>}
       </div>
 
       {/* Submit Button */}

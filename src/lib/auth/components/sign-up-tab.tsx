@@ -1,13 +1,13 @@
-import { useNavigate } from "@tanstack/react-router"
-import { useState } from "react"
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
-import authClient from "@/lib/auth/auth-client.ts"
+import { PasswordInput } from "@/components/password-input.tsx"
+import { Button } from "@/components/ui/button.tsx"
 import { Input } from "@/components/ui/input.tsx"
 import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button.tsx"
 import { LoadingSwap } from "@/components/ui/loading-swap.tsx"
-import { PasswordInput } from "@/components/password-input.tsx"
+import authClient from "@/lib/auth/auth-client.ts"
+import { useMutation } from "@tanstack/react-query"
+import { useNavigate } from "@tanstack/react-router"
+import { useState } from "react"
+import { toast } from "sonner"
 
 /**
  * Sign Up Tab Component
@@ -98,9 +98,7 @@ export function SignUpTab() {
           disabled={isLoading}
           aria-invalid={!!errors.name}
         />
-        {errors.name && (
-          <p className="text-destructive text-sm">{errors.name}</p>
-        )}
+        {errors.name && <p className="text-destructive text-sm">{errors.name}</p>}
       </div>
 
       {/* Email Field */}
@@ -115,9 +113,7 @@ export function SignUpTab() {
           disabled={isLoading}
           aria-invalid={!!errors.email}
         />
-        {errors.email && (
-          <p className="text-destructive text-sm">{errors.email}</p>
-        )}
+        {errors.email && <p className="text-destructive text-sm">{errors.email}</p>}
       </div>
 
       {/* Password Field */}
@@ -131,9 +127,7 @@ export function SignUpTab() {
           disabled={isLoading}
           aria-invalid={!!errors.password}
         />
-        {errors.password && (
-          <p className="text-destructive text-sm">{errors.password}</p>
-        )}
+        {errors.password && <p className="text-destructive text-sm">{errors.password}</p>}
       </div>
 
       {/* Submit Button */}

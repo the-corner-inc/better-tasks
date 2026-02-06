@@ -1,6 +1,6 @@
-import { createFileRoute, redirect } from "@tanstack/react-router"
 import { authQueryOptions } from "@/lib/auth/auth.queries.ts"
 import { LoginForm } from "@/lib/auth/components/login-form.tsx"
+import { createFileRoute, redirect } from "@tanstack/react-router"
 
 /**
  * Login Page Route

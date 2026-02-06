@@ -1,8 +1,7 @@
-import { createServerFn } from "@tanstack/react-start"
-import { and, eq, max } from "drizzle-orm"
-import type {
-  TodoModel} from "@/routes/(app)/_auth/tasks/$id/-feature/todos.dm.ts";
+import { $getCurrentUserId } from "@/lib/auth/auth.functions.ts"
 import { db } from "@/lib/db/db.ts"
+import { task as taskTable, todo as todoTable } from "@/lib/db/schema.ts"
+import type { TodoModel } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.dm.ts"
 import {
   createTodoSchema,
   reorderTodoSchema,
@@ -10,8 +9,8 @@ import {
   toggleTodoSchema,
   updateTodoContentSchema,
 } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.dm.ts"
-import { task as taskTable, todo as todoTable } from "@/lib/db/schema.ts"
-import { $getCurrentUserId } from "@/lib/auth/auth.functions.ts"
+import { createServerFn } from "@tanstack/react-start"
+import { and, eq, max } from "drizzle-orm"
 
 /**
  * Server Functions
@@ -122,10 +121,7 @@ export const createTodo = createServerFn({ method: "POST" })
       updatedAt: now,
     } satisfies TodoModel
 
-    const [newTodo] = await db
-      .insert(todoTable)
-      .values(todoToInsert)
-      .returning()
+    const [newTodo] = await db.insert(todoTable).values(todoToInsert).returning()
 
     // Update task's updatedAt
     await touchTask(data.taskId)
@@ -220,9 +216,7 @@ export const reorderTodos = createServerFn({ method: "POST" })
             sortPosition: index,
             updatedAt: now,
           })
-          .where(
-            and(eq(todoTable.id, todoId), eq(todoTable.taskId, data.taskId)),
-          ),
+          .where(and(eq(todoTable.id, todoId), eq(todoTable.taskId, data.taskId))),
       ),
     )
 

@@ -1,10 +1,5 @@
-import { Link } from "@tanstack/react-router"
-import { CheckIcon, EditIcon, Trash2Icon, XIcon } from "lucide-react"
-import { useState } from "react"
-import { useServerFn } from "@tanstack/react-start"
-import { useQueryClient } from "@tanstack/react-query"
-import type { FormEvent} from "react";
-import type { TaskTodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import { ActionButton } from "@/components/ui/action-button.tsx"
+import { Button } from "@/components/ui/button.tsx"
 import {
   Card,
   CardContent,
@@ -12,18 +7,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card.tsx"
-import { Button } from "@/components/ui/button.tsx"
 import { Input } from "@/components/ui/input.tsx"
-import { ActionButton } from "@/components/ui/action-button.tsx"
-import {
-  deleteTask,
-  updateTask,
-} from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts"
 import {
   TodosPreview,
   TodosStats,
 } from "@/routes/(app)/_auth/tasks/-feature/components/todos-preview.tsx"
+import type { TaskTodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
 import { tasksKey } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
+import {
+  deleteTask,
+  updateTask,
+} from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts"
+import { useQueryClient } from "@tanstack/react-query"
+import { Link } from "@tanstack/react-router"
+import { useServerFn } from "@tanstack/react-start"
+import { CheckIcon, EditIcon, Trash2Icon, XIcon } from "lucide-react"
+import type { FormEvent } from "react"
+import { useState } from "react"
 
 /**
  * Task Card Component
@@ -107,9 +107,7 @@ export function TaskCard({ task }: { task: TaskTodoModel }) {
           ) : (
             <>
               <Link to="/tasks/$id" params={{ id: task.id }} className="flex-1">
-                <CardTitle className="text-base hover:underline">
-                  {task.title}
-                </CardTitle>
+                <CardTitle className="text-base hover:underline">{task.title}</CardTitle>
               </Link>
               <div className="flex items-center gap-1" data-actions>
                 <Button
@@ -141,7 +139,7 @@ export function TaskCard({ task }: { task: TaskTodoModel }) {
       </CardHeader>
 
       {/* Todos Preview */}
-      {task.todos && task.todos.length > 0 && (
+      {task.todos.length > 0 && (
         <CardContent className="pt-0">
           <TodosPreview taskId={task.id} todos={task.todos} />
         </CardContent>

@@ -1,8 +1,8 @@
+import { env } from "@/lib/env/server.ts"
 import { createServerOnlyFn } from "@tanstack/react-start"
 import { drizzle } from "drizzle-orm/postgres-js"
 import postgres from "postgres"
 import * as schema from "./schema.ts"
-import { env } from "@/lib/env/server.ts"
 
 /**
  * Database Instance

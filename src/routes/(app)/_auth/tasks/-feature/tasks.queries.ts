@@ -1,8 +1,8 @@
-import { queryOptions } from "@tanstack/react-query"
 import {
   getTaskByIdWithTodos,
   getTasksList,
 } from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts"
+import { queryOptions } from "@tanstack/react-query"
 
 /**
  * Query Options - (React Query Cache)
@@ -57,6 +57,4 @@ export const taskDetailQueryOptions = (taskId: string) =>
 // Useful for typing components that receive query results
 
 export type TasksListQueryResult = Awaited<ReturnType<typeof getTasksList>>
-export type TasksDetailsQueryResult = Awaited<
-  ReturnType<typeof getTaskByIdWithTodos>
->
+export type TasksDetailsQueryResult = Awaited<ReturnType<typeof getTaskByIdWithTodos>>

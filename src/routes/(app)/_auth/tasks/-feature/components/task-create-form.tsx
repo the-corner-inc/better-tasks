@@ -1,14 +1,14 @@
-import { useRef, useState } from "react"
-import { PlusIcon } from "lucide-react"
-import { useServerFn } from "@tanstack/react-start"
-import { useQueryClient } from "@tanstack/react-query"
-import type { FormEvent} from "react";
-import { Input } from "@/components/ui/input.tsx"
 import { Button } from "@/components/ui/button.tsx"
-import { LoadingSwap } from "@/components/ui/loading-swap.tsx"
-import { createTask } from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts"
 import { Card, CardContent } from "@/components/ui/card.tsx"
+import { Input } from "@/components/ui/input.tsx"
+import { LoadingSwap } from "@/components/ui/loading-swap.tsx"
 import { tasksKey } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
+import { createTask } from "@/routes/(app)/_auth/tasks/-feature/tasks.service.ts"
+import { useQueryClient } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
+import { PlusIcon } from "lucide-react"
+import type { FormEvent } from "react"
+import { useRef, useState } from "react"
 
 /**
  * Task Create Form Component
@@ -52,14 +52,13 @@ export function TaskCreateForm({ onCancel, onCreated }: Props) {
       onCreated?.()
       // Invalidate the cache
       await queryClient.invalidateQueries({ queryKey: [tasksKey] })
-    } catch (error) {
+    } catch (err) {
       // Handle redirect responses (Tanstack pattern)
-      if (error instanceof Response) throw error
-      if (typeof error === "object" && error !== null && "redirect" in error)
-        throw error
+      if (err instanceof Response) throw err
+      if (typeof err === "object" && err !== null && "redirect" in err) throw err
 
       // Real error
-      console.error("Submit failed:", error)
+      console.error("Submit failed:", err)
       setError("Something went wrong")
     } finally {
       setIsLoading(false)
@@ -78,15 +77,10 @@ export function TaskCreateForm({ onCancel, onCreated }: Props) {
             disabled={isLoading}
             aria-label="Task title"
           />
-          {error && (
-            <p className="text-destructive text-sm text-red-600">{error}</p>
-          )}
+          {error && <p className="text-destructive text-sm text-red-600">{error}</p>}
           <div className="flex gap-2">
             <Button type="submit" disabled={isLoading} size="sm">
-              <LoadingSwap
-                isLoading={isLoading}
-                className="flex items-center gap-2"
-              >
+              <LoadingSwap isLoading={isLoading} className="flex items-center gap-2">
                 <PlusIcon className="h-4 w-4" /> Create
               </LoadingSwap>
             </Button>

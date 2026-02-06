@@ -1,7 +1,7 @@
-import { createServerFn } from "@tanstack/react-start"
-import { getRequest, setResponseHeader } from "@tanstack/start-server-core"
 import type { AuthQueryResult } from "@/lib/auth/auth.queries.ts"
 import { auth } from "@/lib/auth/auth.ts"
+import { createServerFn } from "@tanstack/react-start"
+import { getRequest, setResponseHeader } from "@tanstack/start-server-core"
 
 // TODO :UNDERSTAND THIS FILE BETTER
 
@@ -29,8 +29,8 @@ export const $getUser = createServerFn({ method: "GET" }).handler(async () => {
 
   // Important : Forward any Set-Cookie headers to the client,
   // This is critical for session/cache refresh to work properly
-  const cookies = session.headers?.getSetCookie()
-  if (cookies?.length) {
+  const cookies = session.headers.getSetCookie()
+  if (cookies.length) {
     setResponseHeader("Set-Cookie", cookies)
   }
 
@@ -54,39 +54,35 @@ export const $getUsers = createServerFn({ method: "GET" }).handler(async () => {
  * Get the current session (includes both user and session data)
  * Useful when you need session metadata (e.g., expiration, IP)
  */
-export const $getSession = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const session = await auth.api.getSession({
-      headers: getRequest().headers,
-      returnHeaders: true,
-    })
+export const $getSession = createServerFn({ method: "GET" }).handler(async () => {
+  const session = await auth.api.getSession({
+    headers: getRequest().headers,
+    returnHeaders: true,
+  })
 
-    // Forward Set-Cookie headers
-    const cookies = session.headers?.getSetCookie()
-    if (cookies?.length) {
-      setResponseHeader("Set-Cookie", cookies)
-    }
+  // Forward Set-Cookie headers
+  const cookies = session.headers.getSetCookie()
+  if (cookies.length) {
+    setResponseHeader("Set-Cookie", cookies)
+  }
 
-    return session.response || null
-  },
-)
+  return session.response || null
+})
 
 /**
  * Get the current user ID (throws if not authenticated)
  * Use this when you need to ensure the user is logged in
  */
-export const $getCurrentUserId = createServerFn({ method: "GET" }).handler(
-  async () => {
-    const session = await auth.api.getSession({
-      headers: getRequest().headers,
-    })
+export const $getCurrentUserId = createServerFn({ method: "GET" }).handler(async () => {
+  const session = await auth.api.getSession({
+    headers: getRequest().headers,
+  })
 
-    const userId = session?.user?.id
+  const userId = session?.user.id
 
-    if (!userId) {
-      throw new Error("Not authenticated")
-    }
+  if (!userId) {
+    throw new Error("Not authenticated")
+  }
 
-    return userId
-  },
-)
+  return userId
+})

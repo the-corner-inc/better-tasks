@@ -1,27 +1,21 @@
-import { startTransition, useState } from "react"
-import { useServerFn } from "@tanstack/react-start"
-import {
-  CheckIcon,
-  EditIcon,
-  GripVerticalIcon,
-  Trash2Icon,
-  XIcon,
-} from "lucide-react"
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-import { useQueryClient } from "@tanstack/react-query"
-import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import { ActionButton } from "@/components/ui/action-button.tsx"
+import { Button } from "@/components/ui/button.tsx"
+import { Checkbox } from "@/components/ui/checkbox.tsx"
+import { Input } from "@/components/ui/input.tsx"
+import { cn } from "@/lib/utils.ts"
 import {
   deleteTodo,
   toggleTodo,
   updateTodoContent,
 } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts"
-import { Input } from "@/components/ui/input.tsx"
-import { Button } from "@/components/ui/button.tsx"
-import { Checkbox } from "@/components/ui/checkbox.tsx"
-import { ActionButton } from "@/components/ui/action-button.tsx"
-import { cn } from "@/lib/utils.ts"
+import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
 import { tasksKey } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import { useQueryClient } from "@tanstack/react-query"
+import { useServerFn } from "@tanstack/react-start"
+import { CheckIcon, EditIcon, GripVerticalIcon, Trash2Icon, XIcon } from "lucide-react"
+import { startTransition, useState } from "react"
 
 /**
  * Todos Item Component (Sortable)
@@ -55,14 +49,8 @@ export function TodoItem({ todo, onUpdate, onDelete }: Props) {
   const deleteFn = useServerFn(deleteTodo)
 
   // DnD Sortable
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: todo.id })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: todo.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -154,11 +142,7 @@ export function TodoItem({ todo, onUpdate, onDelete }: Props) {
 
       {/* Content / Edit Form */}
       {isEditing ? (
-        <form
-          onSubmit={handleUpdateContent}
-          className="flex flex-1 gap-2"
-          data-actions
-        >
+        <form onSubmit={handleUpdateContent} className="flex flex-1 gap-2" data-actions>
           <Input
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
@@ -182,21 +166,14 @@ export function TodoItem({ todo, onUpdate, onDelete }: Props) {
       ) : (
         <>
           <span
-            className={cn(
-              "flex-1",
-              isCompleted && "text-muted-foreground line-through",
-            )}
+            className={cn("flex-1", isCompleted && "text-muted-foreground line-through")}
           >
             {todo.content}
           </span>
 
           {/* Actions */}
           <div className="flex items-center gap-1" data-actions>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setIsEditing(true)}
-            >
+            <Button variant="ghost" size="icon-sm" onClick={() => setIsEditing(true)}>
               <EditIcon className="h-4 w-4" />
             </Button>
             <ActionButton action={handleDelete} variant="ghost" size="icon-sm">

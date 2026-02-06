@@ -1,14 +1,13 @@
-import { useMutation } from "@tanstack/react-query"
-import { toast } from "sonner"
-import type {SupportedOAuthProvider} from "@/lib/auth/o-auth-providers";
 import { Button } from "@/components/ui/button"
 import { LoadingSwap } from "@/components/ui/loading-swap"
 import authClient from "@/lib/auth/auth-client"
+import type { SupportedOAuthProvider } from "@/lib/auth/o-auth-providers"
 import {
   SUPPORTED_OAUTH_PROVIDERS,
-  SUPPORTED_OAUTH_PROVIDER_DETAILS
-  
+  SUPPORTED_OAUTH_PROVIDER_DETAILS,
 } from "@/lib/auth/o-auth-providers"
+import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 /**
  * Social Auth Buttons Component

@@ -1,3 +1,8 @@
+import type { AuthQueryResult } from "@/lib/auth/auth.queries.ts"
+import { authQueryOptions } from "@/lib/auth/auth.queries.ts"
+import { TanStackDevtools } from "@tanstack/react-devtools"
+import type { QueryClient } from "@tanstack/react-query"
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
 import {
   HeadContent,
   Outlet,
@@ -5,14 +10,9 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
-import { TanStackDevtools } from "@tanstack/react-devtools"
 import { Toaster } from "sonner"
-import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools"
 import appCss from "../styles.css?url"
-import type { QueryClient } from "@tanstack/react-query"
-import type { AuthQueryResult } from "@/lib/auth/auth.queries.ts";
-import { authQueryOptions } from "@/lib/auth/auth.queries.ts"
 
 /**
  * Root Route

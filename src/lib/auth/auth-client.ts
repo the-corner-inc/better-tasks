@@ -1,7 +1,7 @@
-import { createAuthClient } from "better-auth/react"
-import { adminClient, inferAdditionalFields } from "better-auth/client/plugins"
 import type { auth } from "@/lib/auth/auth.ts"
 import { env } from "@/lib/env/client.ts"
+import { adminClient, inferAdditionalFields } from "better-auth/client/plugins"
+import { createAuthClient } from "better-auth/react"
 
 /**
  * Auth - Client Instance (React)

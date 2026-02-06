@@ -1,9 +1,9 @@
-import { Link, createFileRoute } from "@tanstack/react-router"
-import { ArrowLeftIcon } from "lucide-react"
-import { useSuspenseQuery } from "@tanstack/react-query"
 import { Button } from "@/components/ui/button.tsx"
 import { TodoListInline } from "@/routes/(app)/_auth/tasks/$id/-feature/components/todo-list-inline.tsx"
 import { taskDetailQueryOptions } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { Link, createFileRoute } from "@tanstack/react-router"
+import { ArrowLeftIcon } from "lucide-react"
 
 // ===================================================================
 // ROUTE

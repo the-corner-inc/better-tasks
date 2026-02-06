@@ -1,6 +1,6 @@
-import { z } from "zod"
-import { createSelectSchema } from "drizzle-zod"
 import { task as TaskTable, todo as TodoTable } from "@/lib/db/schema.ts"
+import { createSelectSchema } from "drizzle-zod"
+import { z } from "zod"
 
 /**
  * Types & validation Schemas
@@ -21,7 +21,7 @@ const taskSchema = createSelectSchema(TaskTable)
 const todoSchema = createSelectSchema(TodoTable)
 
 // Composition : Task with its related Todos
-const taskTodosSchema = taskSchema.extend({
+export const taskTodosSchema = taskSchema.extend({
   todos: z.array(todoSchema),
 })
 

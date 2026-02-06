@@ -1,8 +1,3 @@
-import {   useTransition } from "react"
-import { toast } from "sonner"
-import type {ComponentProps, ReactNode} from "react";
-import { Button } from "@/components/ui/button"
-import { LoadingSwap } from "@/components/ui/loading-swap"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,6 +9,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { LoadingSwap } from "@/components/ui/loading-swap"
+import type { ComponentProps, ReactNode } from "react"
+import { useTransition } from "react"
+import { toast } from "sonner"
 
 type ActionResult = {
   error: boolean
@@ -54,18 +54,13 @@ export function ActionButton({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              {areYouSureDescription}
-            </AlertDialogDescription>
+            <AlertDialogDescription>{areYouSureDescription}</AlertDialogDescription>
           </AlertDialogHeader>
 
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction disabled={isLoading} onClick={performAction}>
-              <LoadingSwap
-                isLoading={isLoading}
-                className="flex items-center gap-2"
-              >
+              <LoadingSwap isLoading={isLoading} className="flex items-center gap-2">
                 Yes
               </LoadingSwap>
             </AlertDialogAction>
@@ -84,10 +79,7 @@ export function ActionButton({
         props.onClick?.(e)
       }}
     >
-      <LoadingSwap
-        isLoading={isLoading}
-        className="inline-flex items-center gap-2"
-      >
+      <LoadingSwap isLoading={isLoading} className="inline-flex items-center gap-2">
         {children}
       </LoadingSwap>
     </Button>

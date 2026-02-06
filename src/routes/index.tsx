@@ -1,7 +1,7 @@
-import { createFileRoute, redirect } from "@tanstack/react-router"
-import { useSuspenseQuery } from "@tanstack/react-query"
 import { authQueryOptions } from "@/lib/auth/auth.queries"
 import { LoginForm } from "@/lib/auth/components/login-form.tsx"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { createFileRoute, redirect } from "@tanstack/react-router"
 
 /**
  * Home Page

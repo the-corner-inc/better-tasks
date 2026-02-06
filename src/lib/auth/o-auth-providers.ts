@@ -1,5 +1,5 @@
-import type { ComponentProps, ElementType } from "react"
 import { GitHubIcon, GoogleIcon } from "@/lib/auth/components/o-auth-icons"
+import type { ComponentProps, ElementType } from "react"
 
 /**
  * Auth - OAuth Providers

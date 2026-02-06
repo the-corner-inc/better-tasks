@@ -1,10 +1,10 @@
+import { auth } from "@/lib/auth/auth.ts"
 import { createMiddleware } from "@tanstack/react-start"
 import {
   getRequest,
   setResponseHeader,
   setResponseStatus,
 } from "@tanstack/start-server-core"
-import { auth } from "@/lib/auth/auth.ts"
 
 // TODO :UNDERSTAND THIS FILE BETTER
 
@@ -67,13 +67,13 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
   })
 
   // Forward any Set-Cookie headers to the client, e.g. for session/cache refresh
-  const cookies = session.headers?.getSetCookie()
-  if (cookies?.length) {
+  const cookies = session.headers.getSetCookie()
+  if (cookies.length) {
     setResponseHeader("Set-Cookie", cookies)
   }
 
   // Return 401 if not authenticated
-  if (!session?.response?.user) {
+  if (!session.response?.user) {
     setResponseStatus(401)
     throw new Error("Unauthorized")
   }

@@ -1,10 +1,9 @@
-import * as React from "react"
-import { Eye, EyeOff } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button.tsx"
+import { cn } from "@/lib/utils"
+import { Eye, EyeOff } from "lucide-react"
+import * as React from "react"
 
-interface PasswordInputProps
-  extends Omit<React.ComponentProps<"input">, "type"> {}
+type PasswordInputProps = Omit<React.ComponentProps<"input">, "type">
 
 function PasswordInput({ className, ...props }: PasswordInputProps) {
   const [showPassword, setShowPassword] = React.useState(false)
@@ -20,6 +19,7 @@ function PasswordInput({ className, ...props }: PasswordInputProps) {
           "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
           className,
         )}
+        /* eslint-disable-next-line @eslint-react/no-implicit-key */
         {...props}
       />
       <Button

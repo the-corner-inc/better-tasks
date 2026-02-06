@@ -1,10 +1,4 @@
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs.tsx"
-import {
   Card,
   CardContent,
   CardFooter,
@@ -12,8 +6,9 @@ import {
   CardTitle,
 } from "@/components/ui/card.tsx"
 import { Separator } from "@/components/ui/separator.tsx"
-import { SignUpTab } from "@/lib/auth/components/sign-up-tab.tsx"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx"
 import { SignInTab } from "@/lib/auth/components/sign-in-tab.tsx"
+import { SignUpTab } from "@/lib/auth/components/sign-up-tab.tsx"
 import { SocialAuthButtons } from "@/lib/auth/components/social-auth-buttons.tsx"
 
 /**

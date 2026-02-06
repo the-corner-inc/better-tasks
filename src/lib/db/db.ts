@@ -1,7 +1,7 @@
-import {createServerOnlyFn} from "@tanstack/react-start";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { createServerOnlyFn } from "@tanstack/react-start"
+import { drizzle } from "drizzle-orm/postgres-js"
 import postgres from "postgres"
-import * as schema from './schema.ts'
+import * as schema from "./schema.ts"
 import { env } from "@/lib/env/server.ts"
 
 /**
@@ -26,15 +26,15 @@ import { env } from "@/lib/env/server.ts"
 
 const client = postgres(env.DATABASE_URL)
 
-const getDatabase = createServerOnlyFn( () =>
-    drizzle({
-        client,
-        schema,
-        casing: "snake_case"
-    })
+const getDatabase = createServerOnlyFn(() =>
+  drizzle({
+    client,
+    schema,
+    casing: "snake_case",
+  }),
 )
 
 export const db = getDatabase()
 
 // Old way, not safe for client side
-//export const db = drizzle(process.env.DATABASE_URL!, { schema })
+// export const db = drizzle(process.env.DATABASE_URL!, { schema })

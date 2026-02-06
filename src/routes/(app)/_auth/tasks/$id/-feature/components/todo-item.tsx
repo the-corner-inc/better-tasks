@@ -1,21 +1,27 @@
-import { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
-import { startTransition, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
+import { startTransition, useState } from "react"
+import { useServerFn } from "@tanstack/react-start"
 import {
-    deleteTodo,
-    toggleTodo,
-    updateTodoContent,
-} from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts";
-import { Input } from "@/components/ui/input.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { Checkbox } from "@/components/ui/checkbox.tsx";
-import { ActionButton } from "@/components/ui/action-button.tsx";
-import { CheckIcon, EditIcon, GripVerticalIcon, Trash2Icon, XIcon } from "lucide-react";
-import { cn } from "@/lib/utils.ts";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import {tasksKey} from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts";
-import {useQueryClient} from "@tanstack/react-query";
+  CheckIcon,
+  EditIcon,
+  GripVerticalIcon,
+  Trash2Icon,
+  XIcon,
+} from "lucide-react"
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import { useQueryClient } from "@tanstack/react-query"
+import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import {
+  deleteTodo,
+  toggleTodo,
+  updateTodoContent,
+} from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts"
+import { Input } from "@/components/ui/input.tsx"
+import { Button } from "@/components/ui/button.tsx"
+import { Checkbox } from "@/components/ui/checkbox.tsx"
+import { ActionButton } from "@/components/ui/action-button.tsx"
+import { cn } from "@/lib/utils.ts"
+import { tasksKey } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
 
 /**
  * Todos Item Component (Sortable)
@@ -28,182 +34,177 @@ import {useQueryClient} from "@tanstack/react-query";
  */
 
 type Props = {
-    todo: TodoModel;
-    onUpdate: (todo: TodoModel) => void;
-    onDelete: (todoId: string) => void;
-};
+  todo: TodoModel
+  onUpdate: (todo: TodoModel) => void
+  onDelete: (todoId: string) => void
+}
 
 export function TodoItem({ todo, onUpdate, onDelete }: Props) {
-    // Cache manipulation
-    const queryClient = useQueryClient()
+  // Cache manipulation
+  const queryClient = useQueryClient()
 
-    // Hooks
-    const [isEditing, setIsEditing] = useState(false);
-    const [editContent, setEditContent] = useState(todo.content);
-    const [isCompleted, setIsCompleted] = useState(todo.isCompleted);
-    const [isLoading, setIsLoading] = useState(false);
+  // Hooks
+  const [isEditing, setIsEditing] = useState(false)
+  const [editContent, setEditContent] = useState(todo.content)
+  const [isCompleted, setIsCompleted] = useState(todo.isCompleted)
+  const [isLoading, setIsLoading] = useState(false)
 
-    // Server Functions
-    const toggleFn = useServerFn(toggleTodo);
-    const updateFn = useServerFn(updateTodoContent);
-    const deleteFn = useServerFn(deleteTodo);
+  // Server Functions
+  const toggleFn = useServerFn(toggleTodo)
+  const updateFn = useServerFn(updateTodoContent)
+  const deleteFn = useServerFn(deleteTodo)
 
-    // DnD Sortable
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({ id: todo.id });
+  // DnD Sortable
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: todo.id })
 
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
-    };
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  }
 
-    // Functions
-    function handleToggle() {
-        const next = !isCompleted;
-        setIsCompleted(next);
-        onUpdate({ ...todo, isCompleted: next });
+  // Functions
+  function handleToggle() {
+    const next = !isCompleted
+    setIsCompleted(next)
+    onUpdate({ ...todo, isCompleted: next })
 
-        startTransition(async () => {
-            await toggleFn({ data: { todoId: todo.id, isCompleted: next } });
-            // Invalidate Cache
-            await queryClient.invalidateQueries({ queryKey: [tasksKey] });
-        });
+    startTransition(async () => {
+      await toggleFn({ data: { todoId: todo.id, isCompleted: next } })
+      // Invalidate Cache
+      await queryClient.invalidateQueries({ queryKey: [tasksKey] })
+    })
+  }
+
+  function handleRowClick(event: React.MouseEvent) {
+    // If we click on actions (edit, delete, drag), don't toggle
+    if ((event.target as HTMLElement).closest("[data-actions]")) return
+    if ((event.target as HTMLElement).closest("[data-drag-handle]")) return
+    if (isEditing) return
+
+    handleToggle()
+  }
+
+  async function handleUpdateContent(event: React.FormEvent) {
+    event.preventDefault()
+    if (!editContent.trim()) return
+
+    setIsLoading(true)
+    try {
+      const updated = await updateFn({
+        data: { todoId: todo.id, content: editContent },
+      })
+      onUpdate(updated)
+      setIsEditing(false)
+      // Invalidate Cache
+      await queryClient.invalidateQueries({ queryKey: [tasksKey] })
+    } catch (error) {
+      console.error("Update failed:", error)
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    function handleRowClick(event: React.MouseEvent) {
-        // If we click on actions (edit, delete, drag), don't toggle
-        if ((event.target as HTMLElement).closest("[data-actions]")) return;
-        if ((event.target as HTMLElement).closest("[data-drag-handle]")) return;
-        if (isEditing) return;
+  async function handleDelete() {
+    await deleteFn({ data: { todoId: todo.id } })
+    onDelete(todo.id)
 
-        handleToggle();
-    }
+    // Invalidate Cache
+    await queryClient.invalidateQueries({ queryKey: [tasksKey] })
+  }
 
-    async function handleUpdateContent(event: React.FormEvent) {
-        event.preventDefault();
-        if (!editContent.trim()) return;
+  function handleCancelEdit() {
+    setIsEditing(false)
+    setEditContent(todo.content)
+  }
 
-        setIsLoading(true);
-        try {
-            const updated = await updateFn({
-                data: { todoId: todo.id, content: editContent },
-            });
-            onUpdate(updated);
-            setIsEditing(false);
-            // Invalidate Cache
-            await queryClient.invalidateQueries({ queryKey: [tasksKey] });
+  // Render
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      onClick={handleRowClick}
+      className={cn(
+        "bg-card flex cursor-pointer items-center gap-2 rounded-lg border p-2",
+        isDragging && "opacity-50 shadow-lg",
+      )}
+    >
+      {/* Drag Handle */}
+      <button
+        data-drag-handle
+        {...attributes}
+        {...listeners}
+        className="text-muted-foreground hover:text-foreground cursor-grab active:cursor-grabbing"
+      >
+        <GripVerticalIcon className="h-4 w-4" />
+      </button>
 
-        } catch (error) {
-            console.error("Update failed:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+      {/* Checkbox */}
+      <Checkbox
+        checked={isCompleted}
+        onCheckedChange={handleToggle}
+        disabled={isEditing}
+      />
 
-    async function handleDelete() {
-        await deleteFn({ data: { todoId: todo.id } });
-        onDelete(todo.id);
-
-        // Invalidate Cache
-        await queryClient.invalidateQueries({ queryKey: [tasksKey] });
-    }
-
-    function handleCancelEdit() {
-        setIsEditing(false);
-        setEditContent(todo.content);
-    }
-
-    // Render
-    return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            onClick={handleRowClick}
-            className={cn(
-                "flex items-center gap-2 p-2 rounded-lg border bg-card cursor-pointer",
-                isDragging && "opacity-50 shadow-lg"
-            )}
+      {/* Content / Edit Form */}
+      {isEditing ? (
+        <form
+          onSubmit={handleUpdateContent}
+          className="flex flex-1 gap-2"
+          data-actions
         >
-            {/* Drag Handle */}
-            <button
-                data-drag-handle
-                {...attributes}
-                {...listeners}
-                className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
-            >
-                <GripVerticalIcon className="h-4 w-4" />
-            </button>
-
-            {/* Checkbox */}
-            <Checkbox
-                checked={isCompleted}
-                onCheckedChange={handleToggle}
-                disabled={isEditing}
-            />
-
-            {/* Content / Edit Form */}
-            {isEditing ? (
-                <form
-                    onSubmit={handleUpdateContent}
-                    className="flex-1 flex gap-2"
-                    data-actions
-                >
-                    <Input
-                        value={editContent}
-                        onChange={(e) => setEditContent(e.target.value)}
-                        autoFocus
-                        disabled={isLoading}
-                        className="flex-1 h-8"
-                    />
-                    <Button type="submit" size="icon-sm" disabled={isLoading}>
-                        <CheckIcon className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={handleCancelEdit}
-                        disabled={isLoading}
-                    >
-                        <XIcon className="h-4 w-4" />
-                    </Button>
-                </form>
-            ) : (
-                <>
-                    <span
-                        className={cn(
-                            "flex-1",
-                            isCompleted && "line-through text-muted-foreground"
-                        )}
-                    >
-                        {todo.content}
-                    </span>
-
-                    {/* Actions */}
-                    <div className="flex items-center gap-1" data-actions>
-                        <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={() => setIsEditing(true)}
-                        >
-                            <EditIcon className="h-4 w-4" />
-                        </Button>
-                        <ActionButton
-                            action={handleDelete}
-                            variant="ghost"
-                            size="icon-sm"
-                        >
-                            <Trash2Icon className="h-4 w-4" />
-                        </ActionButton>
-                    </div>
-                </>
+          <Input
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            autoFocus
+            disabled={isLoading}
+            className="h-8 flex-1"
+          />
+          <Button type="submit" size="icon-sm" disabled={isLoading}>
+            <CheckIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            onClick={handleCancelEdit}
+            disabled={isLoading}
+          >
+            <XIcon className="h-4 w-4" />
+          </Button>
+        </form>
+      ) : (
+        <>
+          <span
+            className={cn(
+              "flex-1",
+              isCompleted && "text-muted-foreground line-through",
             )}
-        </div>
-    );
+          >
+            {todo.content}
+          </span>
+
+          {/* Actions */}
+          <div className="flex items-center gap-1" data-actions>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => setIsEditing(true)}
+            >
+              <EditIcon className="h-4 w-4" />
+            </Button>
+            <ActionButton action={handleDelete} variant="ghost" size="icon-sm">
+              <Trash2Icon className="h-4 w-4" />
+            </ActionButton>
+          </div>
+        </>
+      )}
+    </div>
+  )
 }

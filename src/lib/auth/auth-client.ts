@@ -1,7 +1,7 @@
-import { createAuthClient } from 'better-auth/react'
-import {env} from "@/lib/env/client.ts"
-import {adminClient, inferAdditionalFields} from "better-auth/client/plugins";
-import type {auth} from "@/lib/auth/auth.ts";
+import { createAuthClient } from "better-auth/react"
+import { adminClient, inferAdditionalFields } from "better-auth/client/plugins"
+import type { auth } from "@/lib/auth/auth.ts"
+import { env } from "@/lib/env/client.ts"
 
 /**
  * Auth - Client Instance (React)
@@ -28,22 +28,20 @@ import type {auth} from "@/lib/auth/auth.ts";
  */
 
 const authClient = createAuthClient({
-    // Todo: Still true ?
-    //  No need to pass the URL of the authentication API endpoint, because the Client & Server are on the same URL
-    // Base URL - uses same origin in production
-    baseURL: env.VITE_BASE_URL || "http://localhost:3000",
+  // Todo: Still true ?
+  //  No need to pass the URL of the authentication API endpoint, because the Client & Server are on the same URL
+  // Base URL - uses same origin in production
+  baseURL: env.VITE_BASE_URL || "http://localhost:3000",
 
-    plugins: [
-        // https://www.better-auth.com/docs/concepts/typescript#inferring-additional-fields-on-client
-        // Add the fields defined in the "auth.ts" schema to the client instance
-        // This allows TypeScript to recognize the additional user fields in the client API, and propagate them through the application.
-        inferAdditionalFields<typeof auth>(),
+  plugins: [
+    // https://www.better-auth.com/docs/concepts/typescript#inferring-additional-fields-on-client
+    // Add the fields defined in the "auth.ts" schema to the client instance
+    // This allows TypeScript to recognize the additional user fields in the client API, and propagate them through the application.
+    inferAdditionalFields<typeof auth>(),
 
-
-        // Tables // Todo: more info here
-        adminClient(),
-    ]
-
+    // Tables // Todo: more info here
+    adminClient(),
+  ],
 })
 
 export default authClient

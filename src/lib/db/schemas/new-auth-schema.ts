@@ -1,12 +1,12 @@
-import { relations } from "drizzle-orm";
+import { relations } from "drizzle-orm"
 import {
+  boolean,
+  index,
+  integer,
   pgTable,
   text,
   timestamp,
-  boolean,
-  integer,
-  index,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/pg-core"
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -23,7 +23,7 @@ export const user = pgTable("user", {
   banned: boolean("banned").default(false),
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
-});
+})
 
 export const session = pgTable(
   "session",
@@ -43,7 +43,7 @@ export const session = pgTable(
     impersonatedBy: text("impersonated_by"),
   },
   (table) => [index("session_userId_idx").on(table.userId)],
-);
+)
 
 export const account = pgTable(
   "account",
@@ -67,7 +67,7 @@ export const account = pgTable(
       .notNull(),
   },
   (table) => [index("account_userId_idx").on(table.userId)],
-);
+)
 
 export const verification = pgTable(
   "verification",
@@ -83,7 +83,7 @@ export const verification = pgTable(
       .notNull(),
   },
   (table) => [index("verification_identifier_idx").on(table.identifier)],
-);
+)
 
 export const task = pgTable("task", {
   id: text("id").primaryKey(),
@@ -93,7 +93,7 @@ export const task = pgTable("task", {
   title: text("title").notNull(),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
-});
+})
 
 export const todo = pgTable("todo", {
   id: text("id").primaryKey(),
@@ -105,27 +105,27 @@ export const todo = pgTable("todo", {
   sortPosition: integer("sort_position").notNull(),
   createdAt: timestamp("created_at").notNull(),
   updatedAt: timestamp("updated_at").notNull(),
-});
+})
 
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
   tasks: many(task),
-}));
+}))
 
 export const sessionRelations = relations(session, ({ one }) => ({
   user: one(user, {
     fields: [session.userId],
     references: [user.id],
   }),
-}));
+}))
 
 export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
     references: [user.id],
   }),
-}));
+}))
 
 export const taskRelations = relations(task, ({ one, many }) => ({
   user: one(user, {
@@ -133,11 +133,11 @@ export const taskRelations = relations(task, ({ one, many }) => ({
     references: [user.id],
   }),
   todos: many(todo),
-}));
+}))
 
 export const todoRelations = relations(todo, ({ one }) => ({
   task: one(task, {
     fields: [todo.taskId],
     references: [task.id],
   }),
-}));
+}))

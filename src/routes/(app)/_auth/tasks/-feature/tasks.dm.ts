@@ -1,6 +1,6 @@
-import {z} from "zod";
-import {createSelectSchema} from "drizzle-zod";
-import {task as TaskTable,todo as TodoTable} from "@/lib/db/schema.ts";
+import { z } from "zod"
+import { createSelectSchema } from "drizzle-zod"
+import { task as TaskTable, todo as TodoTable } from "@/lib/db/schema.ts"
 
 /**
  * Types & validation Schemas
@@ -22,7 +22,7 @@ const todoSchema = createSelectSchema(TodoTable)
 
 // Composition : Task with its related Todos
 const taskTodosSchema = taskSchema.extend({
-    todos: z.array(todoSchema)
+  todos: z.array(todoSchema),
 })
 
 // ===============================================================================
@@ -34,9 +34,8 @@ const taskTodosSchema = taskSchema.extend({
 //  - in props of components : function taskCard({ task }: { task: TaskModel })
 // ===============================================================================
 export type TaskModel = z.infer<typeof taskSchema>
-export type TodoModel = z.infer<typeof todoSchema>;
+export type TodoModel = z.infer<typeof todoSchema>
 export type TaskTodoModel = z.infer<typeof taskTodosSchema>
-
 
 // ===============================================================================
 // INPUT SCHEMAS
@@ -47,27 +46,26 @@ export type TaskTodoModel = z.infer<typeof taskTodosSchema>
 //  - In client side
 // ====================== PROPERTIES =============================================
 const id = z.string().min(1, "taskId required")
-const title = z.string()
-                        .min(1, "title required")
-                        .max(255, "Title too long")
-                        .transform((val) => val.trim())
-
+const title = z
+  .string()
+  .min(1, "title required")
+  .max(255, "Title too long")
+  .transform((val) => val.trim())
 
 // ====================== INPUT SCHEMAS ==========================================
 export const taskIdSchema = z.object({
-    taskId: id
+  taskId: id,
 })
 
 export const createTaskSchema = z.object({
-    title: title
+  title: title,
 })
 
 export const updateTaskSchema = z.object({
-    taskId: id,
-    title: title
+  taskId: id,
+  title: title,
 })
 
 export const deleteTaskSchema = z.object({
-    taskId: id,
+  taskId: id,
 })
-

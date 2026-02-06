@@ -1,6 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { auth } from '@/lib/auth/auth.ts'
-
+import { createFileRoute } from "@tanstack/react-router"
+import { auth } from "@/lib/auth/auth.ts"
 
 /**
  * TODO : UPDATE THIS INFORMATION FROM NEXT.JS
@@ -37,11 +36,10 @@ import { auth } from '@/lib/auth/auth.ts'
  *
  */
 
-
 // ======================================================
 // HTTP handlers
 // ======================================================
-export const Route = createFileRoute('/api/auth/$')({
+export const Route = createFileRoute("/api/auth/$")({
   server: {
     handlers: {
       GET: ({ request }) => auth.handler(request),
@@ -49,7 +47,6 @@ export const Route = createFileRoute('/api/auth/$')({
     },
   },
 })
-
 
 // ======================================================
 // ArcJet security options

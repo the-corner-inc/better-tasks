@@ -8,97 +8,97 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router"
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as publicRouteRouteImport } from './routes/(public)/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as appAuthRouteRouteImport } from './routes/(app)/_auth/route'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as publicAuthLoginIndexRouteImport } from './routes/(public)/auth/login/index'
-import { Route as appAuthTasksIndexRouteImport } from './routes/(app)/_auth/tasks/index'
-import { Route as appAuthTasksIdIndexRouteImport } from './routes/(app)/_auth/tasks/$id/index'
+import { Route as rootRouteImport } from "./routes/__root"
+import { Route as publicRouteRouteImport } from "./routes/(public)/route"
+import { Route as IndexRouteImport } from "./routes/index"
+import { Route as appAuthRouteRouteImport } from "./routes/(app)/_auth/route"
+import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth/$"
+import { Route as publicAuthLoginIndexRouteImport } from "./routes/(public)/auth/login/index"
+import { Route as appAuthTasksIndexRouteImport } from "./routes/(app)/_auth/tasks/index"
+import { Route as appAuthTasksIdIndexRouteImport } from "./routes/(app)/_auth/tasks/$id/index"
 
-const appRouteImport = createFileRoute('/(app)')()
+const appRouteImport = createFileRoute("/(app)")()
 
 const appRoute = appRouteImport.update({
-  id: '/(app)',
+  id: "/(app)",
   getParentRoute: () => rootRouteImport,
 } as any)
 const publicRouteRoute = publicRouteRouteImport.update({
-  id: '/(public)',
+  id: "/(public)",
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
 } as any)
 const appAuthRouteRoute = appAuthRouteRouteImport.update({
-  id: '/_auth',
+  id: "/_auth",
   getParentRoute: () => appRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
+  id: "/api/auth/$",
+  path: "/api/auth/$",
   getParentRoute: () => rootRouteImport,
 } as any)
 const publicAuthLoginIndexRoute = publicAuthLoginIndexRouteImport.update({
-  id: '/auth/login/',
-  path: '/auth/login/',
+  id: "/auth/login/",
+  path: "/auth/login/",
   getParentRoute: () => publicRouteRoute,
 } as any)
 const appAuthTasksIndexRoute = appAuthTasksIndexRouteImport.update({
-  id: '/tasks/',
-  path: '/tasks/',
+  id: "/tasks/",
+  path: "/tasks/",
   getParentRoute: () => appAuthRouteRoute,
 } as any)
 const appAuthTasksIdIndexRoute = appAuthTasksIdIndexRouteImport.update({
-  id: '/tasks/$id/',
-  path: '/tasks/$id/',
+  id: "/tasks/$id/",
+  path: "/tasks/$id/",
   getParentRoute: () => appAuthRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof appAuthRouteRouteWithChildren
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/tasks': typeof appAuthTasksIndexRoute
-  '/auth/login': typeof publicAuthLoginIndexRoute
-  '/tasks/$id': typeof appAuthTasksIdIndexRoute
+  "/": typeof appAuthRouteRouteWithChildren
+  "/api/auth/$": typeof ApiAuthSplatRoute
+  "/tasks": typeof appAuthTasksIndexRoute
+  "/auth/login": typeof publicAuthLoginIndexRoute
+  "/tasks/$id": typeof appAuthTasksIdIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof appAuthRouteRouteWithChildren
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/tasks': typeof appAuthTasksIndexRoute
-  '/auth/login': typeof publicAuthLoginIndexRoute
-  '/tasks/$id': typeof appAuthTasksIdIndexRoute
+  "/": typeof appAuthRouteRouteWithChildren
+  "/api/auth/$": typeof ApiAuthSplatRoute
+  "/tasks": typeof appAuthTasksIndexRoute
+  "/auth/login": typeof publicAuthLoginIndexRoute
+  "/tasks/$id": typeof appAuthTasksIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/(public)': typeof publicRouteRouteWithChildren
-  '/(app)': typeof appRouteWithChildren
-  '/(app)/_auth': typeof appAuthRouteRouteWithChildren
-  '/api/auth/$': typeof ApiAuthSplatRoute
-  '/(app)/_auth/tasks/': typeof appAuthTasksIndexRoute
-  '/(public)/auth/login/': typeof publicAuthLoginIndexRoute
-  '/(app)/_auth/tasks/$id/': typeof appAuthTasksIdIndexRoute
+  "/": typeof IndexRoute
+  "/(public)": typeof publicRouteRouteWithChildren
+  "/(app)": typeof appRouteWithChildren
+  "/(app)/_auth": typeof appAuthRouteRouteWithChildren
+  "/api/auth/$": typeof ApiAuthSplatRoute
+  "/(app)/_auth/tasks/": typeof appAuthTasksIndexRoute
+  "/(public)/auth/login/": typeof publicAuthLoginIndexRoute
+  "/(app)/_auth/tasks/$id/": typeof appAuthTasksIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/auth/$' | '/tasks' | '/auth/login' | '/tasks/$id'
+  fullPaths: "/" | "/api/auth/$" | "/tasks" | "/auth/login" | "/tasks/$id"
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/auth/$' | '/tasks' | '/auth/login' | '/tasks/$id'
+  to: "/" | "/api/auth/$" | "/tasks" | "/auth/login" | "/tasks/$id"
   id:
-    | '__root__'
-    | '/'
-    | '/(public)'
-    | '/(app)'
-    | '/(app)/_auth'
-    | '/api/auth/$'
-    | '/(app)/_auth/tasks/'
-    | '/(public)/auth/login/'
-    | '/(app)/_auth/tasks/$id/'
+    | "__root__"
+    | "/"
+    | "/(public)"
+    | "/(app)"
+    | "/(app)/_auth"
+    | "/api/auth/$"
+    | "/(app)/_auth/tasks/"
+    | "/(public)/auth/login/"
+    | "/(app)/_auth/tasks/$id/"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -108,61 +108,61 @@ export interface RootRouteChildren {
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/(app)': {
-      id: '/(app)'
-      path: '/'
-      fullPath: '/'
+    "/(app)": {
+      id: "/(app)"
+      path: "/"
+      fullPath: "/"
       preLoaderRoute: typeof appRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(public)': {
-      id: '/(public)'
-      path: '/'
-      fullPath: '/'
+    "/(public)": {
+      id: "/(public)"
+      path: "/"
+      fullPath: "/"
       preLoaderRoute: typeof publicRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
+    "/": {
+      id: "/"
+      path: "/"
+      fullPath: "/"
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(app)/_auth': {
-      id: '/(app)/_auth'
-      path: '/'
-      fullPath: '/'
+    "/(app)/_auth": {
+      id: "/(app)/_auth"
+      path: "/"
+      fullPath: "/"
       preLoaderRoute: typeof appAuthRouteRouteImport
       parentRoute: typeof appRoute
     }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
+    "/api/auth/$": {
+      id: "/api/auth/$"
+      path: "/api/auth/$"
+      fullPath: "/api/auth/$"
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(public)/auth/login/': {
-      id: '/(public)/auth/login/'
-      path: '/auth/login'
-      fullPath: '/auth/login'
+    "/(public)/auth/login/": {
+      id: "/(public)/auth/login/"
+      path: "/auth/login"
+      fullPath: "/auth/login"
       preLoaderRoute: typeof publicAuthLoginIndexRouteImport
       parentRoute: typeof publicRouteRoute
     }
-    '/(app)/_auth/tasks/': {
-      id: '/(app)/_auth/tasks/'
-      path: '/tasks'
-      fullPath: '/tasks'
+    "/(app)/_auth/tasks/": {
+      id: "/(app)/_auth/tasks/"
+      path: "/tasks"
+      fullPath: "/tasks"
       preLoaderRoute: typeof appAuthTasksIndexRouteImport
       parentRoute: typeof appAuthRouteRoute
     }
-    '/(app)/_auth/tasks/$id/': {
-      id: '/(app)/_auth/tasks/$id/'
-      path: '/tasks/$id'
-      fullPath: '/tasks/$id'
+    "/(app)/_auth/tasks/$id/": {
+      id: "/(app)/_auth/tasks/$id/"
+      path: "/tasks/$id"
+      fullPath: "/tasks/$id"
       preLoaderRoute: typeof appAuthTasksIdIndexRouteImport
       parentRoute: typeof appAuthRouteRoute
     }
@@ -215,9 +215,9 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
+import type { getRouter } from "./router.tsx"
+import type { createStart } from "@tanstack/react-start"
+declare module "@tanstack/react-start" {
   interface Register {
     router: Awaited<ReturnType<typeof getRouter>>
   }

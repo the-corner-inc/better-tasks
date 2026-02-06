@@ -1,5 +1,5 @@
-import {queryOptions} from "@tanstack/react-query";
-import {$getSession, $getUser, $getUsers} from "@/lib/auth/auth.functions.ts";
+import { queryOptions } from "@tanstack/react-query"
+import { $getSession, $getUser, $getUsers } from "@/lib/auth/auth.functions.ts"
 
 // Todo : How it it used exactly ?
 /**
@@ -28,37 +28,36 @@ import {$getSession, $getUser, $getUsers} from "@/lib/auth/auth.functions.ts";
  * Most commonly used - returns user data or null
  */
 export const authQueryOptions = () =>
-    queryOptions({
-        // UNIQUE ID IN THE CACHE
-        queryKey: ["user"],
-        // QUERY MADE TO THE SERVER IF THE DATA IS STALE OR NOT IN CACHE
-        queryFn: ({ signal }) => $getUser({ signal }),
-        staleTime: 1000 * 60 * 2, // cache for 2 minute to reduce server calls
-    })
+  queryOptions({
+    // UNIQUE ID IN THE CACHE
+    queryKey: ["user"],
+    // QUERY MADE TO THE SERVER IF THE DATA IS STALE OR NOT IN CACHE
+    queryFn: ({ signal }) => $getUser({ signal }),
+    staleTime: 1000 * 60 * 2, // cache for 2 minute to reduce server calls
+  })
 
 /**
  * Query options for the users
  * Most commonly used - returns users data or null
  */
 export const usersQueryOptions = () =>
-    queryOptions({
-        queryKey: ["users"],
-        queryFn: ({ signal }) => $getUsers({ signal }),
-        staleTime: 1000 * 60 * 2, // cache for 2 minute to reduce server calls
-    })
+  queryOptions({
+    queryKey: ["users"],
+    queryFn: ({ signal }) => $getUsers({ signal }),
+    staleTime: 1000 * 60 * 2, // cache for 2 minute to reduce server calls
+  })
 
 /**
  * Query options for the full session
  * Use when you need session metadata alongside user data
  */
 export const sessionQueryOptions = () =>
-    queryOptions({
-        queryKey: ["session"], // NOM DE OBJET TANSTACK DANS LE CACHE
-        // QUERY SERA STOQUE DANS LE QUERY-KEY
-        queryFn: ({ signal }) => $getSession({ signal }),
-        staleTime: 1000 * 60 * 1, // cache for 1 minute to reduce server calls
-    })
-
+  queryOptions({
+    queryKey: ["session"], // NOM DE OBJET TANSTACK DANS LE CACHE
+    // QUERY SERA STOQUE DANS LE QUERY-KEY
+    queryFn: ({ signal }) => $getSession({ signal }),
+    staleTime: 1000 * 60 * 1, // cache for 1 minute to reduce server calls
+  })
 
 // ====================== QUERY OPTIONS ======================
 // Type exports for use in components and routes

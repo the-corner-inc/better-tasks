@@ -1,8 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button.tsx"
 
-//TODO: RAPH COMPONENT, DOCUMENT IT
-
+// TODO: RAPH COMPONENT, DOCUMENT IT
 
 export function DefaultNotFound() {
   return (
@@ -14,7 +13,7 @@ export function DefaultNotFound() {
           Go back
         </Button>
         <Button asChild variant="secondary">
-            <Link to="/">Home</Link>
+          <Link to="/">Home</Link>
         </Button>
       </p>
     </div>

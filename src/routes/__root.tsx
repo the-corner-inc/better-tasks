@@ -1,16 +1,18 @@
 import {
   HeadContent,
+  Outlet,
   Scripts,
-  createRootRouteWithContext, Outlet,
-} from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-import appCss from '../styles.css?url'
-import type { QueryClient } from '@tanstack/react-query'
-import {authQueryOptions, AuthQueryResult} from "@/lib/auth/auth.queries.ts";
-import {Toaster} from "sonner";
-import {ReactQueryDevtoolsPanel} from "@tanstack/react-query-devtools";
+  createRootRouteWithContext,
+} from "@tanstack/react-router"
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import { TanStackDevtools } from "@tanstack/react-devtools"
+import { Toaster } from "sonner"
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
+import TanStackQueryDevtools from "../integrations/tanstack-query/devtools"
+import appCss from "../styles.css?url"
+import type { QueryClient } from "@tanstack/react-query"
+import type { AuthQueryResult } from "@/lib/auth/auth.queries.ts";
+import { authQueryOptions } from "@/lib/auth/auth.queries.ts"
 
 /**
  * Root Route
@@ -24,7 +26,7 @@ import {ReactQueryDevtoolsPanel} from "@tanstack/react-query-devtools";
  */
 
 interface MyRouterContext {
-  queryClient: QueryClient,
+  queryClient: QueryClient
   user: AuthQueryResult
 }
 
@@ -33,7 +35,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     // Prefetch auth data for optimal UX
     // We use React Query for client-side caching to reduce client-to-server calls,  see /src/router.tsx
     // Better Auth's cookieCache also reduces server-to-db calls, /src/lib/auth/auth.ts
-    context.queryClient.prefetchQuery( authQueryOptions() )
+    context.queryClient.prefetchQuery(authQueryOptions())
 
     // Note: typically we don't need the user immediately in landing pages,
     // so we're only prefetching here and not awaiting.
@@ -41,14 +43,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   },
   head: () => ({
     meta: [
-      { charSet: 'utf-8',},
-      { name: 'viewport', content: 'width=device-width, initial-scale=1',},
-      { title: 'Better Tasks', },
-      { name: "description", content: "Task management website"}
+      { charSet: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { title: "Better Tasks" },
+      { name: "description", content: "Task management website" },
     ],
     links: [
-      { rel: 'stylesheet', href: appCss,},
-      { rel: "icon", href: "https://assets.the-corner.io/logos/the_corner-icon-filled.webp"}
+      { rel: "stylesheet", href: appCss },
+      {
+        rel: "icon",
+        href: "https://assets.the-corner.io/logos/the_corner-icon-filled.webp",
+      },
     ],
   }),
 
@@ -57,21 +62,20 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootComponent() {
   return (
-      <RootDocument>
-        <Outlet />
-      </RootDocument>
+    <RootDocument>
+      <Outlet />
+    </RootDocument>
   )
 }
 
 function RootDocument({ children }: { readonly children: React.ReactNode }) {
   return (
-      // suppress since we're updating the "dark" class in ThemeProvider //Todo: remove classname Dark below
-      <html lang="en" className="dark" suppressHydrationWarning>
+    // suppress since we're updating the "dark" class in ThemeProvider //Todo: remove classname Dark below
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body className="min-h-screen bg-background antialiased">
-
+      <body className="bg-background min-h-screen antialiased">
         {children}
 
         {/* Toast notifications */}
@@ -80,7 +84,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
         {/* DevTools - only in development */}
         <TanStackDevtools
           config={{
-            position: 'bottom-right',
+            position: "bottom-right",
           }}
           plugins={[
             {
@@ -88,7 +92,7 @@ function RootDocument({ children }: { readonly children: React.ReactNode }) {
               render: <ReactQueryDevtoolsPanel />,
             },
             {
-              name: 'Tanstack Router',
+              name: "Tanstack Router",
               render: <TanStackRouterDevtoolsPanel />,
             },
             TanStackQueryDevtools,

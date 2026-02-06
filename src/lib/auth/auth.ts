@@ -1,14 +1,12 @@
-import { betterAuth } from 'better-auth'
-import {tanstackStartCookies} from "better-auth/tanstack-start";
-import {createServerOnlyFn} from "@tanstack/react-start";
-import {drizzleAdapter} from "better-auth/adapters/drizzle";
-import {db} from "@/lib/db/db.ts";
+import { betterAuth } from "better-auth"
+import { tanstackStartCookies } from "better-auth/tanstack-start"
+import { createServerOnlyFn } from "@tanstack/react-start"
+import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { admin } from "better-auth/plugins"
+import { db } from "@/lib/db/db.ts"
 import * as schema from "@/lib/db/schema.ts"
 import { env } from "@/lib/env/server.ts"
-import {admin} from "better-auth/plugins";
-import {tasksTablePlugin} from "@/lib/auth/plugins/todos.table.ts";
-
-
+import { tasksTablePlugin } from "@/lib/auth/plugins/todos.table.ts"
 
 /** TODO: UPDATE FORM NEXT.JS DOCS
  * Auth - Server configuration
@@ -33,10 +31,8 @@ import {tasksTablePlugin} from "@/lib/auth/plugins/todos.table.ts";
  * - Acts as the single source of truth for Auth behaviors
  */
 
-
-const getAuthConfig = createServerOnlyFn( () =>
+const getAuthConfig = createServerOnlyFn(() =>
   betterAuth({
-
     // Base URL for auth callbacks
     baseURL: env.VITE_BASE_URL,
 
@@ -49,28 +45,28 @@ const getAuthConfig = createServerOnlyFn( () =>
     // https://www.better-auth.com/docs/concepts/oauth
     socialProviders: {
       github: {
-        clientId: env.GITHUB_CLIENT_ID! as string,
-        clientSecret: env.GITHUB_CLIENT_SECRET! as string,
+        clientId: env.GITHUB_CLIENT_ID!,
+        clientSecret: env.GITHUB_CLIENT_SECRET!,
       },
-        google: {
-            clientId: env.GOOGLE_CLIENT_ID! as string,
-            clientSecret: env.GOOGLE_CLIENT_SECRET! as string,
-        }
+      google: {
+        clientId: env.GOOGLE_CLIENT_ID!,
+        clientSecret: env.GOOGLE_CLIENT_SECRET!,
+      },
     },
 
     // Database configuration with Drizzle adapter
-    database: drizzleAdapter( db, {provider: "pg", schema} ),
+    database: drizzleAdapter(db, { provider: "pg", schema }),
 
     // Session configuration with cookie caching. Reduces the calls to the DB
     session: {
       cookieCache: {
         enabled: true,
-        maxAge: 5 * 60,   // 5 minutes cache for session cookies for the user
+        maxAge: 5 * 60, // 5 minutes cache for session cookies for the user
       },
     },
 
-      // Disable telemetry for privacy
-      telemetry: {
+    // Disable telemetry for privacy
+    telemetry: {
       enabled: false,
     },
 
@@ -83,28 +79,26 @@ const getAuthConfig = createServerOnlyFn( () =>
 
       // Additional user fields (extend as needed)
       // https://www.better-auth.com/docs/concepts/typescript#additional-fields
-      additionalFields: {
-
-      },
+      additionalFields: {},
     },
 
     // Plugins - IMPORTANT: tanstackStartCookies MUST be last!
     // https://www.better-auth.com/docs/integrations/tanstack#usage-tips
     plugins: [
-        // Table
-        admin(), // Adds "roles" in user table //Todo : Get more infos on this and why it allows me to do "auth.api.listUsers"
-        tasksTablePlugin(),
+      // Table
+      admin(), // Adds "roles" in user table //Todo : Get more infos on this and why it allows me to do "auth.api.listUsers"
+      tasksTablePlugin(),
 
-        // Core
-        tanstackStartCookies(),
+      // Core
+      tanstackStartCookies(),
     ],
 
     // Experimental features
     experimental: {
-        // Enable Drizzle joins for better query performance
-        // https://www.better-auth.com/docs/adapters/drizzle#joins-experimental
-        joins: true,
-      },
-  })
+      // Enable Drizzle joins for better query performance
+      // https://www.better-auth.com/docs/adapters/drizzle#joins-experimental
+      joins: true,
+    },
+  }),
 )
 export const auth = getAuthConfig()

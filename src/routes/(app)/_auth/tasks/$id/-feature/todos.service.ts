@@ -1,15 +1,17 @@
-import {createServerFn} from "@tanstack/react-start";
-import {db} from "@/lib/db/db.ts";
+import { createServerFn } from "@tanstack/react-start"
+import { and, eq, max } from "drizzle-orm"
+import type {
+  TodoModel} from "@/routes/(app)/_auth/tasks/$id/-feature/todos.dm.ts";
+import { db } from "@/lib/db/db.ts"
 import {
-    createTodoSchema,
-    reorderTodoSchema,
-    todoIdSchema, TodoModel,
-    toggleTodoSchema,
-    updateTodoContentSchema
+  createTodoSchema,
+  reorderTodoSchema,
+  todoIdSchema,
+  toggleTodoSchema,
+  updateTodoContentSchema,
 } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.dm.ts"
-import { todo as todoTable , task as taskTable  } from "@/lib/db/schema.ts"
-import {and, eq, max} from "drizzle-orm";
-import {$getCurrentUserId} from "@/lib/auth/auth.functions.ts";
+import { task as taskTable, todo as todoTable } from "@/lib/db/schema.ts"
+import { $getCurrentUserId } from "@/lib/auth/auth.functions.ts"
 
 /**
  * Server Functions
@@ -47,39 +49,39 @@ import {$getCurrentUserId} from "@/lib/auth/auth.functions.ts";
  * Verify user owns the task
  * */
 async function verifyTaskOwnership(taskId: string, userId: string) {
-    const task = await db.query.task.findFirst({
-        where: and(eq(taskTable.id, taskId), eq(taskTable.userId, userId)),
-    });
+  const task = await db.query.task.findFirst({
+    where: and(eq(taskTable.id, taskId), eq(taskTable.userId, userId)),
+  })
 
-    if (!task) {
-        throw new Error("Task not found or access denied");
-    }
+  if (!task) {
+    throw new Error("Task not found or access denied")
+  }
 
-    return task;
+  return task
 }
 
 /**
  * Verify user owns the todos (via task)
  * */
 async function verifyTodoOwnership(todoId: string, userId: string) {
-    const todo = await db.query.todo.findFirst({
-        where: eq(todoTable.id, todoId),
-        with: { task: true },   //gets the TASK associated with this todos, but TODOS contains TASK
-    });
+  const todo = await db.query.todo.findFirst({
+    where: eq(todoTable.id, todoId),
+    with: { task: true }, // gets the TASK associated with this todos, but TODOS contains TASK
+  })
 
-    if (!todo || todo.task.userId !== userId) {
-        throw new Error("Todo not found or access denied");
-    }
+  if (!todo || todo.task.userId !== userId) {
+    throw new Error("Todo not found or access denied")
+  }
 
-    return todo;
+  return todo
 }
 
 /** Update task's updatedAt timestamp */
 async function touchTask(taskId: string) {
-    await db
-        .update(taskTable)
-        .set({ updatedAt: new Date() })
-        .where(eq(taskTable.id, taskId));
+  await db
+    .update(taskTable)
+    .set({ updatedAt: new Date() })
+    .where(eq(taskTable.id, taskId))
 }
 
 // ========================================================
@@ -90,145 +92,142 @@ async function touchTask(taskId: string) {
 // This file contains only mutations.
 // ========================================================
 
-
-
 // ========================================================
 // MUTATIONS (POST)
 // ========================================================
-export const createTodo = createServerFn({ method: "POST"})
-    .inputValidator(createTodoSchema)
-    .handler( async ({ data }) => {
-        const userId = await $getCurrentUserId()
+export const createTodo = createServerFn({ method: "POST" })
+  .inputValidator(createTodoSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        // Verify ownership
-        await verifyTaskOwnership(data.taskId, userId)
+    // Verify ownership
+    await verifyTaskOwnership(data.taskId, userId)
 
-        // Get max sortPosition for this task
-        const maxResult = await db
-            .select({ maxPos: max(todoTable.sortPosition) })
-            .from(todoTable)
-            .where(eq(todoTable.taskId, data.taskId))
+    // Get max sortPosition for this task
+    const maxResult = await db
+      .select({ maxPos: max(todoTable.sortPosition) })
+      .from(todoTable)
+      .where(eq(todoTable.taskId, data.taskId))
 
-        const nextPosition = (maxResult[0]?.maxPos ?? -1) +1
+    const nextPosition = (maxResult[0]?.maxPos ?? -1) + 1
 
-        const now = new Date()
-        const todoToInsert = {
-            id: crypto.randomUUID(),
-            taskId: data.taskId,
-            content: data.content.trim(),
-            isCompleted: false,
-            sortPosition: nextPosition,
-            createdAt: now,
-            updatedAt: now
-        } satisfies TodoModel
+    const now = new Date()
+    const todoToInsert = {
+      id: crypto.randomUUID(),
+      taskId: data.taskId,
+      content: data.content.trim(),
+      isCompleted: false,
+      sortPosition: nextPosition,
+      createdAt: now,
+      updatedAt: now,
+    } satisfies TodoModel
 
-        const [newTodo] = await db
-            .insert(todoTable)
-            .values(todoToInsert)
-            .returning()
+    const [newTodo] = await db
+      .insert(todoTable)
+      .values(todoToInsert)
+      .returning()
 
-        // Update task's updatedAt
-        await touchTask(data.taskId)
+    // Update task's updatedAt
+    await touchTask(data.taskId)
 
-        return newTodo
-    })
+    return newTodo
+  })
 
 export const updateTodoContent = createServerFn({ method: "POST" })
-    .inputValidator(updateTodoContentSchema)
-    .handler(async ({ data }) => {
-        const userId = await $getCurrentUserId();
+  .inputValidator(updateTodoContentSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        // Verify ownership
-        const todo = await verifyTodoOwnership(data.todoId, userId);
+    // Verify ownership
+    const todo = await verifyTodoOwnership(data.todoId, userId)
 
-        const now = new Date();
-        const todoToUpdate = {
-            content: data.content.trim(),
-            updatedAt: now,
-        } satisfies Partial<TodoModel>
+    const now = new Date()
+    const todoToUpdate = {
+      content: data.content.trim(),
+      updatedAt: now,
+    } satisfies Partial<TodoModel>
 
-        const [updatedTodo] = await db
-            .update(todoTable)
-            .set(todoToUpdate)
-            .where(eq(todoTable.id, data.todoId))
-            .returning();
+    const [updatedTodo] = await db
+      .update(todoTable)
+      .set(todoToUpdate)
+      .where(eq(todoTable.id, data.todoId))
+      .returning()
 
-        // Update parent : task's updatedAt
-        await touchTask(todo.taskId)
+    // Update parent : task's updatedAt
+    await touchTask(todo.taskId)
 
-        return updatedTodo;
-    });
+    return updatedTodo
+  })
 
 export const toggleTodo = createServerFn({ method: "POST" })
-    .inputValidator(toggleTodoSchema)
-    .handler(async ({ data }) => {
-        const userId = await $getCurrentUserId();
+  .inputValidator(toggleTodoSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        // Verify ownership
-        const todo = await verifyTodoOwnership(data.todoId, userId);
+    // Verify ownership
+    const todo = await verifyTodoOwnership(data.todoId, userId)
 
-        const now = new Date();
-        const todoToUpdate = {
-            isCompleted: data.isCompleted,
-            updatedAt: now,
-        } satisfies Partial<TodoModel>
+    const now = new Date()
+    const todoToUpdate = {
+      isCompleted: data.isCompleted,
+      updatedAt: now,
+    } satisfies Partial<TodoModel>
 
-        const [updatedTodo] = await db
-            .update(todoTable)
-            .set(todoToUpdate)
-            .where(eq(todoTable.id, data.todoId))
-            .returning();
+    const [updatedTodo] = await db
+      .update(todoTable)
+      .set(todoToUpdate)
+      .where(eq(todoTable.id, data.todoId))
+      .returning()
 
-        // Update task's updatedAt
-        await touchTask(todo.taskId)
+    // Update task's updatedAt
+    await touchTask(todo.taskId)
 
-        return updatedTodo;
-    });
+    return updatedTodo
+  })
 
 export const deleteTodo = createServerFn({ method: "POST" })
-    .inputValidator(todoIdSchema)
-    .handler(async ({ data }) => {
-        const userId = await $getCurrentUserId();
+  .inputValidator(todoIdSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        // Verify ownership
-        const todo = await verifyTodoOwnership(data.todoId, userId);
+    // Verify ownership
+    const todo = await verifyTodoOwnership(data.todoId, userId)
 
-        await db.delete(todoTable).where(eq(todoTable.id, data.todoId));
+    await db.delete(todoTable).where(eq(todoTable.id, data.todoId))
 
-        // Update task's updatedAt
-        await touchTask(todo.taskId)
+    // Update task's updatedAt
+    await touchTask(todo.taskId)
 
-        return { success: true };
-    });
+    return { success: true }
+  })
 
 export const reorderTodos = createServerFn({ method: "POST" })
-    .inputValidator(reorderTodoSchema)
-    .handler(async ({ data }) => {
-        const userId = await $getCurrentUserId();
+  .inputValidator(reorderTodoSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        // Verify ownership
-        await verifyTaskOwnership(data.taskId, userId);
+    // Verify ownership
+    await verifyTaskOwnership(data.taskId, userId)
 
-        const now = new Date();
+    const now = new Date()
 
-        // Update each todos sortPosition based on new order
-        await Promise.all(data.todoIds.map((todoId, index) =>
-                db.update(todoTable)
-                  .set({
-                      sortPosition: index,
-                      updatedAt: now,
-                  })
-                  .where(
-                      and(
-                          eq(todoTable.id, todoId),
-                          eq(todoTable.taskId, data.taskId)
-                      )
-                  )
-            )
-        );
+    // Update each todos sortPosition based on new order
+    await Promise.all(
+      data.todoIds.map((todoId, index) =>
+        db
+          .update(todoTable)
+          .set({
+            sortPosition: index,
+            updatedAt: now,
+          })
+          .where(
+            and(eq(todoTable.id, todoId), eq(todoTable.taskId, data.taskId)),
+          ),
+      ),
+    )
 
-        // Update task's updatedAt
-        await touchTask(data.taskId)
+    // Update task's updatedAt
+    await touchTask(data.taskId)
 
-        return { success: true };
-    });
+    return { success: true }
+  })

@@ -1,6 +1,10 @@
 import { createMiddleware } from "@tanstack/react-start"
-import {auth} from "@/lib/auth/auth.ts";
-import {getRequest, setResponseHeader, setResponseStatus} from "@tanstack/start-server-core";
+import {
+  getRequest,
+  setResponseHeader,
+  setResponseStatus,
+} from "@tanstack/start-server-core"
+import { auth } from "@/lib/auth/auth.ts"
 
 // TODO :UNDERSTAND THIS FILE BETTER
 
@@ -51,34 +55,29 @@ import {getRequest, setResponseHeader, setResponseStatus} from "@tanstack/start-
  * - Adds user to context for downstream handlers
  * - Returns 401 if not authenticated
  */
-export const authMiddleware = createMiddleware()
-    .server( async ({ next }) => {
+export const authMiddleware = createMiddleware().server(async ({ next }) => {
+  const session = await auth.api.getSession({
+    headers: getRequest().headers,
+    query: {
+      // Ensure session is fresh
+      // https://www.better-auth.com/docs/concepts/session-management#session-caching
+      disableCookieCache: true,
+    },
+    returnHeaders: true,
+  })
 
-        const session = await auth.api.getSession({
-            headers: getRequest().headers,
-            query: {
-            // Ensure session is fresh
-            // https://www.better-auth.com/docs/concepts/session-management#session-caching
-            disableCookieCache: true,
-            },
-            returnHeaders: true,
-        })
+  // Forward any Set-Cookie headers to the client, e.g. for session/cache refresh
+  const cookies = session.headers?.getSetCookie()
+  if (cookies?.length) {
+    setResponseHeader("Set-Cookie", cookies)
+  }
 
-        // Forward any Set-Cookie headers to the client, e.g. for session/cache refresh
-        const cookies = session.headers?.getSetCookie()
-        if (cookies?.length) {
-            setResponseHeader("Set-Cookie", cookies)
-        }
+  // Return 401 if not authenticated
+  if (!session?.response?.user) {
+    setResponseStatus(401)
+    throw new Error("Unauthorized")
+  }
 
-        // Return 401 if not authenticated
-        if (!session?.response?.user) {
-            setResponseStatus(401)
-            throw new Error("Unauthorized")
-        }
-
-        // Pass user to the next handler via context
-        return next({ context: { user: session.response.user } })
+  // Pass user to the next handler via context
+  return next({ context: { user: session.response.user } })
 })
-
-
-

@@ -1,15 +1,16 @@
-import {createServerFn} from "@tanstack/react-start";
-import {db} from "@/lib/db/db.ts";
-import {and, asc, desc, eq} from "drizzle-orm";
-import {task as taskTable, todo as todoTable} from "@/lib/db/schema.ts"
+import { createServerFn } from "@tanstack/react-start"
+import { and, asc, desc, eq } from "drizzle-orm"
+import type {
+  TaskModel} from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
+import { db } from "@/lib/db/db.ts"
+import { task as taskTable, todo as todoTable } from "@/lib/db/schema.ts"
 import {
-    createTaskSchema,
-    deleteTaskSchema,
-    taskIdSchema,
-    TaskModel,
-    updateTaskSchema
-} from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts";
-import {$getCurrentUserId} from "@/lib/auth/auth.functions.ts";
+  createTaskSchema,
+  deleteTaskSchema,
+  taskIdSchema,
+  updateTaskSchema,
+} from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import { $getCurrentUserId } from "@/lib/auth/auth.functions.ts"
 
 /**
  * Server Functions
@@ -43,162 +44,146 @@ import {$getCurrentUserId} from "@/lib/auth/auth.functions.ts";
 // HELPER
 // ========================================================
 
-
 // ========================================================
 // LOADERS (GET)
 // ========================================================
 /**
  * Returns the list of all tasks (with todos).
  */
-export const getTasksList = createServerFn({ method: "GET" })
-    .handler(async () => {
-        const userId = await $getCurrentUserId();
+export const getTasksList = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const userId = await $getCurrentUserId()
 
-        const tasks = await db.query.task.findMany({
-            where: eq(taskTable.userId , userId),
-            orderBy: [desc(taskTable.updatedAt), desc(taskTable.createdAt)],
-            with: {
-                todos: {
-                    orderBy: [asc(todoTable.sortPosition)],
-                },
-            },
-        })
-
-
-
-        return tasks;
+    const tasks = await db.query.task.findMany({
+      where: eq(taskTable.userId, userId),
+      orderBy: [desc(taskTable.updatedAt), desc(taskTable.createdAt)],
+      with: {
+        todos: {
+          orderBy: [asc(todoTable.sortPosition)],
+        },
+      },
     })
+
+    return tasks
+  },
+)
 
 export const getTaskById = createServerFn({ method: "GET" })
-    .inputValidator(taskIdSchema)
-    .handler(async ({ data }) => {
+  .inputValidator(taskIdSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        const userId = await $getCurrentUserId();
-
-        const taskResult = await db.query.task.findFirst({
-            where: (and
-                (eq(taskTable.id, data.taskId)),
-                    (eq(taskTable.userId, userId))
-            )
-        })
-
-        if (!taskResult){
-            // Could be 404 or forbidden. Keep simple.
-            throw new Error("Task not found")
-        }
-
-        return {task: taskResult}
+    const taskResult = await db.query.task.findFirst({
+      where: (and(eq(taskTable.id, data.taskId)), eq(taskTable.userId, userId)),
     })
+
+    if (!taskResult) {
+      // Could be 404 or forbidden. Keep simple.
+      throw new Error("Task not found")
+    }
+
+    return { task: taskResult }
+  })
 
 /**
  * returns a single task with its todos
  */
 export const getTaskByIdWithTodos = createServerFn({ method: "GET" })
-    .inputValidator(taskIdSchema)
-    .handler(async ({ data }) => {
-        const userId = await $getCurrentUserId();
+  .inputValidator(taskIdSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        const taskResult = await db.query.task.findFirst({
-            where: and(
-                eq(taskTable.id, data.taskId),
-                eq(taskTable.userId, userId),
-            ),
-            with: {
-                // "todos" doit être le nom de ta relation côté Drizzle
-                todos: {
-                    orderBy: [desc(todoTable.updatedAt), desc(todoTable.createdAt)],
-                },
-            },
-        });
+    const taskResult = await db.query.task.findFirst({
+      where: and(eq(taskTable.id, data.taskId), eq(taskTable.userId, userId)),
+      with: {
+        // "todos" doit être le nom de ta relation côté Drizzle
+        todos: {
+          orderBy: [desc(todoTable.updatedAt), desc(todoTable.createdAt)],
+        },
+      },
+    })
 
-        if (!taskResult) {
-            throw new Error("Task not found");
-        }
+    if (!taskResult) {
+      throw new Error("Task not found")
+    }
 
-        return { task: taskResult };
-    });
+    return { task: taskResult }
+  })
 
 // ========================================================
 // MUTATIONS (POST)
 // ========================================================
 
 export const createTask = createServerFn({ method: "POST" })
-    .inputValidator(createTaskSchema)
-    .handler(async ({ data }) => {
-        const userId = await $getCurrentUserId();
+  .inputValidator(createTaskSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        const now = new Date();
+    const now = new Date()
 
-        // satisfies TaskModel: TypeScript makes sure that EVERY field is present
-        const taskToInsert = {
-            id: crypto.randomUUID(),
-            userId: userId,
-            title: data.title,
-            createdAt: now,
-            updatedAt: now,
-        } satisfies TaskModel
+    // satisfies TaskModel: TypeScript makes sure that EVERY field is present
+    const taskToInsert = {
+      id: crypto.randomUUID(),
+      userId: userId,
+      title: data.title,
+      createdAt: now,
+      updatedAt: now,
+    } satisfies TaskModel
 
-        const [newTask] = await db
-            .insert(taskTable)
-            .values(taskToInsert)
-            .returning();
+    const [newTask] = await db
+      .insert(taskTable)
+      .values(taskToInsert)
+      .returning()
 
-        return newTask;
-    });
-
+    return newTask
+  })
 
 export const updateTask = createServerFn({ method: "POST" })
-    .inputValidator(updateTaskSchema)
-    .handler(async ({ data }) => {
-        const userId = await $getCurrentUserId();
+  .inputValidator(updateTaskSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        // Verify ownership
-        const existingTask = await db.query.task.findFirst({
-            where: and(
-                eq(taskTable.id, data.taskId),
-                eq(taskTable.userId, userId)
-            ),
-        });
+    // Verify ownership
+    const existingTask = await db.query.task.findFirst({
+      where: and(eq(taskTable.id, data.taskId), eq(taskTable.userId, userId)),
+    })
 
-        if (!existingTask) {
-            throw new Error("Task not found or access denied");
-        }
+    if (!existingTask) {
+      throw new Error("Task not found or access denied")
+    }
 
-        const now = new Date();
+    const now = new Date()
 
-        const fieldsToUpdate = {
-            title: data.title,
-            updatedAt: now,
-        } satisfies Partial<TaskModel>
+    const fieldsToUpdate = {
+      title: data.title,
+      updatedAt: now,
+    } satisfies Partial<TaskModel>
 
-        const [updatedTask] = await db
-            .update(taskTable)
-            .set(fieldsToUpdate)
-            .where(eq(taskTable.id, data.taskId))
-            .returning();
+    const [updatedTask] = await db
+      .update(taskTable)
+      .set(fieldsToUpdate)
+      .where(eq(taskTable.id, data.taskId))
+      .returning()
 
-        return updatedTask;
-    });
+    return updatedTask
+  })
 
 export const deleteTask = createServerFn({ method: "POST" })
-    .inputValidator(deleteTaskSchema)
-    .handler(async ({ data }) => {
-        const userId = await $getCurrentUserId();
+  .inputValidator(deleteTaskSchema)
+  .handler(async ({ data }) => {
+    const userId = await $getCurrentUserId()
 
-        // Verify ownership
-        const existingTask = await db.query.task.findFirst({
-            where: and(
-                eq(taskTable.id, data.taskId),
-                eq(taskTable.userId, userId)
-            ),
-        });
+    // Verify ownership
+    const existingTask = await db.query.task.findFirst({
+      where: and(eq(taskTable.id, data.taskId), eq(taskTable.userId, userId)),
+    })
 
-        if (!existingTask) {
-            throw new Error("Task not found or access denied");
-        }
+    if (!existingTask) {
+      throw new Error("Task not found or access denied")
+    }
 
-        // Todos will be deleted via cascade
-        await db.delete(taskTable).where(eq(taskTable.id, data.taskId));
+    // Todos will be deleted via cascade
+    await db.delete(taskTable).where(eq(taskTable.id, data.taskId))
 
-        return { success: true };
-    });
+    return { success: true }
+  })

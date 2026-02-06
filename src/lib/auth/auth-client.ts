@@ -39,7 +39,7 @@ const authClient = createAuthClient({
     // This allows TypeScript to recognize the additional user fields in the client API, and propagate them through the application.
     inferAdditionalFields<typeof auth>(),
 
-    // Tables // Todo: more info here
+    // Tables
     adminClient(),
   ],
 })

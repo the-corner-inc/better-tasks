@@ -1,9 +1,5 @@
 import { env } from "@/lib/env/server.ts"
 import type { Config } from "drizzle-kit"
-// import {config} from 'dotenv'
-
-// Todo : DOCUMENT THIS FILE
-// config({ path: ['.env.local', '.env'] })
 
 export default {
   out: "./drizzle",

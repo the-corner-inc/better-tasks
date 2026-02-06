@@ -8,7 +8,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { admin } from "better-auth/plugins"
 import { tanstackStartCookies } from "better-auth/tanstack-start"
 
-/** TODO: UPDATE FORM NEXT.JS DOCS
+/**
  * Auth - Server configuration
  *
  * Is the source of truth for all auth configuration.
@@ -86,7 +86,7 @@ const getAuthConfig = createServerOnlyFn(() =>
     // https://www.better-auth.com/docs/integrations/tanstack#usage-tips
     plugins: [
       // Table
-      admin(), // Adds "roles" in user table //Todo : Get more infos on this and why it allows me to do "auth.api.listUsers"
+      admin(), // Adds "roles" in user table
       tasksTablePlugin(),
 
       // Core

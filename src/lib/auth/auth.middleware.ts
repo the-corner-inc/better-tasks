@@ -6,8 +6,6 @@ import {
   setResponseStatus,
 } from "@tanstack/start-server-core"
 
-// TODO :UNDERSTAND THIS FILE BETTER
-
 /**
  * Middleware
  *

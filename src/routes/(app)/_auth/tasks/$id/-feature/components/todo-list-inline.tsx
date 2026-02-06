@@ -33,10 +33,10 @@ import { ListTodoIcon, PlusIcon } from "lucide-react"
 import { startTransition, useState } from "react"
 
 /**
- * Todo List Inline Component
+ * Todos List Inline Component
  *
  * Features:
- * - Add todo form
+ * - Add todos form
  * - Drag & drop reorder
  * - Stats (x/y completed)
  * - Empty state
@@ -126,7 +126,7 @@ export function TodoListInline({ taskId, todos: initialTodos }: Props) {
         )}
       </div>
 
-      {/* Add Todo Form / Button */}
+      {/* Add Todos Form / Button */}
       {isAdding ? (
         <TodoAddForm
           taskId={taskId}

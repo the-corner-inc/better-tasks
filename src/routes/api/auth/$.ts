@@ -2,7 +2,6 @@ import { auth } from "@/lib/auth/auth.ts"
 import { createFileRoute } from "@tanstack/react-router"
 
 /**
- * TODO : UPDATE THIS INFORMATION FROM NEXT.JS
  * Auth API route - Catch-all Handler (Better Auth)
  *
  * Route:
@@ -52,4 +51,4 @@ export const Route = createFileRoute("/api/auth/$")({
 // ArcJet security options
 // ======================================================
 // We limit rate limiting to POST method only for security reasons (to prevent brute-force attacks on sign-in/sign-up).
-// Todo : Implement
+// Todo : Implement ? Or rate limiting somewhere else with another tool ?

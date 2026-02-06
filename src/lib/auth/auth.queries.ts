@@ -1,7 +1,6 @@
 import { $getSession, $getUser, $getUsers } from "@/lib/auth/auth.functions.ts"
 import { queryOptions } from "@tanstack/react-query"
 
-// Todo : How it it used exactly ?
 /**
  * Auth - Query Options
  *

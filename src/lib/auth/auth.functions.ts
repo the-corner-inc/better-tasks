@@ -3,7 +3,6 @@ import { auth } from "@/lib/auth/auth.ts"
 import { createServerFn } from "@tanstack/react-start"
 import { getRequest, setResponseHeader } from "@tanstack/start-server-core"
 
-
 /**
  * Auth - Server Functions
  *

@@ -14,7 +14,6 @@ import * as schema from "./schema.ts"
  * uses "server env." variables.
  */
 
-
 const client = postgres(env.DATABASE_URL)
 
 const getDatabase = createServerOnlyFn(() =>

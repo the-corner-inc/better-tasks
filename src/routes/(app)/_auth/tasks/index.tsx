@@ -4,26 +4,20 @@ import { tasksListQueryOptions } from "@/routes/(app)/_auth/tasks/-feature/tasks
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 
-// ===================================================================
-// ROUTE
-// ===================================================================
 export const Route = createFileRoute("/(app)/_auth/tasks/")({
-  component: RouteComponent,
+  component: TasksListPage,
   loader: async ({ context }) => {
     // user is guaranteed by (_auth) beforeLoad, but keeping this pattern good
     await context.queryClient.ensureQueryData(authQueryOptions())
 
-    // fetch tasks with todos
     // no return - the data are stored into the cache
     await context.queryClient.ensureQueryData(tasksListQueryOptions())
   },
 })
 
-// ===================================================================
-// SHOWS THE TASKS
-// ===================================================================
-function RouteComponent() {
-  // FETCH THE DATAS FROM THE CACHE
+
+function TasksListPage() {
+
   const { data: user } = useSuspenseQuery(authQueryOptions())
   const { data: tasks } = useSuspenseQuery(tasksListQueryOptions())
 

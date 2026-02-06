@@ -12,7 +12,7 @@ import {
   TodosPreview,
   TodosStats,
 } from "@/routes/(app)/_auth/tasks/-feature/components/todos-preview.tsx"
-import type { TaskTodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import type { TaskTodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.d.ts"
 import { tasksKey } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
 import {
   deleteTask,

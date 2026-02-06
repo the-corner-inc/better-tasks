@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox.tsx"
 import { cn } from "@/lib/utils.ts"
-import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.d.ts"
 import { Link } from "@tanstack/react-router"
 
 /**

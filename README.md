@@ -100,13 +100,13 @@ src/
 │   │   ├── route.tsx             # Auth layout + beforeLoad guard
 │   │   └── tasks/
 │   │       ├── -feature/         # Tasks feature (co-located)
-│   │       │   ├── tasks.dm.ts       # Data Models (Zod schemas + types)
+│   │       │   ├── tasks.d.ts       # Data Models (Zod schemas + types)
 │   │       │   ├── tasks.queries.ts  # Query Options (React Query cache)
 │   │       │   ├── tasks.service.ts  # Server Functions (CRUD)
 │   │       │   └── components/       # UI components
 │   │       ├── $id/
 │   │       │   ├── -feature/         # Todos feature (nested)
-│   │       │   │   ├── todos.dm.ts
+│   │       │   │   ├── todos.d.ts
 │   │       │   │   ├── todos.service.ts
 │   │       │   │   └── components/
 │   │       │   └── index.tsx         # Task detail page

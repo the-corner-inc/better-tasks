@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button.tsx"
 import { TaskCard } from "@/routes/(app)/_auth/tasks/-feature/components/task-card.tsx"
 import { TaskCreateForm } from "@/routes/(app)/_auth/tasks/-feature/components/task-create-form.tsx"
-import type { TaskTodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import type { TaskTodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.d.ts"
 import { PlusIcon } from "lucide-react"
 import { useState } from "react"
 

@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button.tsx"
 import { Link } from "@tanstack/react-router"
 
-// TODO: RAPH COMPONENT, DOCUMENT IT
-
 export function DefaultNotFound() {
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center gap-2 space-y-2 p-2">

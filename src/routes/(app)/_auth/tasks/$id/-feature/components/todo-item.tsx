@@ -8,7 +8,7 @@ import {
   toggleTodo,
   updateTodoContent,
 } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts"
-import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.d.ts"
 import { tasksKey } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"

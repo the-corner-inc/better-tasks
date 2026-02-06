@@ -5,7 +5,6 @@ import { createRouter } from "@tanstack/react-router"
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query"
 import { routeTree } from "./routeTree.gen"
 
-// Import the generated route tree
 
 /**
  * Router Factory
@@ -16,20 +15,18 @@ import { routeTree } from "./routeTree.gen"
  * - Default error handling
  */
 
-// Create a new router instance
 export function getRouter() {
-  // Configure QueryClient with sensible defaults
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        refetchOnWindowFocus: false, // Don't refetch on window focus for better UX
-        staleTime: 1000 * 60 * 2, // Cache data for 2 minutes
-        retry: 3, // Retry failed queries up to 3 times
+        refetchOnWindowFocus: false,
+        staleTime: 1000 * 60 * 2, // 2 minutes
+        retry: 3,
       },
     },
   })
 
-  // Create the router
   const router = createRouter({
     routeTree,
     context: { queryClient, user: null },
@@ -54,11 +51,3 @@ export function getRouter() {
 
   return router
 }
-
-// Todo : Document this to see if usable or not
-// Type declaration for router
-/* declare module "@tanstack/react-router" {
-  interface Register {
-    router: ReturnType<typeof getRouter>
-  }
-}*/

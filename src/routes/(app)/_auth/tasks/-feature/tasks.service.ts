@@ -1,13 +1,13 @@
 import { $getCurrentUserId } from "@/lib/auth/auth.functions.ts"
 import { db } from "@/lib/db/db.ts"
 import { task as taskTable, todo as todoTable } from "@/lib/db/schema.ts"
-import type { TaskModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import type { TaskModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.d.ts"
 import {
   createTaskSchema,
   deleteTaskSchema,
   taskIdSchema,
   updateTaskSchema,
-} from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+} from "@/routes/(app)/_auth/tasks/-feature/tasks.d.ts"
 import { createServerFn } from "@tanstack/react-start"
 import { and, asc, desc, eq } from "drizzle-orm"
 

@@ -2,35 +2,16 @@ import { createEnv } from "@t3-oss/env-core"
 import * as z from "zod"
 
 /**
- * server.ts
- *
  * Server-side environment variables configuration.
  *
  * !!! WARNING !!!
  * The ".env.local" file will/can overwrite some values from the ".env" file
  *
- * This file:
- * - Centralizes all sensitive environment variables (database, secrets, OAuth)
- * - Validates their presence and format at startup
- * - Prevents any secret from leaking into the client bundle
- *
  * !!! ABSOLUTE RULE !!!
  * This file must NEVER be imported in code that runs on the client
- * (React components, hooks, browser utilities).
  *
- * Runtime context:
- * - Node.js only
- * - Access via `process.env`
- *
- * Typical use cases:
- * - Database connection (Drizzle)
- * - Authentication (Better Auth secrets, OAuth providers)
- * - Server-generated URLs (callbacks, redirects)
- *
- * Why this file exists:
- * - TanStack Start shares code between client and server
- * - Without explicit separation, secrets can leak into the client bundle
- * - `createEnv` + `zod` provide safety, validation, and early failure
+ * This file prevents any secret from leaking into the client bundle
+ * Without explicit separation for client / server, secrets can leak into the client bundle
  */
 
 export const env = createEnv({

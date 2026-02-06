@@ -10,7 +10,7 @@ import {
 import { TodoAddForm } from "@/routes/(app)/_auth/tasks/$id/-feature/components/todo-add-form.tsx"
 import { TodoItem } from "@/routes/(app)/_auth/tasks/$id/-feature/components/todo-item.tsx"
 import { reorderTodos } from "@/routes/(app)/_auth/tasks/$id/-feature/todos.service.ts"
-import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.dm.ts"
+import type { TodoModel } from "@/routes/(app)/_auth/tasks/-feature/tasks.d.ts"
 import { tasksKey } from "@/routes/(app)/_auth/tasks/-feature/tasks.queries.ts"
 import type { DragEndEvent } from "@dnd-kit/core"
 import {

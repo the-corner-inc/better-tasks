@@ -8,8 +8,6 @@ import {
   useRouter,
 } from "@tanstack/react-router"
 
-// TODO: RAPH COMPONENT, DOCUMENT IT
-
 export function DefaultCatchBoundary({ error }: Readonly<ErrorComponentProps>) {
   const router = useRouter()
   const isRoot = useMatch({

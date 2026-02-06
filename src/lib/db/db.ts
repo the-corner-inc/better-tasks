@@ -5,13 +5,10 @@ import postgres from "postgres"
 import * as schema from "./schema.ts"
 
 /**
- * Database Instance
+ * Database Instance - client side safe
  *
  * Creates a Drizzle ORM instance connected to PostgreSQL.
  * Includes all schemas (auth + app) for type-safe queries.
- *
- * Make a server function to ensure it will not get executed in the client (client side safe).
- * uses "server env." variables.
  */
 
 const client = postgres(env.DATABASE_URL)
@@ -25,6 +22,3 @@ const getDatabase = createServerOnlyFn(() =>
 )
 
 export const db = getDatabase()
-
-// Old way, not safe for client side
-// export const db = drizzle(process.env.DATABASE_URL!, { schema })

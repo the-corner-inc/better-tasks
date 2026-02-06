@@ -9,17 +9,10 @@ import { z } from "zod"
 // ================================================================
 // BASE ZOD SCHEMAS (from Drizzle - single source of truth)
 // ================================================================
-// Schemas are generated with Zod based on the row of the DB
-// this avoids to re-type all fields and only do composition
-//
-// Those Schemas are a ground-base to work with to create others schemas from it
-// ================================================================
 export const todoSchema = createSelectSchema(TodoTable)
 
 // ================================================================
 // MODELS TYPES for internal use - Full database rows
-// ================================================================
-// Inferred types
 // ================================================================
 
 export type TodoModel = z.infer<typeof todoSchema>

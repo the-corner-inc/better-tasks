@@ -15,30 +15,22 @@ import { HomeIcon, ListTodoIcon, LogOutIcon, UserIcon } from "lucide-react"
  * Protected Layout Route for (_auth)
  *
  * This layout:
- * 1. Checks authentication in beforeLoad (server-side)
- * 2. Redirects to /auth/login if not authenticated
- * 3. Provides a header with user info and sign out
- * 4. Renders child routes via <Outlet />
+ * - Checks authentication in beforeLoad (server-side), BEFORE the route renders
+ * - Redirects if not authenticated
+ * - Provides a header with user info and sign out
  *
  * All routes under (_auth)/ are protected by this layout.
  */
 
 export const Route = createFileRoute("/(app)/_auth")({
   component: AppLayout,
-
-  // ===================================================================
-  // beforeLoad - Runs BEFORE the route renders (server-side capable)
-  // This is where we check authentication
-  // ===================================================================
   beforeLoad: async ({ context, location }) => {
     // ensureQueryData: Returns cached data OR fetches if not cached
-    // revalidateIfStale: Refetch in background if data is stale
     const user = await context.queryClient.ensureQueryData({
       ...authQueryOptions(),
       revalidateIfStale: true,
     })
 
-    // If no user -> redirect to login with return URL
     if (!user) {
       throw redirect({
         to: "/auth/login",
@@ -46,38 +38,27 @@ export const Route = createFileRoute("/(app)/_auth")({
       })
     }
 
-    // Return user to make it available in child routes via context
-    // This updates the type to non-null for child routes
+    // make it available in child routes via context
     return { user }
   },
 })
 
 function AppLayout() {
-  // Get user from React Query cache (already fetched in beforeLoad)
+
   const { data: user } = useSuspenseQuery(authQueryOptions())
 
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  // Handle sign out
   const handleSignOut = async () => {
     await authClient.signOut()
-
-    // Clear the auth cache
     queryClient.setQueryData(authQueryOptions().queryKey, null)
-
-    // Invalidate router to re-run loaders
     router.invalidate()
-
-    // Redirect to home
     router.navigate({ to: "/" })
   }
 
   return (
     <div className="min-h-screen">
-      {/* ================================================================
-          HEADER - Navigation bar with user info
-          ================================================================ */}
       <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b backdrop-blur">
         <div className="container flex h-14 items-center justify-between">
           {/* Left: Logo / Navigation */}
@@ -116,9 +97,6 @@ function AppLayout() {
         </div>
       </header>
 
-      {/* ================================================================
-          MAIN CONTENT - Child routes are rendered here via <Outlet />
-          ================================================================ */}
       <main className="container py-8">
         <Outlet />
       </main>

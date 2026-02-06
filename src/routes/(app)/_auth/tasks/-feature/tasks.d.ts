@@ -9,14 +9,6 @@ import { z } from "zod"
 // ===============================================================================
 // BASE ZOD SCHEMAS (from Drizzle - single source of truth)
 // ===============================================================================
-// Schemas are generated with Zod based on the row of the DB
-// this avoids to re-type all fields and only do composition
-//
-// Those Schemas are a ground-base to work with to create others schemas from it
-//
-// createSelectSchema : What EXITS from the DB (all fields)
-// createInsertSchema : What ENTERS to  the DB (some fields are optional)
-// ===============================================================================
 const taskSchema = createSelectSchema(TaskTable)
 const todoSchema = createSelectSchema(TodoTable)
 

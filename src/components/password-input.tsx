@@ -19,7 +19,7 @@ function PasswordInput({ className, ...props }: PasswordInputProps) {
           "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
           className,
         )}
-        /* eslint-disable-next-line @eslint-react/no-implicit-key */
+         
         {...props}
       />
       <Button

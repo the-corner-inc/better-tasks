@@ -15,9 +15,7 @@ export const Route = createFileRoute("/(app)/_auth/tasks/")({
   },
 })
 
-
 function TasksListPage() {
-
   const { data: user } = useSuspenseQuery(authQueryOptions())
   const { data: tasks } = useSuspenseQuery(tasksListQueryOptions())
 

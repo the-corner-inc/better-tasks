@@ -4,7 +4,7 @@ import {
   getRequest,
   setResponseHeader,
   setResponseStatus,
-} from "@tanstack/start-server-core"
+} from "@tanstack/react-start/server"
 
 /**
  * Middleware

@@ -1,7 +1,7 @@
 import type { AuthQueryResult } from "@/lib/auth/auth.queries.ts"
 import { auth } from "@/lib/auth/auth.ts"
 import { createServerFn } from "@tanstack/react-start"
-import { getRequest, setResponseHeader } from "@tanstack/start-server-core"
+import { getRequest, setResponseHeader } from "@tanstack/react-start/server"
 
 /**
  * Auth - Server Functions

@@ -44,7 +44,6 @@ export const Route = createFileRoute("/(app)/_auth")({
 })
 
 function AppLayout() {
-
   const { data: user } = useSuspenseQuery(authQueryOptions())
 
   const router = useRouter()

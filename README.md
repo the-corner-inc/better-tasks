@@ -97,7 +97,6 @@ There can be more file types. This is just a basic example.
 
 ---
 
-
 ---
 
 ## Contributor Guide
@@ -105,7 +104,6 @@ There can be more file types. This is just a basic example.
 For setup, development, scripts, Docker, testing, UI, and authentication instructions, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
-
 
 ---
 

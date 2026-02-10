@@ -14,7 +14,6 @@ import { createFileRoute, redirect } from "@tanstack/react-router"
 export const Route = createFileRoute("/")({
   component: HomePage,
   loader: async ({ context }) => {
-
     const user = await context.queryClient.ensureQueryData(authQueryOptions())
 
     if (user) {
@@ -22,7 +21,6 @@ export const Route = createFileRoute("/")({
     }
   },
 })
-
 
 function HomePage() {
   const { data: user } = useSuspenseQuery(authQueryOptions())

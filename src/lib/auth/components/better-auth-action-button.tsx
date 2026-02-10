@@ -11,7 +11,7 @@ export function BetterAuthActionButton({
 }) {
   return (
     <ActionButton
-      /* eslint-disable-next-line @eslint-react/no-implicit-key */
+       
       {...props}
       action={async () => {
         const result = await action()

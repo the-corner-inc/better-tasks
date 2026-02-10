@@ -11,7 +11,6 @@ export function BetterAuthActionButton({
 }) {
   return (
     <ActionButton
-       
       {...props}
       action={async () => {
         const result = await action()

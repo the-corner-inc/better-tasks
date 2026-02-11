@@ -6,48 +6,58 @@ Welcome! This guide explains how to set up, develop, and contribute to Better Ta
 
 1. **Install dependencies:**
    ```bash
-   npm install
+   pnpm install
    ```
 2. **Environment variables:**
    Copy `.env.example` to `.env` and configure as needed.
    ```bash
    cp .env.example .env
    ```
-3. **Start PostgreSQL:**
+3. Create the database
+
+   ```bash
+   createdb better_tasks
+   ```
+
+4. **Start PostgreSQL:**
    ```bash
    docker compose up -d
    ```
-4. **Generate Auth Schema:**
+5. **Generate Auth Schema:**
+   Note: should be done already
    ```bash
-   npm run auth:generate
+   pnpm auth:generate
    ```
    Replace the old schema with the generated one.
-5. **Database setup:**
-   - Generate tables: `npm run db:generate`
-   - Push schema (dev): `npm run db:push`
-   - Migrate (prod): `npm run db:migrate`
-6. **Start dev server:**
+6. **Database setup:**
+   - Generate tables: `pnpm db:generate`
+   - Push schema (dev): `pnpm db:push`
+   - Migrate (prod): `pnpm db:migrate`
+
+-
+
+7. **Start dev server:**
    ```bash
-   npm run dev
+   pnpm dev
    ```
    Visit [http://localhost:3000](http://localhost:3000)
 
 ## Common Scripts
 
-| Command                 | Description                    |
-| ----------------------- | ------------------------------ |
-| `npm run dev`           | Start development server       |
-| `npm run build`         | Build for production           |
-| `npm run start`         | Start production server        |
-| `npm run db:generate`   | Generate Drizzle migrations    |
-| `npm run db:migrate`    | Apply migrations               |
-| `npm run db:studio`     | Open Drizzle Studio            |
-| `npm run db:push`       | Push schema to DB (dev)        |
-| `npm run auth:generate` | Regenerate Better Auth schemas |
-| `npm run test`          | Run tests (Vitest)             |
-| `npm run lint`          | Lint code                      |
-| `npm run format`        | Format code                    |
-| `npm run check`         | Type check                     |
+| Command              | Description                    |
+| -------------------- | ------------------------------ |
+| `pnpm dev`           | Start development server       |
+| `pnpm build`         | Build for production           |
+| `pnpm start`         | Start production server        |
+| `pnpm db:generate`   | Generate Drizzle migrations    |
+| `pnpm db:migrate`    | Apply migrations               |
+| `pnpm db:studio`     | Open Drizzle Studio            |
+| `pnpm db:push`       | Push schema to DB (dev)        |
+| `pnpm auth:generate` | Regenerate Better Auth schemas |
+| `pnpm test`          | Run tests (Vitest)             |
+| `pnpm lint`          | Lint code                      |
+| `pnpm format`        | Format code                    |
+| `pnpm check`         | Type check                     |
 
 ## Docker Commands
 
@@ -58,15 +68,15 @@ Welcome! This guide explains how to set up, develop, and contribute to Better Ta
 
 ## Testing & Quality
 
-- **Testing:** Uses [Vitest](https://vitest.dev/). Run tests with `npm run test`.
-- **Linting & Formatting:** Uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/). Run `npm run lint`, `npm run format`, and `npm run check`.
+- **Testing:** Uses [Vitest](https://vitest.dev/). Run tests with `pnpm test`.
+- **Linting & Formatting:** Uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/). Run `pnpm lint`, `pnpm format`, and `pnpm check`.
 
 ## UI & Styling
 
 - **Tailwind CSS** for styling.
 - **shadcn/ui** for base UI components. Add new components via:
   ```bash
-  pnpm dlx shadcn@latest add <component>
+  ppnpm dlx shadcn@latest add <component>
   ```
 
 ## Authentication

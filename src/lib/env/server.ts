@@ -1,0 +1,31 @@
+import { createEnv } from "@t3-oss/env-core"
+import * as z from "zod"
+
+/**
+ * Server-side environment variables configuration.
+ *
+ * !!! WARNING !!!
+ * The ".env.local" file will/can overwrite some values from the ".env" file
+ *
+ * !!! ABSOLUTE RULE !!!
+ * This file must NEVER be imported in code that runs on the client
+ *
+ * This file prevents any secret from leaking into the client bundle
+ * Without explicit separation for client / server, secrets can leak into the client bundle
+ */
+
+export const env = createEnv({
+  server: {
+    DATABASE_URL: z.url(),
+    VITE_BASE_URL: z.url().default("http://localhost:3000"),
+    BETTER_AUTH_SECRET: z.string().min(1),
+
+    // OAuth2 providers, optional, update as needed
+    GITHUB_CLIENT_ID: z.string().optional(),
+    GITHUB_CLIENT_SECRET: z.string().optional(),
+
+    GOOGLE_CLIENT_ID: z.string().optional(),
+    GOOGLE_CLIENT_SECRET: z.string().optional(),
+  },
+  runtimeEnv: process.env,
+})
